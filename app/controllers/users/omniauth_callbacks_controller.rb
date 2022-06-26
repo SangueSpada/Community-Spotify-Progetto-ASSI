@@ -27,13 +27,12 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   # GET|POST /users/auth/spotify
   #def passthru
-  #  super
   #end
 
   # GET|POST /users/auth/spotify/callback
-  def failure
-    super
-  end
+  #def failure
+  #  super
+  #end
 
   # protected
   protected
