@@ -11,11 +11,14 @@
 * rails server
 
 ## COME PROCEDERE MO?
-* creazione dei modelli POST e COMMUNITY
-* realizzazione pagine: /home /'nome-profilo' /'nome-community' /creaPost /editPost /creaCommunity /editCommunity
+* creazione dei modelli POST, e C_POST, COMMENTI, COMMUNITY, EVENTI
+* realizzazione pagine: /home /'nome-profilo' /'nome-community' /creaPost /editPost /creaCommento /editCommento /creaCommunity /editCommunity /creaCPost /editCPost
 * gestione ruoli con gem Canard
 * capire come mostrare al meglio le cose in home (metodo cronologico?)
-* algoritmo esplora 
+* algoritmo esplora
+* oauth google calendar
+* implementazione cancella cookie per permettere di accedere con altro account spotify
+
 
 
 
