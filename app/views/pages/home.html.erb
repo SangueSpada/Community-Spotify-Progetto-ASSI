@@ -8,3 +8,12 @@
 <%= link_to "Login", new_user_session_path %>
 <%= link_to "Create Account", new_user_registration_path %>
 <% end %>
+
+<br>
+
+<% @posts.each do |post| %>
+    <li>
+        <b> <%= post.title %> </b> di <%= post.author %> <br>
+        <%= post.body %>
+    </li>
+<% end %>
