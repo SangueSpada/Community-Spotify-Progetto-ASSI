@@ -25,7 +25,7 @@ Devise.setup do |config|
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
   config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
-  config.omniauth :spotify, '8b3302cc08dc41fa9790995ba270302a', 'b243d56c77f946b4a70c7ae26c52d4c4', scope: %w(user-read-email user-read-private playlist-modify-public user-library-read user-library-modify).join(' ')
+  config.omniauth :spotify, Rails.application.credentials[:spotify][:client_id], Rails.application.credentials[:spotify][:client_secret], scope: %w(user-read-email user-read-private playlist-modify-public user-library-read user-library-modify).join(' ')
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
 
