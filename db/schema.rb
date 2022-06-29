@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_28_141040) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_29_160625) do
   create_table "comments", force: :cascade do |t|
     t.string "body"
     t.string "author"
@@ -20,10 +20,45 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_28_141040) do
     t.index ["post_id"], name: "index_comments_on_post_id"
   end
 
+  create_table "communities", force: :cascade do |t|
+    t.string "name"
+    t.string "creator"
+    t.string "description"
+    t.string "playlist"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "participations", id: false, force: :cascade do |t|
+    t.integer "community_id"
+    t.integer "user_id"
+    t.integer "role", default: 0
+    t.boolean "banned", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["community_id"], name: "index_participations_on_community_id"
+    t.index ["user_id"], name: "index_participations_on_user_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.string "title"
     t.string "body"
     t.string "author"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "reactions", force: :cascade do |t|
+    t.string "uid"
+    t.boolean "like"
+    t.integer "post_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_reactions_on_post_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -41,4 +76,5 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_28_141040) do
   end
 
   add_foreign_key "comments", "posts"
+  add_foreign_key "reactions", "posts"
 end
