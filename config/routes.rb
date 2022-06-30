@@ -25,8 +25,4 @@ Rails.application.routes.draw do
       resources :comment_reactions
     end
   end
-
-  get "/posts/new/:uid", to: "posts#new"
-
-  get "/posts/:id/edit/:uid", to: "posts#edit"
 end

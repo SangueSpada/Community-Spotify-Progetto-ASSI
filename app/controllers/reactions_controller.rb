@@ -1,17 +1,19 @@
 class ReactionsController < ApplicationController
     def create
         @post = Post.find(params[:post_id])
-        @reaction = Post.reactions.create(reaction_params)
+        @reaction = @post.reactions.create(reaction_params)
+        return false
     end
 
     def update
         @post = Post.find(params[:post_id])
-        @reaction = Post.reactions.update(reaction_params)
+        @reaction = @post.reactions.update(reaction_params)
+        return false
     end
 
     def destroy
         @post = Post.find(params[:post_id])
-        @reaction = Post.reactions.destroy
+        @reaction = @post.reactions.destroy
     end
 
     private

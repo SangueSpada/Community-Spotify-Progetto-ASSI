@@ -9,7 +9,9 @@
         <%= form.text_area :body %>
     </div>
 
-    <%= form.text_field :author %>
+    <div>
+        <%= form.hidden_field :author, value: current_user.uid %>
+    </div>
 
     <div>
         <%= form.submit %>

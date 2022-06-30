@@ -1,12 +1,13 @@
 class PostsController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def home
     @posts = Post.all
   end
 
   def new
     @post = Post.new
-    @authors = User.where(uid: params[:uid])
-    @author = User.first
+    @author = current_user
   end
 
   def create
@@ -34,6 +35,8 @@ class PostsController < ApplicationController
 
   def destroy 
     @post = Post.find(params[:id])
+    @post.reactions.destroy
+    @post.comments.destroy
     @post.destroy
 
     redirect_to root_path, status: :see_other
