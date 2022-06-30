@@ -116,27 +116,26 @@
   <div>
     <ul>
       <% @posts.each do |p| %>
-        <li> 
-          <p><%= p.title %> di <%= current_user.uid %></p>
-          <p><%= p.body %></p>
-        </li>
-        <%= form_with model: [ p, p.reactions.build ] do |form| %>
-          <%= form.hidden_field :uid, value: current_user%>
-          <%= form.hidden_field :like, value: true%>
-          <%= form.submit "Mi piace" %>
-        <% end %>
-        <%= button_to "Modifica", edit_post_path(p), method: :get %>
-        <%= button_to "Elimina", post_path(p), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
-        <% p.comments.each do |c| %>
-          <p> <%= c.author %> </p>
-          <p> <%= c.body %> </p>
-        <% end %>
-        <%= form_with model: [ p, p.comments.build ] do |form| %>
-          <%= form.hidden_field :author, value: current_user.uid %>
-          <%= form.text_field :body %>
-          <%= form.submit "Commenta" %>
-        <% end %>
-      <% end %>
+        
+          <li> 
+            <p><%= p.title %> di <%= current_user.uid %></p>
+            <p><%= p.body %></p>
+          </li>
+          <%= render "reactions/form", post: p %>
+          <%= button_to "Modifica", edit_post_path(p), method: :get %>
+          <%= button_to "Elimina", post_path(p), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
+          <% p.comments.each do |c| %>
+            <p> <%= c.author %> </p>
+            <p> <%= c.body %> </p>
+            <%= render "comment_reactions/form", post: p, comment: c %>
+            <% if c.author == current_user %>
+              <%= button_to "Modifica", edit_post_path(p), method: :get %>
+              <%= button_to "Elimina", post_path(p), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
+            <% end %>
+          <% end %>
+          <%= render "comments/form", post: p %>
+        <!--<% end %>-->
+      
     </ul>
   </div>
   

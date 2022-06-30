@@ -1,0 +1,10 @@
+<%= form_with model: [ post, post.reactions.build ] do |form| %>
+    <%= form.hidden_field :uid, value: current_user%>
+    <%= form.hidden_field :like, value: true%>
+    <%= form.submit "Mi piace" %>
+<% end %>
+<%= form_with model: [ post, post.reactions.build ] do |form| %>
+    <%= form.hidden_field :uid, value: current_user%>
+    <%= form.hidden_field :like, value: false%>
+    <%= form.submit "Non mi piace" %>
+<% end %>
