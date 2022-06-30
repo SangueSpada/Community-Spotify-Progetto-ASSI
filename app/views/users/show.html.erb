@@ -45,10 +45,56 @@
                      <!-- END profile-header-info -->
                      <div class="pt-2">
                         <span>10 post</span>
-                        <span>100 Followers</span>
-                        <span></span>
-                        <span>20 Following</span>
-                        <span>52 Community</span>
+                        <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#followersModal">
+                        10 Followers
+                        </button>
+                        <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#followingModal">
+                        20 Following
+                        </button>
+                        <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#communityModal">
+                        52 Community
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="followingModal" tabindex="-1" aria-labelledby="followingModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="followingModalLabel">Following</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                ...
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="modal fade" id="followersModal" tabindex="-1" aria-labelledby="followersModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="followersModalLabel">Followers</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                ...
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="modal fade" id="communityModal" tabindex="-1" aria-labelledby="communityModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="communityModalLabel">Community</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                ...
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
                      </div>
                   </div>
                   <!-- END profile-header-content -->
