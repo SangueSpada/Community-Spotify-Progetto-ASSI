@@ -11,22 +11,23 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
   resources :posts do
-    resources :comments do
-      resources :comment_reactions
+    
+    resources :comments, only: [:create,:update,:destroy] do
+      resources :comment_reactions, only: [:create,:update,:destroy]
     end
-    resources :reactions
+    resources :reactions, only: [:create,:update,:destroy]
   end
   
   resources :communities do
     resources :community_posts do
-      resources :comments do
-        resources :reactions
+      resources :comments, only: [:create,:update,:destroy] do
+        resources :comment_reactions, only: [:create,:update,:destroy]
       end
-      resources :comment_reactions
+      resources :reactions, only: [:create,:update,:destroy]
     end
   end
 
-  get "/posts/new/:uid", to: "posts#new"
+  #get "/posts/new/:uid", to: "posts#new"
 
-  get "/posts/:id/edit/:uid", to: "posts#edit"
+  #get "/posts/:id/edit/:uid", to: "posts#edit"
 end
