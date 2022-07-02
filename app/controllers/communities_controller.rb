@@ -1,6 +1,10 @@
 class CommunitiesController < ApplicationController
     skip_before_action :verify_authenticity_token
 
+    def show
+        @community = Community.find(params[:id])
+    end
+
     def new
         @tags = Tag.all
         @community = Community.new()
