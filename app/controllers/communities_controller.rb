@@ -1,11 +1,14 @@
 class CommunitiesController < ApplicationController
+    skip_before_action :verify_authenticity_token
+
     def new
+        @tags = Tag.all
         @community = Community.new()
-        @creator = User.where(uid: params[:uid]).first
     end
 
     def create
-        @community = Community.new(community_params, creator: @creator)
+        @community = Community.new(community_params)
+        #give_community_tags(@community, params[:tag_ids])
         if @community.save
             @participation = Participation.new(role: :admin)
             if @participation.save
@@ -19,6 +22,7 @@ class CommunitiesController < ApplicationController
     end
 
     def edit
+        @tags = Tag.all
         @community = Community.find(params[:id])
     end
 
@@ -40,6 +44,12 @@ class CommunitiesController < ApplicationController
 
     private
         def community_params
-            params.require(:community).permit(:name, :description, :playlist)
+            params.require(:community).permit(:name, :creator, :description, :playlist)
+        end
+
+        def give_community_tags(community, tags)
+            tags.each do |tag|
+                community.tags << Tag.find(id: tag)
+            end
         end
 end

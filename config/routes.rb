@@ -25,4 +25,6 @@ Rails.application.routes.draw do
       resources :reactions, only: [:create,:update,:destroy]
     end
   end
+
+  resources :tags
 end

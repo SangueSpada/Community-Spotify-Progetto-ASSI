@@ -3,6 +3,7 @@ class PagesController < ApplicationController
   def home
     puts current_user
     @posts = Post.all
+    @communities = Community.all
   end
 
 end

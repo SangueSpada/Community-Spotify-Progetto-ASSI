@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_30_152518) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_02_154312) do
   create_table "comment_reactions", force: :cascade do |t|
     t.string "uid"
     t.boolean "like"
@@ -36,6 +36,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_30_152518) do
     t.string "playlist"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "community_posts", force: :cascade do |t|
+    t.string "title"
+    t.string "body"
+    t.string "author"
+    t.integer "community_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["community_id"], name: "index_community_posts_on_community_id"
   end
 
   create_table "participations", id: false, force: :cascade do |t|
@@ -66,6 +76,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_30_152518) do
     t.index ["post_id"], name: "index_reactions_on_post_id"
   end
 
+  create_table "taggables", force: :cascade do |t|
+    t.integer "community_id", null: false
+    t.integer "tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["community_id"], name: "index_taggables_on_community_id"
+    t.index ["tag_id"], name: "index_taggables_on_tag_id"
+  end
+
   create_table "tags", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -86,5 +105,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_30_152518) do
 
   add_foreign_key "comment_reactions", "comments"
   add_foreign_key "comments", "posts"
+  add_foreign_key "community_posts", "communities"
   add_foreign_key "reactions", "posts"
+  add_foreign_key "taggables", "communities"
+  add_foreign_key "taggables", "tags"
 end

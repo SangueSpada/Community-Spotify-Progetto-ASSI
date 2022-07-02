@@ -1,3 +1,4 @@
 class Tag < ApplicationRecord
-  has_and_belongs_to_many :communities, dependent: :destroy
+  has_many :taggables, dependent: :destroy
+  has_many :communities
 end

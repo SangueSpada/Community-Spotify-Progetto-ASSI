@@ -1,0 +1,19 @@
+<%= form_with model: [community, community.community_posts.build]  do |form| %>
+    <div>
+        <%= form.label :title %>
+        <%= form.text_field :title %>
+    </div>
+
+    <div>
+        <%= form.label :body %>
+        <%= form.text_area :body %>
+    </div>
+
+    <div>
+        <%= form.hidden_field :author, value: current_user.uid %>
+    </div>
+
+    <div>
+        <%= form.submit %>
+    </div>
+<% end %>

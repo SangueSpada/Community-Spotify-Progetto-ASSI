@@ -118,7 +118,7 @@
       <% @posts.each do |p| %>
         
           <li> 
-            <p><%= p.title %> di <%= current_user.uid %></p>
+            <p><%= p.title %> di <%= p.author %></p>
             <p><%= p.body %></p>
           </li>
           <%= render "reactions/form", post: p %>
@@ -134,7 +134,17 @@
             <% end %>
           <% end %>
           <%= render "comments/form", post: p %>
-        <!--<% end %>-->
+      <% end %>
+
+      <% @communities.each do |c| %>
+        <% community_posts = c.community_posts.all %>
+          <% community_posts.each do |cp| %>
+            <li> 
+              <p><%= cp.title %> di <%= cp.author %> in <%= c.name %> </p>
+              <p><%= cp.body %></p>
+            </li>
+          <% end %>
+      <% end %>
       
     </ul>
   </div>
