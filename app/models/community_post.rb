@@ -1,4 +1,4 @@
-class CommunityPost < ApplicationRecord
+class CommunityPost < Post
     belongs_to :community
 
     has_many :comments, dependent: :destroy
