@@ -14,9 +14,9 @@ class CommunitiesController < ApplicationController
         @community = Community.new(community_params)
         #give_community_tags(@community, params[:tag_ids])
         if @community.save
-            @participation = Participation.new(role: :admin)
+            @participation = Participation.new(user_id: current_user.uid, community_id: @community.id, role: admin, banned: false)
             if @participation.save
-                redirect_to root_path
+                redirect_to community_path(@community)
             else
                 render :new, status: :unprocessable_entity
             end
@@ -33,7 +33,7 @@ class CommunitiesController < ApplicationController
     def update
         @community = Community.find(params[:id])
         if @community.update(community_params)
-            redirect_to root_path
+            redirect_to community_path(@community)
         else
             render :edit, status: :unprocessable_entity
         end

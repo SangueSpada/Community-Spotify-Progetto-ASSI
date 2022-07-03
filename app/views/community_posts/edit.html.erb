@@ -16,7 +16,8 @@
     <body class="bg-light">
         <%= render "partials/navbar" %>
         <div style="padding: 40pt"></div>
-        <h1>Modifica Post</h1>
-        <%= render "form", post: @post %>
-        </body>
+        <h1> Modifica il post per la community <%= @community.name %> </h1>
+        <%= render "form", community: @community, community_post: @community_post %>
+             
+    </body>
 </html>

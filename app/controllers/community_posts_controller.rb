@@ -22,12 +22,13 @@ class CommunityPostsController < ApplicationController
   end
 
   def edit
-    @community_post = CommunityPost.find(params[:id])
+    @community = Community.find(params[:community_id])
+    @community_post = @community.community_posts.find(params[:id])
   end
 
   def update
     @community = Community.find(params[:community_id])
-    @community_post = @community.community_posts
+    @community_post = @community.community_posts.find(params[:id])
 
     if @community_post.update(community_post_params)
       redirect_to root_path
@@ -36,7 +37,7 @@ class CommunityPostsController < ApplicationController
     end
   end
 
-  def destroy 
+  def destroy
     @community = Community.find(params[:community_id])
     @community_post = @community.community_posts.destroy
 

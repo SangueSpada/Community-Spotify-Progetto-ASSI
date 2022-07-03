@@ -2,13 +2,13 @@ class CommentReactionsController < ApplicationController
   def create
     @comment = Comment.find(params[:comment_id])
     @reaction = @comment.comment_reactions.create(comment_reaction_params)
-    return false
+    redirect_to root_path
   end
 
   def update
     @comment = Comment.find(params[:comment_id])
     @reaction = @comment.reactions.update(comment_reaction_params)
-    return false
+    redirect_to root_path
   end
 
   def destroy

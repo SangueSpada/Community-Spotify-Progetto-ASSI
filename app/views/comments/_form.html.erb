@@ -1,5 +1,13 @@
-<%= form_with model: [ post, post.comments.build ] do |form| %>
-    <%= form.hidden_field :author, value: current_user.uid %>
-    <%= form.text_field :body %>
-    <%= form.submit "Commenta" %>
+<% if community == nil %>
+    <%= form_with model: [ post, post.comments.build ] do |form| %>
+        <%= form.hidden_field :author, value: current_user.uid %>
+        <%= form.text_field :body %>
+        <%= form.submit "Commenta" %>
+    <% end %>
+<% else %>
+    <%= form_with model: [ community, community_post, community_post.comments.build ] do |form| %>
+        <%= form.hidden_field :author, value: current_user.uid %>
+        <%= form.text_field :body %>
+        <%= form.submit "Commenta" %>
+    <% end %>
 <% end %>

@@ -1,2 +1,21 @@
-<h2> <%= @community.name %> </h2>
+<h2> <%= @community.name %> </h2> 
+<%= button_to "Modifica Community", edit_community_path(@community), method: :get %>
 <p> <%= @community.description %> </p>
+<%= button_to "Sei membro della community? Crea post!", new_community_community_post_path(@community), method: :get %>
+<% @community.community_posts.each do |community_post| %>
+    <p><%= community_post.title %> di <%= community_post.author%> </p>
+    <p> <%= community_post.body %> </p>
+    <%= render "reactions/form", community: @community, community_post: community_post %>
+    <%= button_to "Modifica", edit_community_community_post_path(@community.id, community_post.id), method: :get %>
+    <%= button_to "Elimina", community_community_post_path(@community.id, community_post.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
+    <% community_post.comments.each do |comment| %>
+        <p> <%= comment.author %> </p>
+        <p> <%= comment.body %> </p>
+        <%= render "comment_reactions/form", community: @community, community_post: community_post, comment: comment %>
+        <% if c.author == current_user %>
+            <%= button_to "Modifica", edit_community_community_post_comment_path(@community.id, community_post.id, comment.id), method: :get %>
+            <%= button_to "Elimina", community_community_post_comment_path(@community.id, community_post.id, comment.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
+        <% end %>
+    <% end %>
+    <%= render "comments/form", community: @community, community_post: community_post %>
+<% end %>
