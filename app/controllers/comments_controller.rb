@@ -1,36 +1,37 @@
 class CommentsController < ApplicationController
     def create
-        if()
+        if(params[:post_id] == nil)
             @community = Community.find(params[:community_id])
             @community_post = @community.community_posts.find(params[:community_post_id])
             @comment = @community_post.comments.create(comment_params)
-            redirect_to community_path, community: @community
+            redirect_to community_path(@community)
         else 
+            @post = Post.find(params[:post_id])
             @comment = @post.comments.create(comment_params)
             redirect_to root_path
         end    
     end
 
     def update
-        @post = Post.find(params[:post_id])
-        if(@post == nil)
+        if(params[:post_id] == nil)
             @community = Community.find(params[:community_id])
             @community_post = @community.community_posts.find(params[:community_post_id])
             @comment = @community_post.comments.update(comment_params)
-            redirect_to community_path, community: @community
-        else 
+            redirect_to community_path(@community)
+        else
+            @post = Post.find(params[:post_id]) 
             @comment = @post.comments.update(comment_params)
             redirect_to root_path
         end   
     end
 
     def destroy
-        @post = Post.find(params[:post_id])
-        if(@post == nil)
+        if(params[:post_id] == nil)
             @community = Community.find(params[:community_id])
             @community_post = @community.community_posts.find(params[:community_post_id])
             @comment = @community_post.comments.destroy
         else 
+            @post = Post.find(params[:post_id])
             @comment = @post.comments.destroy
         end   
     end
