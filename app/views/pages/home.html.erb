@@ -121,19 +121,19 @@
             <p><%= p.title %> di <%= p.author %></p>
             <p><%= p.body %></p>
           </li>
-          <%= render "reactions/form", post: p %>
+          
           <%= button_to "Modifica", edit_post_path(p), method: :get %>
           <%= button_to "Elimina", post_path(p), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
           <% p.comments.each do |c| %>
             <p> <%= c.author %> </p>
             <p> <%= c.body %> </p>
-            <%= render "comment_reactions/form", post: p, comment: c %>
+            
             <% if c.author == current_user %>
               <%= button_to "Modifica", edit_post_comment_path(all_ids: [p.id, c.id]), method: :get %>
               <%= button_to "Elimina", post_comment_path(all_ids: [p.id, c.id]), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
             <% end %>
           <% end %>
-          <%= render "comments/form", post: p %>
+          
       <% end %>
 
       <% @communities.each do |c| %>

@@ -52,7 +52,7 @@
                         20 Following
                         </button>
                         <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#communityModal">
-                        52 Community
+                        <%= String(@communities.count()) %> Community
                         </button>
                         <!-- Modal -->
                         <div class="modal fade" id="followingModal" tabindex="-1" aria-labelledby="followingModalLabel" aria-hidden="true">
@@ -63,7 +63,6 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
                               <div class="modal-body">
-                                ...
                               </div>
                             </div>
                           </div>
@@ -89,7 +88,9 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
                               <div class="modal-body">
-                                ...
+                                 <% @communities.each do |co| %>
+                                    <a href="/communities/<%= String(co.id) %>" ><%= co.name %></a><br>
+                                 <% end %>
                               </div>
                             </div>
                           </div>

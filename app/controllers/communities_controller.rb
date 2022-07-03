@@ -14,7 +14,7 @@ class CommunitiesController < ApplicationController
         @community = Community.new(community_params)
         #give_community_tags(@community, params[:tag_ids])
         if @community.save
-            @participation = Participation.new(user_id: current_user.uid, community_id: @community.id, role: admin, banned: false)
+            @participation = Participation.new(user_id: current_user.id, community_id: @community.id, role: :admin, banned: false)
             if @participation.save
                 redirect_to community_path(@community)
             else
