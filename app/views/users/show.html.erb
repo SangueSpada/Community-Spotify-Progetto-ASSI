@@ -46,14 +46,28 @@
                      <div class="pt-2">
                         <span>10 post</span>
                         <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#followersModal">
-                        10 Followers
+                        <%= String(@u.followers.length()) %> Followers
                         </button>
                         <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#followingModal">
-                        20 Following
+                        <%= String(@u.followings.length()) %> Following
                         </button>
                         <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#communityModal">
-                        52 Community
+                        <%= String(@communities.count()) %> Community
                         </button>
+                        <section id="all-links"class="mt-2">
+                            <% if @u.uid == current_user.uid %>
+                                <%= button_to "Logout", destroy_user_session_path, data: {turbo: "false"}, method: :delete, :class => "btn btn-outline-warning" %>
+                            <% elsif current_user.followings.include?(@u) %>
+                                <h5><%= button_to "Unfollow",unfollow_user_path, method: "POST",:class => "btn btn-outline-danger" %></h5>
+                            <% else %>
+                                <h5><%= button_to "Follow", follow_user_path, method: "POST", :class => "btn btn-outline-success" %></h5>
+                            <% end%>
+                            
+                            <br>
+                        </section>
+                        
+                           
+                      
                         <!-- Modal -->
                         <div class="modal fade" id="followingModal" tabindex="-1" aria-labelledby="followingModalLabel" aria-hidden="true">
                           <div class="modal-dialog">
@@ -63,7 +77,9 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
                               <div class="modal-body">
-                                ...
+                              <% @u.followings.each  do |following| %>
+                                    <a href="/user/<%= String(following.uid) %>" ><%= following.uid %></a><br>
+                                 <% end %>
                               </div>
                             </div>
                           </div>
@@ -76,7 +92,9 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
                               <div class="modal-body">
-                                ...
+                                 <% @u.followers.each  do |followers| %>
+                                    <a href="/user/<%= String(followers.uid) %>" ><%= followers.uid %></a><br>
+                                 <% end %>
                               </div>
                             </div>
                           </div>
@@ -89,7 +107,9 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
                               <div class="modal-body">
-                                ...
+                                 <% @communities.each do |co| %>
+                                    <a href="/communities/<%= String(co.id) %>" ><%= co.name %></a><br>
+                                 <% end %>
                               </div>
                             </div>
                           </div>
