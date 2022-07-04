@@ -118,7 +118,7 @@
       <% @posts.each do |p| %>
         
           <li> 
-            <p><%= p.title %> di <%= p.author %></p>
+            <p><%= p.title %> di <a class="dropdown-item" href="/user/<%= p.author %>" ><%= p.author %></a></p>
             <p><%= p.body %></p>
           </li>
           
@@ -134,16 +134,6 @@
             <% end %>
           <% end %>
           
-      <% end %>
-
-      <% @communities.each do |c| %>
-        <% community_posts = c.community_posts.all %>
-          <% community_posts.each do |cp| %>
-            <li> 
-              <p><%= cp.title %> di <%= cp.author %> in <%= c.name %> </p>
-              <p><%= cp.body %></p>
-            </li>
-          <% end %>
       <% end %>
       
     </ul>
