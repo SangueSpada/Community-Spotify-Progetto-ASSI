@@ -1,19 +1,46 @@
-<%= form_with model: @post do |form| %>
-    <div>
-        <%= form.label :title %>
-        <%= form.text_field :title %>
-    </div>
+<% if community == nil %>
+    <%= form_with model: @post do |form| %>
+        <div>
+            <%= form.label :title %>
+            <%= form.text_field :title %>
+        </div>
 
-    <div>
-        <%= form.label :body %>
-        <%= form.text_area :body %>
-    </div>
+        <div>
+            <%= form.label :body %>
+            <%= form.text_area :body %>
+        </div>
 
-    <div>
-        <%= form.hidden_field :author, value: current_user.uid %>
-    </div>
+        <div>
+            <%= form.hidden_field :author, value: current_user.uid %>
+        </div>
 
-    <div>
-        <%= form.submit %>
-    </div>
+        <div>
+            <%= form.submit %>
+        </div>
+    <% end %>
+<% else %>
+    <%= form_with model: [community, community.posts.build] do |form| %>
+        <div>
+            <%= form.label :title %>
+            <%= form.text_field :title %>
+        </div>
+
+        <div>
+            <%= form.label :body %>
+            <%= form.text_area :body %>
+        </div>
+
+        <div>
+            <%= form.hidden_field :author, value: current_user.uid %>
+        </div>
+
+        <% if post.community_id == nil %>
+            <%= form.hidden_field :community_id, value: community.id%>
+        <% end %>
+
+        <div>
+            <%= form.submit %>
+        </div>
+
+    <% end %>
 <% end %>

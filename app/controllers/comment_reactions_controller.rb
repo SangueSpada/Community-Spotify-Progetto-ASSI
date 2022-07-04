@@ -1,19 +1,43 @@
 class CommentReactionsController < ApplicationController
   def create
-    @comment = Comment.find(params[:comment_id])
-    @reaction = @comment.comment_reactions.create(comment_reaction_params)
-    redirect_to root_path
+    @post = Post.find(params[:post_id])
+    @comment = @post.comments.find(params[:comment_id])
+    @comment_reaction = @comment.comment_reactions.create(comment_reaction_params)
+    if @post.community_id != nil
+        @community = Community.find(@post.community_id)
+        redirect_to community_path(@community)
+    else
+        redirect_to root_path
+    end
   end
 
   def update
-    @comment = Comment.find(params[:comment_id])
-    @reaction = @comment.reactions.update(comment_reaction_params)
-    redirect_to root_path
+      @post = Post.find(params[:post_id])
+      @comment = @post.comments.find(params[:comment_id])
+      @comment_reaction = @comment.comment_reactions.find(params[:id])
+      if @comment_reaction.like == true
+          @reaction = @comment.comment_reactions.update(like: false)
+      else
+          @reaction = @comment.comment_reactions.update(like: true)
+      end
+      if @post.community_id != nil
+          @community = Community.find(@post.community_id)
+          redirect_to community_path(@community)
+      else
+          redirect_to root_path
+      end
   end
 
   def destroy
-    @comment = Comment.find(params[:comment_id])
-    @reaction = @comment.reactions.destroy
+      @post = Post.find(params[:post_id])
+      @comment = @post.comments.find(params[:comment_id])
+      @comment_reaction = @comment.comment_reactions.destroy
+      if @post.community_id != nil
+          @community = Community.find(@post.community_id)
+          redirect_to community_path(@community)
+      else
+          redirect_to root_path
+      end
   end
 
   private

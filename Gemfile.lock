@@ -101,6 +101,7 @@ GEM
     digest (3.1.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
+    erb-formatter (0.3.0)
     erubi (1.10.0)
     faraday (2.3.0)
       faraday-net_http (~> 2.0)
@@ -291,6 +292,7 @@ DEPENDENCIES
   capybara
   debug
   devise
+  erb-formatter
   importmap-rails
   jbuilder
   omniauth

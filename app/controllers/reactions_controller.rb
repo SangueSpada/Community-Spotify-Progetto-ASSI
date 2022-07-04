@@ -1,39 +1,40 @@
 class ReactionsController < ApplicationController
     def create
-        if(params[:post_id] == nil)
-            @community = Community.find(params[:community_id])
-            @community_post = @community.community_posts.find(params[:community_post_id])
-            @reaction = @community_post.reactions.create(reaction_params)
-            redirect_to community_path, community: @community
-        else 
-            @post = Post.find(params[:post_id])
-            @comment = @post.reactions.create(reaction_params)
+        @post = Post.find(params[:post_id])
+        @reaction = @post.reactions.create(reaction_params)
+        if @post.community_id != nil
+            @community = Community.find(@post.community_id)
+            redirect_to community_path(@community)
+        else
             redirect_to root_path
-        end  
+        end
     end
 
     def update
-        if(params[:post_id] == nil)
-            @community = Community.find(params[:community_id])
-            @community_post = @community.community_posts.find(params[:community_post_id])
-            @reaction = @community_post.reactions.update(reaction_params)
-            redirect_to community_path, community: @community
-        else 
-            @post = Post.find(params[:post_id])
-            @comment = @post.reactions.update(reaction_params)
+        @post = Post.find(params[:post_id])
+        @reaction = @post.reactions.find(params[:id])
+        if @reaction.like == true
+            @reaction = @post.reactions.update(like: false)
+        else
+            @reaction = @post.reactions.update(like: true)
+        end
+        if @post.community_id != nil
+            @community = Community.find(@post.community_id)
+            redirect_to community_path(@community)
+        else
             redirect_to root_path
-        end  
+        end
     end
 
     def destroy
-        if(params[:post_id] == nil)
-            @community = Community.find(params[:community_id])
-            @community_post = @community.community_posts.find(params[:community_post_id])
-            @reaction = @community_post.reactions.destroy
-        else 
-            @post = Post.find(params[:post_id])
-            @comment = @post.reactions.destroy
-        end 
+        @post = Post.find(params[:post_id])
+        @reaction = @post.reactions.destroy
+        if @post.community_id != nil
+            @community = Community.find(@post.community_id)
+            redirect_to community_path(@community)
+        else
+            redirect_to root_path
+        end
     end
 
     private

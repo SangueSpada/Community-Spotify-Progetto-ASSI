@@ -1,5 +1,4 @@
 class Post < ApplicationRecord
-    self.inheritance_column = 'is_community'
     has_many :comments, dependent: :destroy
     has_many :reactions, dependent: :destroy
 

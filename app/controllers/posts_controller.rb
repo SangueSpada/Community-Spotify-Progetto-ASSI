@@ -7,6 +7,9 @@ class PostsController < ApplicationController
 
   def new
     @post = Post.new
+    if(params[:community_id] != nil)
+      @community = Community.find(params[:community_id])
+    end
     @author = current_user
   end
 
@@ -42,6 +45,6 @@ class PostsController < ApplicationController
   
   private
     def post_params
-      params.require(:post).permit(:title, :body, :author)
+      params.require(:post).permit(:title, :body, :author, :community_id)
     end
 end

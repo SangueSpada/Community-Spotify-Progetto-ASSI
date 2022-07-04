@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_02_154312) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_02_134307) do
   create_table "comment_reactions", force: :cascade do |t|
     t.string "uid"
     t.boolean "like"
@@ -24,10 +24,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_02_154312) do
     t.string "body"
     t.string "author"
     t.integer "post_id", null: false
-    t.integer "community_post_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["community_post_id"], name: "index_comments_on_community_post_id"
     t.index ["post_id"], name: "index_comments_on_post_id"
   end
 
@@ -38,16 +36,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_02_154312) do
     t.string "playlist"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "community_posts", force: :cascade do |t|
-    t.string "title"
-    t.string "body"
-    t.string "author"
-    t.integer "community_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["community_id"], name: "index_community_posts_on_community_id"
   end
 
   create_table "participations", id: false, force: :cascade do |t|
@@ -65,6 +53,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_02_154312) do
     t.string "title"
     t.string "body"
     t.string "author"
+    t.integer "community_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -73,10 +62,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_02_154312) do
     t.string "uid"
     t.boolean "like"
     t.integer "post_id", null: false
-    t.integer "community_post_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["community_post_id"], name: "index_reactions_on_community_post_id"
     t.index ["post_id"], name: "index_reactions_on_post_id"
   end
 
@@ -108,10 +95,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_02_154312) do
   end
 
   add_foreign_key "comment_reactions", "comments"
-  add_foreign_key "comments", "community_posts"
   add_foreign_key "comments", "posts"
-  add_foreign_key "community_posts", "communities"
-  add_foreign_key "reactions", "community_posts"
   add_foreign_key "reactions", "posts"
   add_foreign_key "taggables", "communities"
   add_foreign_key "taggables", "tags"

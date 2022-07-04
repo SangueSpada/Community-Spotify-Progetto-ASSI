@@ -1,0 +1,5 @@
+<%= form_with model: [ post, comment, comment.comment_reactions.build ] do |form| %>
+    <%= form.hidden_field :uid, value: current_user.uid %>
+    <%= form.hidden_field :like, value: false%>
+    <%= form.submit "Non mi piace" %>
+<% end %>

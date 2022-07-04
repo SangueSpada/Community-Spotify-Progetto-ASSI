@@ -114,39 +114,104 @@
     </small>
   </div>
   <div>
-    <ul>
-      <% @posts.each do |p| %>
-        
-          <li> 
-            <p><%= p.title %> di <%= p.author %></p>
-            <p><%= p.body %></p>
-          </li>
-          <%= render "reactions/form", post: p %>
-          <%= button_to "Modifica", edit_post_path(p), method: :get %>
-          <%= button_to "Elimina", post_path(p), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
-          <% p.comments.each do |c| %>
-            <p> <%= c.author %> </p>
-            <p> <%= c.body %> </p>
-            <%= render "comment_reactions/form", post: p, comment: c %>
-            <% if c.author == current_user %>
-              <%= button_to "Modifica", edit_post_comment_path(all_ids: [p.id, c.id]), method: :get %>
-              <%= button_to "Elimina", post_comment_path(all_ids: [p.id, c.id]), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
+      <% @posts.where(community_id: nil).each do |post| %>
+        <p><%= post.title %> di <%= post.author %></p>
+        <p><%= post.body %></p>
+        <p> Mi piace: <%= post.reactions.where(like: true).count %></p>
+        <p> Non mi piace: <%= post.reactions.where(like: false).count %></p>
+        <% if post.reactions.where(uid: current_user.uid).first %>
+          <% @reaction = post.reactions.where(uid: current_user.uid).first %>
+          <% if @reaction.like == true %>
+            <%= button_to "Mi piace", post_reaction_path(post.id, @reaction.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete%>
+            <%= button_to "Non mi piace", update_post_reaction_path(post.id, @reaction.id), method: :get%>
+          <% else %>
+            <%= button_to "Mi piace", update_post_reaction_path(post.id, @reaction.id), method: :get%>
+            <%= button_to "Non mi piace", post_reaction_path(post.id, @reaction.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete%>
+          <% end %>
+        <% else %>
+          <%= render "reactions/like", post: post %>
+          <%= render "reactions/dislike", post: post %>
+        <% end %>
+        <% if post.author == current_user.uid%>
+          <%= button_to "Modifica", edit_post_path(post), method: :get %>
+          <%= button_to "Elimina", post_path(post), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
+        <% end %>
+        <% post.comments.each do |comment| %>
+          <p> <%= comment.author %> </p>
+          <p> <%= comment.body %> </p>
+          <p> Mi piace: <%= comment.comment_reactions.where(like: true).count %></p>
+          <p> Non mi piace: <%= comment.comment_reactions.where(like: false).count %></p>
+          <% if comment.comment_reactions.where(uid: current_user.uid).first %>
+            <% @comment_reaction = comment.comment_reactions.where(uid: current_user.uid).first %>
+            <% if @comment_reaction.like == true %>
+              <%= button_to "Mi piace", post_comment_comment_reaction_path(post.id, comment.id, @comment_reaction.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete%>
+              <%= button_to "Non mi piace", update_post_comment_comment_reaction_path(post.id, comment.id, @comment_reaction.id), method: :get%>
+            <% else %>
+              <%= button_to "Mi piace", update_post_comment_comment_reaction_path(post.id, comment.id, @comment_reaction.id), method: :get%>
+              <%= button_to "Non mi piace", post_comment_comment_reaction_path(post.id, comment.id, @comment_reaction.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete%>
+            <% end %>
+          <% else %>
+            <%= render "comment_reactions/like", post: post, comment: comment %>
+            <%= render "comment_reactions/dislike", post: post, comment: comment %>
+          <% end %>
+            <% if comment.author == current_user.uid %>
+              <%= button_to "Modifica", edit_post_comment_path(post.id, comment.id), method: :get %>
+              <%= button_to "Elimina", post_comment_path(post.id, comment.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
             <% end %>
           <% end %>
-          <%= render "comments/form", post: p %>
+        <%= render "comments/form", post: post %>
       <% end %>
 
-      <% @communities.each do |c| %>
-        <% community_posts = c.community_posts.all %>
-          <% community_posts.each do |cp| %>
-            <li> 
-              <p><%= cp.title %> di <%= cp.author %> in <%= c.name %> </p>
-              <p><%= cp.body %></p>
-            </li>
+      <% @communities.each do |community| %>
+        <% community_posts = community.posts.all %>
+          <% community_posts.each do |community_post| %>
+            <p><%= community_post.title %> di <%= community_post.author %> in <%= community.name %> </p>
+            <p><%= community_post.body %></p>
+            <p> Mi piace: <%= community_post.reactions.where(like: true).count %></p>
+            <p> Non mi piace: <%= community_post.reactions.where(like: false).count %></p>
+            <% if community_post.reactions.where(uid: current_user.uid).first %>
+              <% @reaction = community_post.reactions.where(uid: current_user.uid).first %>
+              <% if @reaction.like == true %>
+                <%= button_to "Mi piace", post_reaction_path(community_post.id, @reaction.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete%>
+                <%= button_to "Non mi piace", update_post_reaction_path(community_post.id, @reaction.id), method: :get%>
+              <% else %>
+                <%= button_to "Mi piace", update_post_reaction_path(community_post.id, @reaction.id), method: :get%>
+                <%= button_to "Non mi piace", post_reaction_path(community_post.id, @reaction.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete%>
+              <% end %>
+            <% else %>
+              <%= render "reactions/like", post: community_post %>
+              <%= render "reactions/dislike", post: community_post %>
+            <% end %>
+            <% if community_post.author == current_user.uid%>
+              <%= button_to "Modifica", edit_post_path(community_post), method: :get %>
+              <%= button_to "Elimina", post_path(community_post), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
+            <% end %>
+            <% community_post.comments.each do |comment| %>
+              <p> <%= comment.author %> </p>
+              <p> <%= comment.body %> </p>
+              <p> Mi piace: <%= comment.comment_reactions.where(like: true).count %></p>
+              <p> Non mi piace: <%= comment.comment_reactions.where(like: false).count %></p>
+              <% if comment.comment_reactions.where(uid: current_user.uid).first %>
+                <% @comment_reaction = comment.comment_reactions.where(uid: current_user.uid).first %>
+                <% if @comment_reaction.like == true %>
+                  <%= button_to "Mi piace", post_comment_comment_reaction_path(community_post.id, comment.id, @comment_reaction.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete%>
+                  <%= button_to "Non mi piace", update_post_comment_comment_reaction_path(community_post.id, comment.id, @comment_reaction.id), method: :get%>
+                <% else %>
+                  <%= button_to "Mi piace", update_post_comment_comment_reaction_path(community_post.id, comment.id, @comment_reaction.id), method: :get%>
+                  <%= button_to "Non mi piace", post_comment_comment_reaction_path(community_post.id, comment.id, @comment_reaction.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete%>
+                <% end %>
+              <% else %>
+                <%= render "comment_reactions/like", post: community_post, comment: comment %>
+                <%= render "comment_reactions/dislike", post: community_post, comment: comment %>
+              <% end %>
+              <% if comment.author == current_user.uid %>
+                <%= button_to "Modifica", edit_post_comment_path(community_post.id, comment.id), method: :get %>
+                <%= button_to "Elimina", post_comment_path(community_post.id, comment.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
+              <% end %>
+            <% end %>
+            <%= render "comments/form", community: @community, post: community_post %>
           <% end %>
       <% end %>
-      
-    </ul>
   </div>
   
 

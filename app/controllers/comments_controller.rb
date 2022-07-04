@@ -1,39 +1,35 @@
 class CommentsController < ApplicationController
     def create
-        if(params[:post_id] == nil)
-            @community = Community.find(params[:community_id])
-            @community_post = @community.community_posts.find(params[:community_post_id])
-            @comment = @community_post.comments.create(comment_params)
+        @post = Post.find(params[:post_id])
+        @comment = @post.comments.create(comment_params)
+        if @post.community_id != nil
+            @community = Community.find(@post.community_id)
             redirect_to community_path(@community)
-        else 
-            @post = Post.find(params[:post_id])
-            @comment = @post.comments.create(comment_params)
+        else
             redirect_to root_path
-        end    
+        end
     end
 
     def update
-        if(params[:post_id] == nil)
-            @community = Community.find(params[:community_id])
-            @community_post = @community.community_posts.find(params[:community_post_id])
-            @comment = @community_post.comments.update(comment_params)
+        @post = Post.find(params[:post_id])
+        @comment = @post.comments.update(comment_params)
+        if @post.community_id != nil
+            @community = Community.find(params[id: @post.community_id])
             redirect_to community_path(@community)
         else
-            @post = Post.find(params[:post_id]) 
-            @comment = @post.comments.update(comment_params)
             redirect_to root_path
-        end   
+        end
     end
 
     def destroy
-        if(params[:post_id] == nil)
-            @community = Community.find(params[:community_id])
-            @community_post = @community.community_posts.find(params[:community_post_id])
-            @comment = @community_post.comments.destroy
-        else 
-            @post = Post.find(params[:post_id])
-            @comment = @post.comments.destroy
-        end   
+        @post = Post.find(params[:post_id])
+        @comment = @post.comments.destroy
+        if @post.community_id != nil
+            @community = Community.find(params[id: @post.community_id])
+            redirect_to community_path(@community)
+        else
+            redirect_to root_path
+        end 
     end
 
     private
