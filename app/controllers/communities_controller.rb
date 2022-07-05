@@ -1,9 +1,8 @@
 class CommunitiesController < ApplicationController
-    skip_before_action :verify_authenticity_token
 
     def show
         @community = Community.find(params[:id])
-        @posts = Post.where(community_id: @community.id).all.order(created_at: :desc)
+        @posts = @community.posts.all.order(created_at: :desc)
     end
 
     def new
