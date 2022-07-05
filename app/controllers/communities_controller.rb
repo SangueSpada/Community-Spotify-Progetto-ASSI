@@ -3,6 +3,7 @@ class CommunitiesController < ApplicationController
 
     def show
         @community = Community.find(params[:id])
+        @posts = Post.where(community_id: @community.id).all.order(created_at: :desc)
     end
 
     def new
@@ -14,10 +15,12 @@ class CommunitiesController < ApplicationController
         @community = Community.new(community_params)
         #give_community_tags(@community, params[:tag_ids])
         if @community.save
-            @participation = Participation.new(user_id: current_user.id, community_id: @community.id, role: :admin, banned: false)
+            @participation = @community.participations.new(user_id: current_user.id, community_id: @community.id, role: :admin, banned: false)
             if @participation.save
+                flash[:notice] = "Community creata con successo."
                 redirect_to community_path(@community)
             else
+                flash[:alert] = "La community non è stata creata. Riprova."
                 render :new, status: :unprocessable_entity
             end
         else
@@ -48,7 +51,7 @@ class CommunitiesController < ApplicationController
 
     private
         def community_params
-            params.require(:community).permit(:name, :creator, :description, :playlist)
+            params.require(:community).permit(:name, :description, :playlist)
         end
 
         def give_community_tags(community, tags)

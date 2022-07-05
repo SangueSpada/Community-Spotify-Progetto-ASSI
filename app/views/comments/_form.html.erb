@@ -1,6 +1,5 @@
-<%= form_with model: [ post, post.comments.build ] do |form| %>
-    <%= form.hidden_field :author, value: current_user.uid %>
+<%= form_with model: [ post, comment ] do |form| %>
     <%= form.text_field :body %>
-    <%= form.submit "Commenta" %>
+    <%= form.submit submit_label %>
 <% end %>
    

@@ -28,7 +28,8 @@ class ReactionsController < ApplicationController
 
     def destroy
         @post = Post.find(params[:post_id])
-        @reaction = @post.reactions.destroy
+        @reaction = @post.reactions.find(params[:id])
+        @reaction.destroy
         if @post.community_id != nil
             @community = Community.find(@post.community_id)
             redirect_to community_path(@community)

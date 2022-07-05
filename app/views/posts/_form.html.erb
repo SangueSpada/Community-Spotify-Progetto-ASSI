@@ -11,10 +11,6 @@
         </div>
 
         <div>
-            <%= form.hidden_field :author, value: current_user.uid %>
-        </div>
-
-        <div>
             <%= form.submit %>
         </div>
     <% end %>
@@ -28,10 +24,6 @@
         <div>
             <%= form.label :body %>
             <%= form.text_area :body %>
-        </div>
-
-        <div>
-            <%= form.hidden_field :author, value: current_user.uid %>
         </div>
 
         <% if post.community_id == nil %>

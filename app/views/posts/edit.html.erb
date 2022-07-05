@@ -17,10 +17,6 @@
         <%= render "partials/navbar" %>
         <div style="padding: 40pt"></div>
         <h1> Modifica post </h1>
-        <% if @community == nil %>
-            <%= render "form", post: @post %>
-        <% else %>
-            <%= render "form", community: @community, post: @post %>
-        <% end %>  
+        <%= render "form", community: @community, post: @post %>
     </body>
 </html>

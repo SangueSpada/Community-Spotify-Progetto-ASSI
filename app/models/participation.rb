@@ -4,4 +4,6 @@ class Participation < ApplicationRecord
     def set_default_role
         self.role ||= :user
     end
+    belongs_to :community
+    belongs_to :user
 end

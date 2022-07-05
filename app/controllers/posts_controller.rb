@@ -10,14 +10,16 @@ class PostsController < ApplicationController
     if(params[:community_id] != nil)
       @community = Community.find(params[:community_id])
     end
-    @author = current_user
   end
 
   def create
     @post = Post.new(post_params)
+    @post.user = current_user
     if @post.save
+      flash[:notice] = "Post creato con successo."
       redirect_to root_path
     else
+      flash[:alert] = "Il post non è stato creato. Riprova."
       render :new, status: :unprocessable_entity
     end 
   end
@@ -45,6 +47,6 @@ class PostsController < ApplicationController
   
   private
     def post_params
-      params.require(:post).permit(:title, :body, :author, :community_id)
+      params.require(:post).permit(:title, :body, :community_id)
     end
 end
