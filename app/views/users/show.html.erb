@@ -1,4 +1,3 @@
-
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -138,11 +137,12 @@
                   <div class="tab-pane fade active show" id="profile-post">
                      <!-- begin timeline -->
                      <ul class="timeline">
+                        <% @posts.each do |post| %>
                         <li>
                            <!-- begin timeline-time -->
                            <div class="timeline-time">
-                              <span class="date">today</span>
-                              <span class="time">04:20</span>
+                              <span class="date"><%=post.created_at.to_fs(:short)%></span>
+                              <span class="time"><%=post.created_at.to_fs(:short)%></span>
                            </div>
                            <!-- end timeline-time -->
                            <!-- begin timeline-icon -->
@@ -153,85 +153,81 @@
                            <!-- begin timeline-body -->
                            <div class="timeline-body">
                               <div class="timeline-header">
-                                 <span class="userimage"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></span>
-                                 <span class="username"><a href="javascript:;">Sean Ngu</a> <small></small></span>
-                                 <span class="pull-right text-muted">18 Views</span>
+                                 <span class="userimage"><img src="<%=post.user.avatar_url%>" alt=""></span>
+                                 <span class="username"><a href="/user/<%= String(post.user.uid) %>"><%= post.user.uid %></a> <small></small></span>
+                                 <div class="pull-right">
+                                <% if post.user == current_user%>
+                                  <span><%= button_to "Modifica", edit_post_path(post), method: :get %></span>
+                                  <span><%= button_to "Elimina", post_path(post), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %></span>
+                                <% end %>
+                                  <span class="text-muted">
+                                    ultima modifica: <%=post.updated_at.to_fs(:short)%> 
+                                  </span>
+                                  </div>
                               </div>
                               <div class="timeline-content">
-                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc faucibus turpis quis tincidunt luctus.
-                                    Nam sagittis dui in nunc consequat, in imperdiet nunc sagittis.
-                                 </p>
+                                <h3><%= post.title %></h3>
+                                <p><%= post.body %></p>
                               </div>
                               <div class="timeline-likes">
                                  <div class="stats-right">
-                                    <span class="stats-text">259 Shares</span>
-                                    <span class="stats-text">21 Comments</span>
+                                    <span class="stats-text"><%= post.comments.count %> Commenti</span>
                                  </div>
                                  <div class="stats">
-                                    <span class="fa-stack fa-fw stats-icon">
-                                    <i class="fa fa-circle fa-stack-2x text-danger"></i>
-                                    <i class="fa fa-heart fa-stack-1x fa-inverse t-plus-1"></i>
-                                    </span>
                                     <span class="fa-stack fa-fw stats-icon">
                                     <i class="fa fa-circle fa-stack-2x text-primary"></i>
                                     <i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
                                     </span>
-                                    <span class="stats-total">4.3k</span>
+                                    <span class="stats-total"><%= post.reactions.where(like: true).count %></span>
+                                    <span class="fa-stack fa-fw stats-icon">
+                                    <i class="fa fa-circle fa-stack-2x text-secondary"></i>
+                                    <i class="fa fa-thumbs-down fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                    <span class="stats-total"><%= post.reactions.where(like: false).count %></span>
                                  </div>
                               </div>
                               <div class="timeline-footer">
-                                 <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-thumbs-up fa-fw fa-lg m-r-3"></i> Like</a>
-                                 <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-comments fa-fw fa-lg m-r-3"></i> Comment</a> 
-                                 <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-share fa-fw fa-lg m-r-3"></i> Share</a>
+                                  <% if post.reactions.where(uid: current_user.uid).first %>
+                                    <% @reaction = post.reactions.where(uid: current_user.uid).first %>
+                                    <% if @reaction.like == true %>
+                                      <%= button_to "Mi piace", post_reaction_path(post.id, @reaction.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete%>
+                                      <%= button_to "Non mi piace", update_post_reaction_path(post.id, @reaction.id), method: :get%>
+                                    <% else %>
+                                      <%= button_to "Mi piace", update_post_reaction_path(post.id, @reaction.id), method: :get%>
+                                      <%= button_to "Non mi piace", post_reaction_path(post.id, @reaction.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete%>
+                                    <% end %>
+                                  <% else %>
+                                    <%= render "reactions/like", post: post %>
+                                    <%= render "reactions/dislike", post: post %>
+                                  <% end %>
+                                  <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-thumbs-up fa-fw fa-lg m-r-3"></i></a>
+                                  <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-thumbs-down fa-fw fa-lg m-r-3"></i></a>
+                                  <!--<a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-comments fa-fw fa-lg m-r-3"></i> Commenta</a> -->
                               </div>
                               <div class="timeline-comment-box">
-                                 <div class="user"><img src="https://bootdey.com/img/Content/avatar/avatar3.png"></div>
+                              <% post.comments.each do |comment| %>
+                                <%= render "comments/comment", post: post, comment: comment%>
+                              <% end %> 
+                                 <div class="user"><img src="<%=current_user.avatar_url%>"></div>
                                  <div class="input">
-                                    <form action="">
+                                  <%= form_with model: [ post, post.comments.build ] do |form| %>
+                                      <%= form.text_field :body %>
+                                      <%= form.submit "commenta" %>
+                                  <% end %>
+                                    <!--<form action="">
                                        <div class="input-group">
                                           <input type="text" class="form-control rounded-corner" placeholder="Write a comment...">
                                           <span class="input-group-btn p-l-10">
                                           <button class="btn btn-primary f-s-12 rounded-corner" type="button">Comment</button>
                                           </span>
                                        </div>
-                                    </form>
+                                    </form>-->
                                  </div>
                               </div>
                            </div>
                            <!-- end timeline-body -->
                         </li>
-                        <li>
-                           <!-- begin timeline-time -->
-                           <div class="timeline-time">
-                              <span class="date">yesterday</span>
-                              <span class="time">20:17</span>
-                           </div>
-                           <!-- end timeline-time -->
-                           <!-- begin timeline-icon -->
-                           <div class="timeline-icon">
-                              <a href="javascript:;">&nbsp;</a>
-                           </div>
-                           <!-- end timeline-icon -->
-                           <!-- begin timeline-body -->
-                           <div class="timeline-body">
-                              <div class="timeline-header">
-                                 <span class="userimage"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></span>
-                                 <span class="username">Sean Ngu</span>
-                                 <span class="pull-right text-muted">82 Views</span>
-                              </div>
-                              <div class="timeline-content">
-                                 <p>Location: United States</p>
-                              </div>
-                              <div class="timeline-footer">
-                                 <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-thumbs-up fa-fw fa-lg m-r-3"></i> Like</a>
-                                 <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-comments fa-fw fa-lg m-r-3"></i> Comment</a> 
-                                 <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-share fa-fw fa-lg m-r-3"></i> Share</a>
-                              </div>
-                           </div>
-                           <!-- end timeline-body -->
-                        </li>
-
+                        <% end %>
                   </div>
                   <!-- end #profile-post tab -->
                </div>
