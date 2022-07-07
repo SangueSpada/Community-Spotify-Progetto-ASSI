@@ -5,6 +5,7 @@ class UsersController < ApplicationController
     @user = RSpotify::User.find(@u.uid)
     @communities = Community.joins(:participations).where(participations: {user_id: @u})
     #puts "le community sono:"+ String(@communities.count())
+    @posts = @u.posts.order(created_at: :desc)
     @communities.each do |co|
       #puts co.id
     end
