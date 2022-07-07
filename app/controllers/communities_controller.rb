@@ -1,18 +1,17 @@
 class CommunitiesController < ApplicationController
-
+    before_action :authenticate_user!
     def show
         @community = Community.find(params[:id])
         @posts = @community.posts.all.order(created_at: :desc)
     end
 
     def new
-        @tags = Tag.all
         @community = Community.new()
     end
 
     def create
-        @community = Community.new(community_params)
-        #give_community_tags(@community, params[:tag_ids])
+        @community = Community.new(community_params.except(:tag_ids))
+        give_community_tags(@community, params[:community][:tag_ids])
         if @community.save
             @participation = @community.participations.new(user_id: current_user.id, community_id: @community.id, role: :admin, banned: false)
             if @participation.save
@@ -34,7 +33,8 @@ class CommunitiesController < ApplicationController
 
     def update
         @community = Community.find(params[:id])
-        if @community.update(community_params)
+        give_community_tags(@community, params[:community][:tag_ids])
+        if @community.update(community_params.except(:tag_ids))
             redirect_to community_path(@community)
         else
             render :edit, status: :unprocessable_entity
@@ -49,13 +49,20 @@ class CommunitiesController < ApplicationController
     end
 
     private
+        def the_class_exists?(class_name)
+            klass = Module.const_get(class_name)
+            return klass.is_a?(Class)
+        rescue TypeError
+            return false
+        end
         def community_params
-            params.require(:community).permit(:name, :description, :playlist)
+            params.require(:community).permit(:name, :description, :playlist, tag_ids: [])
         end
 
         def give_community_tags(community, tags)
-            tags.each do |tag|
-                community.tags << Tag.find(id: tag)
+            community.taggables.destroy_all
+            tags.to_a.each do |tag|
+                community.tags << Tag.find(tag)
             end
         end
 end

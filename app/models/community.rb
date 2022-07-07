@@ -4,7 +4,7 @@ class Community < ApplicationRecord
     has_many :posts, dependent: :destroy
 
     has_many :taggables, dependent: :destroy
-    has_many :tags
+    has_many :tags, through: :taggables
 
     validates :name, presence: true
     validates :description, presence: true
