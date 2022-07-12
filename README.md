@@ -15,7 +15,7 @@
 - Tags ✅
 - Live chat ✅
 - Esplora
-- Check in regex link playlists
+- Check in regex link playlists ✅
 - Edit e Destroy commenti ✅
 - Refresh sulla stessa pagina commenti ✅
 - Followers e following ✅

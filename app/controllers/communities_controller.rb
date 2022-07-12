@@ -12,13 +12,17 @@ class CommunitiesController < ApplicationController
     def create
         @community = Community.new(community_params.except(:tag_ids))
         give_community_tags(@community, params[:community][:tag_ids])
-        if @community.save
-            @participation = @community.participations.new(user_id: current_user.id, community_id: @community.id, role: :admin, banned: false)
-            if @participation.save
-                flash[:notice] = "Community creata con successo."
-                redirect_to community_path(@community)
+        if is_a_playlist?(@community.playlist)
+            if @community.save
+                @participation = @community.participations.new(user_id: current_user.id, community_id: @community.id, role: :admin, banned: false)
+                if @participation.save
+                    flash[:notice] = "Community creata con successo."
+                    redirect_to community_path(@community)
+                else
+                    flash[:alert] = "La community non è stata creata. Riprova."
+                    render :new, status: :unprocessable_entity
+                end
             else
-                flash[:alert] = "La community non è stata creata. Riprova."
                 render :new, status: :unprocessable_entity
             end
         else
@@ -64,5 +68,9 @@ class CommunitiesController < ApplicationController
             tags.to_a.each do |tag|
                 community.tags << Tag.find(tag)
             end
+        end
+
+        def is_a_playlist?(link)
+            !!(link.match(/https:\/\/open.spotify.com\/playlist\/[\w]/))
         end
 end
