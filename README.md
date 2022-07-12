@@ -17,7 +17,7 @@
 - Esplora
 - Check in regex link playlists
 - Edit e Destroy commenti ✅
-- Refresh sulla stessa pagina commenti
+- Refresh sulla stessa pagina commenti ✅
 - Followers e following ✅
 - Possibilità di followare un utente
 - Settare autenticazione a tutte le pagine ✅
