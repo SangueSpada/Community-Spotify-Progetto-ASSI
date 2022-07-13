@@ -23,8 +23,17 @@ Rails.application.routes.draw do
     resources :posts
   end
 
+  resources :users do
+    resources :communities do
+      resources :participations
+    end
+  end 
+
   resources :tags
 
+
+  post "/users/:user_id/communities/:community_id/participations", to: "participations#create", as: "create_user_community_participation"
   get "/posts/:post_id/reactions/:id", to: "reactions#update", as: "update_post_reaction"
   get "/posts/:post_id/comments/:comment_id/comment_reactions/:id", to: "comment_reactions#update", as: "update_post_comment_comment_reaction"
+
 end

@@ -14,6 +14,7 @@ class CommunitiesController < ApplicationController
         give_community_tags(@community, params[:community][:tag_ids])
         if is_a_playlist?(@community.playlist)
             if @community.save
+                @community.creator = current_user
                 @participation = @community.participations.new(user_id: current_user.id, community_id: @community.id, role: :admin, banned: false)
                 if @participation.save
                     flash[:notice] = "Community creata con successo."
@@ -59,6 +60,7 @@ class CommunitiesController < ApplicationController
         rescue TypeError
             return false
         end
+
         def community_params
             params.require(:community).permit(:name, :description, :playlist, tag_ids: [])
         end

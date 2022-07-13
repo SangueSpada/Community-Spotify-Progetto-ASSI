@@ -21,12 +21,12 @@
 - Followers e following ✅
 - Possibilità di followare un utente
 - Settare autenticazione a tutte le pagine ✅
-- Entrare in comunity
+- Entrare in comunity ✅
 - Visualizzare lista utenti in comunity
-- Possibilità per proprietari comunity di promuovere membri
-- Uscire da comunity
-- Bandire come proprietario o mod un membro
-- Trasferire ruolo proprietario ad un altro
+- Possibilità per proprietari comunity di promuovere membri IN CORSO
+- Uscire da comunity IN CORSO
+- Bandire come proprietario o mod un membro IN CORSO 
+- Trasferire ruolo proprietario ad un altro IN CORSO
 - Eventi comunità
 - Confermare o annullare partecipazione evento come membro o modder
 - Aggiungere evento su Calendar

@@ -46,7 +46,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_04_090454) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "participations", id: false, force: :cascade do |t|
+  create_table "participations", force: :cascade do |t|
     t.integer "community_id"
     t.integer "user_id"
     t.integer "role", default: 0
