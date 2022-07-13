@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     :omniauth_callbacks => "users/omniauth_callbacks",
     :sessions => "users/sessions" 
   }
-
+  get '/chats/index'
   get "/user/:uid", to: "users#show"
   post '/users/:uid/follow', to: "users#follow", as: "follow_user"
   post '/users/:uid/unfollow', to: "users#unfollow", as: "unfollow_user"
@@ -24,7 +24,12 @@ Rails.application.routes.draw do
   end
 
   resources :tags
-
+  
+  resources :chats do 
+    resources :messages
+  end  
   get "/posts/:post_id/reactions/:id", to: "reactions#update", as: "update_post_reaction"
   get "/posts/:post_id/comments/:comment_id/comment_reactions/:id", to: "comment_reactions#update", as: "update_post_comment_comment_reaction"
+
+
 end

@@ -8,6 +8,8 @@ class User < ApplicationRecord
   has_many :followers, dependent: :destroy
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
+  has_many :chats, dependent: :destroy
+  has_many :messagges, dependent: :destroy
 
   # Will return an array of follows for the given user instance
   has_many :received_follows, foreign_key: :followed_user_id, class_name: "Follow" #FOLLWING_USERS

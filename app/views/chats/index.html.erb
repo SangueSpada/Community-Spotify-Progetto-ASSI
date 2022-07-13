@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Chats</h1>
+
+    <ul>
+    <% @chats.each do |chat| %>
+        <li>
+        <% if chat.user1==current_user.uid %>
+            <%= chat.user2 %>
+        <% elsif chat.user2==current_user.uid %>
+            <%= chat.user1 %>
+        </li>
+    <% end %>
+    </ul>
+    
+</body>
+</html>
+
+

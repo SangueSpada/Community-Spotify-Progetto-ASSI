@@ -10,7 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_04_090454) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_11_181122) do
+  create_table "chats", force: :cascade do |t|
+    t.string "user1"
+    t.string "user2"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "comment_reactions", force: :cascade do |t|
     t.string "uid"
     t.boolean "like"
@@ -44,6 +51,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_04_090454) do
     t.integer "followed_user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.text "body"
+    t.integer "chat_id"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_id"], name: "index_messages_on_chat_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "participations", id: false, force: :cascade do |t|

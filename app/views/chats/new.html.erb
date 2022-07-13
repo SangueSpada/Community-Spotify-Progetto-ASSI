@@ -1,0 +1,23 @@
+<h1>New Chat</h1>
+<!-- 
+<%= form_with model: @chat do |form| %>
+    <div style="display:none">
+    <%= form.label :user1 %><br>
+    <%= form.text_field :user1, value:current_user.uid %>
+  </div>
+    <%= form.label :user2 %><br>
+    <%= form.text_field :user2 %>
+  </div>
+    
+
+
+  
+
+  <div>
+  
+    <%= form.submit %>
+  </div>
+
+<% end %>
+  -->
+  <%= render "form", chat: @chat %>
