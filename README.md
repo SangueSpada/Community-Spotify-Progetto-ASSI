@@ -10,14 +10,28 @@
 * rails db:migrate 
 * rails server
 
-## COME PROCEDERE MO?
-* creazione dei modelli POST, e C_POST, COMMENTI, COMMUNITY, EVENTI
-* realizzazione pagine: /home /'nome-profilo' /'nome-community' /creaPost /editPost /creaCommento /editCommento /creaCommunity /editCommunity /creaCPost /editCPost
-* gestione ruoli con gem Canard
-* capire come mostrare al meglio le cose in home (metodo cronologico?)
-* algoritmo esplora
-* oauth google calendar
-* implementazione cancella cookie per permettere di accedere con altro account spotify
+## COSA MANCA?
+- Search bar IN CORSO
+- Tags ✅
+- Live chat ✅
+- Esplora
+- Check in regex link playlists ✅
+- Edit e Destroy commenti ✅
+- Refresh sulla stessa pagina commenti ✅
+- Followers e following ✅
+- Possibilità di followare un utente
+- Settare autenticazione a tutte le pagine ✅
+- Entrare in comunity ✅
+- Visualizzare lista utenti in comunity 
+- Possibilità per proprietari comunity di promuovere membri IN CORSO
+- Uscire da comunity ✅
+- Bandire come proprietario o mod un membro IN CORSO 
+- Trasferire ruolo proprietario ad un altro IN CORSO
+- Eventi comunità
+- Confermare o annullare partecipazione evento come membro o modder
+- Aggiungere evento su Calendar
+- Bottone reactions ✅
+- Update reactions da correggere ✅
 
 
 

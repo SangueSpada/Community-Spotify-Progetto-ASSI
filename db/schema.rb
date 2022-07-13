@@ -63,7 +63,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_11_181122) do
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
-  create_table "participations", id: false, force: :cascade do |t|
+  create_table "participations", force: :cascade do |t|
     t.integer "community_id"
     t.integer "user_id"
     t.integer "role", default: 0
