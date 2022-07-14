@@ -42,6 +42,8 @@
                                     <%= button_to "Elimina Community", community_path(community_id: @community.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
                                  <% elsif current_user.participations.where(community_id: @community.id).first == nil %>
                                     <%= button_to "Entra in community", create_user_community_participation_path(user_id: current_user.id, community_id: @community.id)%>
+                                 <% elsif current_user.participations.where(community_id: @community.id, role: :member).first %>
+                                    <%= button_to "Abbandona community", user_community_participation_path(user_id: current_user.id, community_id: @community.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
                                  <% end %>
                               </div>
                               <!-- END profile-header-info -->
@@ -83,6 +85,7 @@
                      <% if current_user.participations.where(community_id: @community.id).first%>
                         <%= button_to "Crea post!", new_community_post_path(@community.id), method: :get %>
                      <% end %>
+                     
                         <!-- begin tab-content -->
                         <div class="tab-content p-0">
                            <!-- begin #profile-post tab -->

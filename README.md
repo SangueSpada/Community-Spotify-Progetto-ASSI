@@ -11,7 +11,7 @@
 * rails server
 
 ## COSA MANCA?
-- Search bar
+- Search bar IN CORSO
 - Tags ✅
 - Live chat ✅
 - Esplora
@@ -22,9 +22,9 @@
 - Possibilità di followare un utente
 - Settare autenticazione a tutte le pagine ✅
 - Entrare in comunity ✅
-- Visualizzare lista utenti in comunity
+- Visualizzare lista utenti in comunity 
 - Possibilità per proprietari comunity di promuovere membri IN CORSO
-- Uscire da comunity IN CORSO
+- Uscire da comunity ✅
 - Bandire come proprietario o mod un membro IN CORSO 
 - Trasferire ruolo proprietario ad un altro IN CORSO
 - Eventi comunità

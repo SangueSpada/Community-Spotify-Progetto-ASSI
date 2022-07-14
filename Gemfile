@@ -80,3 +80,5 @@ gem 'devise'
 gem 'canard', '~> 0.6.2.pre'
 gem 'erb-formatter'
 gem 'solargraph'
+
+gem "ransack", "~> 3.2"

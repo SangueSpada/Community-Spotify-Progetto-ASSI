@@ -1,5 +1,14 @@
 class CommunitiesController < ApplicationController
     before_action :authenticate_user!
+
+    def index
+        if params[:query].present?
+            @communities = Community.where("title LIKE ?", "#{params[:query]}%")
+        else
+            @communities = Community.all
+        end
+    end
+
     def show
         @community = Community.find(params[:id])
         @posts = @community.posts.all.order(created_at: :desc)
