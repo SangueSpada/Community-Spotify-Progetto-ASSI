@@ -242,6 +242,7 @@
 
   
   <div>
+    <%= render "search/form" %>
       <% @posts.where(community_id: nil).each do |post| %>
         <p><%= post.title %> di <%= post.user.uid %></p>
         <%= render "posts/post", post: post %>

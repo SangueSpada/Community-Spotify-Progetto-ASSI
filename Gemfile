@@ -80,5 +80,10 @@ gem 'devise'
 gem 'canard', '~> 0.6.2.pre'
 gem 'erb-formatter'
 gem 'solargraph'
+gem 'jquery-rails'
 
 gem "ransack", "~> 3.2"
+
+gem "webpack", "~> 0.4.2"
+
+gem "webpacker", "~> 5.4"

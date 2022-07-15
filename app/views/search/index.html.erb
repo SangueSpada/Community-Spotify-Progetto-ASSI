@@ -1,0 +1,23 @@
+<h1 class="text-center"><%= pluralize(@communities.count, "Result")%></h1>
+
+<div class="container">
+    <table class="table table-dark table-striped">
+        <thread>
+            <tr>
+                <th><%= sort_link(@query, :name, "Nome", deafult_order: :asc) %></th>
+                <th><%= sort_link(@query, :description, "Descrizione") %></th>
+                <th><%= sort_link(@query, :creator, "Proprietario") %></th>
+            </tr>
+        </thread>
+
+        <tbody>
+            <% @communities.each do |community| %>
+                <tr>
+                    <td><%= link_to community.name, community %></td> 
+                    <td><%= community.description.truncate_words(50) %></td> 
+                    <td><%= community.creator %></td> 
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+</div>
