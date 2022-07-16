@@ -11,7 +11,7 @@
 * rails server
 
 ## COSA MANCA?
-- Search bar IN CORSO
+- Search bar MANCA IL FRONT END
 - Tags ✅
 - Live chat ✅
 - Esplora
@@ -19,19 +19,20 @@
 - Edit e Destroy commenti ✅
 - Refresh sulla stessa pagina commenti ✅
 - Followers e following ✅
-- Possibilità di followare un utente
+- Possibilità di followare un utente 
 - Settare autenticazione a tutte le pagine ✅
 - Entrare in comunity ✅
-- Visualizzare lista utenti in comunity 
-- Possibilità per proprietari comunity di promuovere membri IN CORSO
+- Visualizzare lista utenti in comunity ✅
+- Possibilità per proprietari comunity di promuovere membri ✅
 - Uscire da comunity ✅
-- Bandire come proprietario o mod un membro IN CORSO 
+- Bandire come proprietario o mod un membro ✅
 - Trasferire ruolo proprietario ad un altro IN CORSO
 - Eventi comunità
 - Confermare o annullare partecipazione evento come membro o modder
 - Aggiungere evento su Calendar
 - Bottone reactions ✅
 - Update reactions da correggere ✅
+- Aggiungere utente tecnico
 
 
 
