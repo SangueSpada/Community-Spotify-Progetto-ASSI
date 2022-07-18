@@ -13,7 +13,7 @@ class Modders::RegistrationsController < Devise::RegistrationsController
       super
     else
       flash[:alert] = 'Modder key errata, Riprova.'
-      render new_modder_registration_path(Modder.new)
+      redirect_to new_modder_registration_path
       return
     end
 
