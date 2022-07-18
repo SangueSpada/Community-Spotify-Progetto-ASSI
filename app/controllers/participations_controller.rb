@@ -69,6 +69,21 @@ class ParticipationsController < ApplicationController
     end
   end
 
+  def move
+    @community = Community.find(params[:community_id])
+    @user = User.find(params[:user_id])
+    if @community.creator != current_user.uid
+      puts 'Non puoi accedere a questa sezione!'
+      redirect_to root_path, alert: 'Non puoi accedere a questa sezione!'
+    else
+      @admin_participation = @community.participations.where(role: :admin).first
+      @admin_participation = @admin_participation.update(role: :moderator)
+      @new_admin_participation = @community.participations.where(user_id: @user.id).first
+      @new_admin_participation = @new_admin_participation.update(role: :admin)
+      redirect_to community_path(@community)
+    end
+  end
+
   def destroy
     @community = Community.find(params[:community_id])
     @user = User.find(params[:user_id])
@@ -81,6 +96,8 @@ class ParticipationsController < ApplicationController
       redirect_to community_path(@community)
     end
   end
+
+  private
 
   def participation_params
     params.require(:participation).permit(:role, :banned)

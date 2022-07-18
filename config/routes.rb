@@ -51,6 +51,8 @@ Rails.application.routes.draw do
   post '/users/:user_id/communities/:community_id/participations/demote',
        to: 'participations#demote',
        as: 'demote_user_community_participation'
+  post '/users/:user_id/communities/:community_id/participations/move', to: 'participations#move',
+                                                                        as: 'move_user_community_participation'
   get '/posts/:post_id/reactions/:id', to: 'reactions#update', as: 'update_post_reaction'
   get '/posts/:post_id/comments/:comment_id/comment_reactions/:id',
       to: 'comment_reactions#update',

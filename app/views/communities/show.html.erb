@@ -36,7 +36,7 @@
                     <div class="profile-header-info">
                       <h4 class="m-t-10 m-b-5"><%= @community.name %></h4>
                       <p class="m-b-10"><%= @community.description %></p>
-                      <% if @community.creator == current_user %>
+                      <% if @user_participation.user_id == current_user.id %>
                         <%= button_to "Modifica Community", edit_community_path(community_id: @community.id), method: :get %>
                         <%= button_to "Elimina Community", community_path(community_id: @community.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
                       <% elsif current_user.participations.where(community_id: @community.id).first == nil %>
@@ -90,7 +90,7 @@
                   <div class="tab-pane fade active show" id="profile-post">
                     <!-- begin timeline -->
                     <ul class="timeline">
-                      <% if @community.creator == current_user.uid %>
+                      <% if @participation.user_id == current_user.id %>
                         <% @community.participations.each do |participation| %>
                           <p> <b><%= participation.user.uid %></b> come <%= participation.role %>
                             <% if participation.banned %>
@@ -99,8 +99,9 @@
                             <% elsif participation.role == "member" %>
                               <%= button_to "Bandisci utente", ban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id)%>
                               <%= button_to "Promuovi a moderatore", promote_user_community_participation_path(user_id: participation.user_id, community_id: @community.id) %>
-                            <% elsif participation.role == "moderator" %>
+                            <% elsif participation.role == "moderator" && participation.user_id != current_user.id%>
                               <%= button_to "Bandisci utente", ban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id) %>
+                              <%= button_to "Rendi proprietario", move_user_community_participation_path(user_id: participation.user_id, community_id: @community.id) %>
                             <% end %>
                           </p>
                         <% end %>
@@ -137,6 +138,8 @@
                               <div class="pull-right">
                                 <% if community_post.user == current_user%>
                                   <span><%= button_to "Modifica", edit_post_path(community_post), method: :get %></span>
+                                  <span><%= button_to "Elimina", post_path(community_post), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %></span>
+                                <% elsif @user_participation.role == "moderator" %>
                                   <span><%= button_to "Elimina", post_path(community_post), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %></span>
                                 <% end %>
                                 <span class="text-muted">
