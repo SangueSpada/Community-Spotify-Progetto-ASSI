@@ -1,5 +1,5 @@
 class CommunitiesController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :set_community, only: %i[show edit update destroy]
 
   def index
     @communities = if params[:query].present?
@@ -10,8 +10,6 @@ class CommunitiesController < ApplicationController
   end
 
   def show
-    @community = Community.find(params[:id])
-    @user_participation = @community.participations.where(user_id: current_user.id).first
     @posts = @community.posts.all.order(created_at: :desc)
   end
 
@@ -43,28 +41,42 @@ class CommunitiesController < ApplicationController
   end
 
   def edit
+    if @user_participation.user_id != current_user.id
+      redirect_to community_path(@community), notice: 'Non puoi accedere a questa sezione!'
+    end
     @tags = Tag.all
-    @community = Community.find(params[:id])
   end
 
   def update
-    @community = Community.find(params[:id])
-    give_community_tags(@community, params[:community][:tag_ids])
-    if @community.update(community_params.except(:tag_ids))
-      redirect_to community_path(@community)
+    if @user_participation.user_id != current_user.id
+      redirect_to community_path(@community), notice: 'Non puoi accedere a questa sezione!'
     else
-      render :edit, status: :unprocessable_entity
+      give_community_tags(@community, params[:community][:tag_ids])
+      if @community.update(community_params.except(:tag_ids))
+        redirect_to community_path(@community)
+      else
+        render :edit, status: :unprocessable_entity
+      end
     end
   end
 
   def destroy
-    @community = Community.find(params[:id])
-    @community.destroy
-
-    redirect_to root_path, status: :see_other
+    if @user_participation.user_id != current_user.id
+      redirect_to community_path(@community), notice: 'Non puoi accedere a questa sezione!'
+    else
+      @community.destroy
+      redirect_to root_path, status: :see_other
+    end
   end
 
   private
+
+  def set_community
+    @community = Community.find(params[:id])
+    @user_participation = @community.participations.where(user_id: current_user.id).first
+  rescue ActiveRecord::RecordNotFound => e
+    redirect_to root_path, notice: e.message
+  end
 
   def the_class_exists?(class_name)
     klass = Module.const_get(class_name)

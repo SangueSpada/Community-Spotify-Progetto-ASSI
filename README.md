@@ -42,9 +42,9 @@
 29. Uscire da una comunità ✅
 30. Creare una comunità ✅
 31. Visualizzare descrizione di una comunità ✅
-32. Visualizzare tag di una comunità IN CORSO
-33. Visualizzare membri di una comunità IN CORSO
-34. Visualizzare playlist comunità IN CORSO
+32. Visualizzare tag di una comunità MANCA IL FRONT END
+33. Visualizzare membri di una comunità MANCA IL FRONT END
+34. Visualizzare playlist comunità MANCA IL FRONT END
 35. Creare un post in bacheca comunità ✅
 36. Visualizzare post comunità ✅
 37. Eliminare commenti in un post in bacheca comunità MANCA IL FRONT END

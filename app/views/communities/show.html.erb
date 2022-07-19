@@ -36,7 +36,7 @@
                     <div class="profile-header-info">
                       <h4 class="m-t-10 m-b-5"><%= @community.name %></h4>
                       <p class="m-b-10"><%= @community.description %></p>
-                      <% if @user_participation.user_id == current_user.id %>
+                      <% if @user_participation.present? && @user_participation.user_id == current_user.id %>
                         <%= button_to "Modifica Community", edit_community_path(community_id: @community.id), method: :get %>
                         <%= button_to "Elimina Community", community_path(community_id: @community.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
                       <% elsif current_user.participations.where(community_id: @community.id).first == nil %>
@@ -81,7 +81,7 @@
               <!-- end profile -->
               <!-- begin profile-content -->
               <div class="profile-content">
-                <% if @user_participation %>
+                <% if @user_participation.present? %>
                   <%= button_to "Crea post!", new_community_post_path(@community.id), method: :get %>
                 <% end %>
                 <!-- begin tab-content -->
@@ -90,7 +90,7 @@
                   <div class="tab-pane fade active show" id="profile-post">
                     <!-- begin timeline -->
                     <ul class="timeline">
-                      <% if @participation.user_id == current_user.id %>
+                      <% if @user_participation.present? && @user_participation.user_id == current_user.id %>
                         <% @community.participations.each do |participation| %>
                           <p> <b><%= participation.user.uid %></b> come <%= participation.role %>
                             <% if participation.banned %>

@@ -1,35 +1,39 @@
 class TagsController < ApplicationController
-    before_action :authenticate_user!
-    def new
-        @tag = Tag.new()
-    end
+  before_action :authenticate_user!, :set_reaction, only: %i[edit update destroy]
+  def new
+    @tag = Tag.new
+  end
 
-    def create
-        @tag = Tag.new(tag_params)
-        if @tag.save
-            redirect_to root_path
-        else
-            render :new, status: :unprocessable_entity
-        end
+  def create
+    @tag = Tag.new(tag_params)
+    if @tag.save
+      redirect_to root_path
+    else
+      render :new, status: :unprocessable_entity
     end
+  end
 
-    def edit
-        @tag = Tag.find(params[:id])
+  def edit; end
+
+  def update
+    if @tag.update(tag_params)
+      redirect_to root_path
+    else
+      render :edit, status: :unprocessable_entity
     end
+  end
 
-    def update
-        @tag = Tag.find(params[:id])
-        if @tag.update(tag_params)
-            redirect_to root_path
-        else
-            render :edit, status: :unprocessable_entity
-        end
-    end
+  def destroy
+    @tag.destroy
 
-    def destroy
-        @tag = Tag.find(params[:id])
-        @tag.destroy
+    redirect_to root_path
+  end
 
-        redirect_to root_path
-    end
+  private
+
+  def set_tag
+    @tag = Tag.find(params[:id])
+  rescue ActiveRecord::RecordNotFound => e
+    redirect_to root_path, notice: e.message
+  end
 end
