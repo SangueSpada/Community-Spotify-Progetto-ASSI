@@ -1,15 +1,24 @@
-<div id="comment-body-<%= comment.id%>">
+<div id="comment-body-<%= comment.id%>" style="background: #fbfdff;">
   <p>
+    <div class="user me-1"><img src="<%=current_user.avatar_url%>"></div>
     <%= comment.user.uid %>
   </p>
   <%= comment.body %>
 </div>
-<p>
-  Mi piace:
-  <%= comment.comment_reactions.where(like: true).count %></p>
-<p>
-  Non mi piace:
-  <%= comment.comment_reactions.where(like: false).count %></p>
+<div class="timeline-likes">
+  <div class="stats">
+    <span class="fa-stack fa-fw stats-icon">
+      <i class="fa fa-circle fa-stack-2x text-primary"></i>
+      <i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
+    </span>
+    <span class="stats-total"><%= comment.comment_reactions.where(like: true).count %></p></span>
+    <span class="fa-stack fa-fw stats-icon">
+      <i class="fa fa-circle fa-stack-2x text-secondary"></i>
+      <i class="fa fa-thumbs-down fa-stack-1x fa-inverse"></i>
+    </span>
+    <span class="stats-total"><%= comment.comment_reactions.where(like: false).count %></span>
+  </div>
+</div> 
 <% if comment.comment_reactions.where(uid: current_user.uid).first %>
   <% @comment_reaction = comment.comment_reactions.where(uid: current_user.uid).first %>
   <% if @comment_reaction.like == true %>
