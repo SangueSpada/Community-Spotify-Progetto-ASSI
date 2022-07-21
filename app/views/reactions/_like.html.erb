@@ -1,7 +1,18 @@
-<%= form_with model: [ post, post.reactions.build ] do |form| %>
-    <%= form.hidden_field :uid, value: current_user.uid %>
-    <%= form.hidden_field :like, value: true%>
-    <%= form.submit "Mi piace" %>
+<% if post.reactions.where(uid: current_user.uid).first %> <!-- c è un like/dislike?-->
+    <% @reaction = post.reactions.where(uid: current_user.uid).first %>
+    <% if @reaction.like == true %>
+        <%= button_to raw('<i class="bi bi-hand-thumbs-up-fill"></i>'), post_reaction_path(post.id, @reaction.id), class: "btn btn-trasparent col", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete%>
+    <% else %>
+        <%= button_to raw('<i class="bi bi-hand-thumbs-up"></i>'), update_post_reaction_path(post.id, @reaction.id), class: "btn btn-trasparent col", method: :get%>
+    <% end %>
+<% else %>
+    <%= form_with model: [ post, post.reactions.build ] do |form| %>
+        <%= form.hidden_field :uid, value: current_user.uid %>
+        <%= form.hidden_field :like, value: true%>
+        <button type="submit" class="btn btn-trasparent">
+            <i class="bi bi-hand-thumbs-up"></i>
+        </button>
+    <% end %>
 <% end %>
 
 

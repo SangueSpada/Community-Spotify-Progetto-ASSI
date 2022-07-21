@@ -1,5 +1,5 @@
 class CommentReactionsController < ApplicationController
-  before_action :authenticate_user!, :set_comment, only: %i[update destroy]
+  before_action :authenticate_user!, :set_comment, only: %i[create update destroy]
 
   def create
     @comment_reaction = @comment.comment_reactions.create(comment_reaction_params)
