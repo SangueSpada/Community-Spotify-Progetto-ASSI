@@ -45,7 +45,7 @@
                     </div>
                     <!-- END profile-header-info -->
                     <div class="pt-2">
-                      <span>10 post</span>
+                      <span><%= String(@posts.count()) %> post</span>
                       <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#iscrittiModal">
                         Iscritti
                       </button>
@@ -58,6 +58,13 @@
                               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
+                             <% @community.participations.each do |participation| %>
+                                <% if participation.role == "admin" || participation.role == "modder" %>
+                                  <a href="/user/<%= String(participation.user.uid) %>" ><%= participation.user.uid %></a>  <strong class="text-dark">(<%= participation.role %>)</strong><br>
+                                <% else %>
+                                  <a href="/user/<%= String(participation.user.uid) %>" ><%= participation.user.uid %></a>
+                                <% end %>
+                              <% end %>
                             </div>
                           </div>
                         </div>

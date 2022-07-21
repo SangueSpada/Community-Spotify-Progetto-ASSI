@@ -41,7 +41,7 @@
                      </div>
                      <!-- END profile-header-info -->
                      <div class="pt-2">
-                        <span>10 post</span>
+                        <span><%= String(@posts.count()) %> post</span>
                         <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#followersModal">
                         <%= String(@u.followers.length()) %> Followers
                         </button>
@@ -74,7 +74,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
                               <div class="modal-body">
-                              <% @u.followings.each  do |following| %>
+                                 <% @u.followings.each  do |following| %>
                                     <a href="/user/<%= String(following.uid) %>" ><%= following.uid %></a><br>
                                  <% end %>
                               </div>
