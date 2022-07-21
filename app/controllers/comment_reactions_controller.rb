@@ -13,11 +13,11 @@ class CommentReactionsController < ApplicationController
 
   def update
     @comment_reaction = @comment.comment_reactions.find(params[:id])
-    @reaction = if @comment_reaction.like == true
-                  @comment.comment_reactions.update(like: false)
-                else
-                  @comment.comment_reactions.update(like: true)
-                end
+    @comment_reaction = if @comment_reaction.like == true
+                          @comment_reaction.update(like: false)
+                        else
+                          @comment_reaction.update(like: true)
+                        end
     if !@post.community_id.nil?
       @community = Community.find(@post.community_id)
       redirect_to community_path(@community)
