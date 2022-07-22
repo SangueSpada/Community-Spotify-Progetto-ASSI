@@ -15,12 +15,16 @@ class UsersController < ApplicationController
   
   def follow
     @user = User.where(uid: params[:uid]).first
+    #spotify_user = RSpotify::User.new(request.env['omniauth.auth'])
+    #spotify_user.follow(RSpotify::User.find(@user.uid))
     current_user.followings << @user
     redirect_back(fallback_location: {action: "show", uid: @user.uid})
   end
 
   def unfollow
     @user = User.where(uid: params[:uid]).first
+    #spotify_user = RSpotify::User.new(request.env['devise.auth'])
+    #spotify_user.unfollow(RSpotify::User.find(@user.uid))
     current_user.given_follows.find_by(followed_user_id: @user.id).destroy
     redirect_back(fallback_location: {action: "show", uid: @user.uid})
   end
