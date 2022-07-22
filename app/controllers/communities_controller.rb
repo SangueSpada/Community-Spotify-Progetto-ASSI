@@ -10,22 +10,23 @@ class CommunitiesController < ApplicationController
   end
 
   def show
+    
     @admin_participation = @community.participations.where(role: 'admin').first
-    @playlist = RSpotify::Playlist.find(@admin_participation.user.uid, @community.playlist) # @community.creator è null
+    @playlist = RSpotify::Playlist.find(@admin_participation.user.uid, @community.playlist)
     @posts = @community.posts.all.order(created_at: :desc)
   end
 
   def new
     @community = Community.new
     @playlist = RSpotify::User.find(current_user.uid).playlists(limit: 50)
-    puts @playlist
   end
 
   def create
+    @playlist = RSpotify::User.find(current_user.uid).playlists(limit: 50)
     @community = Community.new(community_params.except(:tag_ids))
     @community.creator = current_user.uid
     give_community_tags(@community, params[:community][:tag_ids])
-    if @community.playlist != nil
+    if @community.playlist?
       if @community.save
         @participation = @community.participations.new(user_id: current_user.id, community_id: @community.id,
                                                        role: :admin, banned: false)
@@ -45,6 +46,7 @@ class CommunitiesController < ApplicationController
   end
 
   def edit
+    @playlist = RSpotify::User.find(current_user.uid).playlists(limit: 50)
     if @user_participation.user_id != current_user.id
       redirect_to community_path(@community), notice: 'Non puoi accedere a questa sezione!'
     end

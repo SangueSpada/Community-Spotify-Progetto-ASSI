@@ -46,7 +46,8 @@
                       <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#gestioneModal">
                         Gestione Iscritti
                       </button>
-                    <% if @user_participation.present? && @user_participation.role == "admin" %>
+                    <% end %>
+                      <% if @user_participation.present? && @user_participation.role == "admin" %>
                         <%= link_to "Modifica Community", edit_community_path(community_id: @community.id), class:"btn btn-outline-warning", method: :get %>
                         <%= link_to "Elimina Community", community_path(community_id: @community.id), class:"btn btn-outline-danger", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
                       <% elsif current_user.participations.where(community_id: @community.id).first == nil %>
@@ -54,7 +55,7 @@
                       <% elsif current_user.participations.where(community_id: @community.id, role: :member).first %>
                         <%= link_to "Abbandona community", user_community_participation_path(user_id: current_user.id, community_id: @community.id),class:"btn btn-outline-danger",  data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
                       <% end %>
-                    <% end %>
+                    
                       <!-- Modal -->
                       <div class="modal fade" id="iscrittiModal" tabindex="-1" aria-labelledby="iscrittiModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
