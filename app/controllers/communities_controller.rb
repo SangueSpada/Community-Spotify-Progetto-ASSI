@@ -17,12 +17,14 @@ class CommunitiesController < ApplicationController
 
   def new
     @community = Community.new
+    @playlist = RSpotify::User.find(current_user.uid).playlists(limit: 50)
+    puts @playlist
   end
 
   def create
     @community = Community.new(community_params.except(:tag_ids))
     give_community_tags(@community, params[:community][:tag_ids])
-    if is_a_playlist?(@community.playlist)
+    if @community.playlist != nil
       if @community.save
         @community.creator = current_user.id
         @participation = @community.participations.new(user_id: current_user.id, community_id: @community.id,

@@ -8,16 +8,15 @@
         <%= form.label :description %>
         <%= form.text_area :description %>
     </div>
-
     <div>
-        <%= form.label :playlist %>
-        <%= form.text_area :playlist %>
-    </div>
-
-    <div>
-        <%= form.collection_check_boxes(:tag_ids, Tag.all, :id, :name, include_hidden: false) do |b| %>
-            <%= b.check_box %>
-            <%= b.label %>
+        <% @playlist.each do |p| %>
+            <div class="form-check" required>
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="<%= p.id %>">
+                <label class="form-check-label" for="<%= p.id %>">
+                <%= p.name %>
+                </label>
+                <img src="<%=p.images[0]['url']%>" width='20px', heigth='20px'>
+            </div>
         <% end %>
     </div>
 
