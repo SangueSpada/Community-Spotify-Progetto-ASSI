@@ -9,8 +9,10 @@ class MessagesController < ApplicationController
     end
     
     def new
-        @mcessage=@chat.messages.new
+        @message=@chat.messages.new
     end
+
+    
 
     def create
         @message=chat.messages.new(message_params)
