@@ -1,15 +1,10 @@
 <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark" aria-label="Main navigation">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">Community spotify</a>
-    <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Icona aggiungi post</a>
-          <ul class="dropdown-menu" aria-labelledby="dropdown01">
+        <li class="nav-item dropdown" >
+          <a class="nav-link" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Icona aggiungi post</a>
+          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdown01">
             <li><a class="dropdown-item" href="/communities/new">Crea Community</a></li>
             <li><a class="dropdown-item" href="/posts/new">Crea Post</a></li>
           </ul>
@@ -24,10 +19,9 @@
         <button class="btn btn-outline-success" type="submit">Search</button>
     </form> -->
     <ul class="navbar-nav mb-2" id="profile">
-        <li class="nav-item text-white mt-3 me-2">Benvenuto <%= current_user.uid %> </li>
         <li class="nav-item dropdown">
-            <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                <img id="profilo_imm" src="<%=current_user.avatar_url%>" alt="mdo" width="48" height="48" class="rounded-circle">
+            <a href="#" class=" nav-link d-block text-decoration-none" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                Benvenuto <%= current_user.uid %> <img id="profilo_imm" src="<%=current_user.avatar_url%>" alt="mdo" width="48" height="48" class="rounded-circle">
             </a>
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="dropdownUser1" style="position: absolute;">
                 <li><a class="dropdown-item" href="/user/<%=current_user.uid%>" >Profilo</a></li>
@@ -38,7 +32,6 @@
             </ul>
         </li>
     </ul>      
-    </div>
   </div>
 </nav>
 

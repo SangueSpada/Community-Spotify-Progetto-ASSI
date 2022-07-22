@@ -14,9 +14,9 @@ class ReactionsController < ApplicationController
 
   def update
     @reaction = if @reaction.like == true
-                  @post.reactions.update(like: false)
+                  @reaction.update(like: false)
                 else
-                  @post.reactions.update(like: true)
+                  @reaction.update(like: true)
                 end
     if !@post.community_id.nil?
       @community = Community.find(@post.community_id)

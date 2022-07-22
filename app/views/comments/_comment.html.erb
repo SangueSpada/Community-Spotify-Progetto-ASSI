@@ -1,38 +1,48 @@
-<div id="comment-body-<%= comment.id%>">
+<div id="comment-body-<%= comment.id%>" style="background: #fbfdff;">
   <p>
+    <div class="user me-1"><img src="<%=comment.user.avatar_url%>"></div>
     <%= comment.user.uid %>
+    <br>
+    <span class="text-muted small"><%=comment.created_at.to_fs(:short)%></span>
   </p>
   <%= comment.body %>
 </div>
-<p>
-  Mi piace:
-  <%= comment.comment_reactions.where(like: true).count %></p>
-<p>
-  Non mi piace:
-  <%= comment.comment_reactions.where(like: false).count %></p>
-<% if comment.comment_reactions.where(uid: current_user.uid).first %>
-  <% @comment_reaction = comment.comment_reactions.where(uid: current_user.uid).first %>
-  <% if @comment_reaction.like == true %>
-    <%= button_to "Mi piace", post_comment_comment_reaction_path(post.id, comment.id, @comment_reaction.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
-    <%= button_to "Non mi piace", update_post_comment_comment_reaction_path(post.id, comment.id, @comment_reaction.id), method: :get %>
-  <% else %>
-    <%= button_to "Mi piace", update_post_comment_comment_reaction_path(post.id, comment.id, @comment_reaction.id), method: :get %>
-    <%= button_to "Non mi piace", post_comment_comment_reaction_path(post.id, comment.id, @comment_reaction.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
-  <% end %>
-<% else %>
-  <%= render "comment_reactions/like", post: post, comment: comment %>
-  <%= render "comment_reactions/dislike", post: post, comment: comment %>
-<% end %>
-<% if comment.user == current_user %>
-  <%= button_to "Modifica", nil, remote: true, method: :get, 
-              data: {
-                controller: "comments",
-                action: "comments#toggleForm",
-                comments_form_param: "edit-form-#{comment.id}",
-                comments_body_param: "comment-body-#{comment.id}"
-              } %>
-  <%= button_to "Elimina", post_comment_path(post.id, comment.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
-  <div id="edit-form-<%= comment.id%>" class="d-none">
-    <%= render "comments/form", post: post, comment: comment, submit_label: "Update" %>
+<div class="timeline-likes">
+  <div class="stats-right">
+    <div style="float: left; width: auto;"> 
+      <%= render "comment_reactions/like", post: post, comment: comment %>
+    </div>
+    <div style="float: left; width: auto;">
+      <%= render "comment_reactions/dislike", post: post, comment: comment %>
+    </div>
   </div>
-<% end %>
+  <div class="stats">
+    <span class="fa-stack fa-fw stats-icon">
+      <i class="fa fa-circle fa-stack-2x text-primary"></i>
+      <i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
+    </span>
+    <span class="stats-total"><%= comment.comment_reactions.where(like: true).count %></p></span>
+    <span class="fa-stack fa-fw stats-icon">
+      <i class="fa fa-circle fa-stack-2x text-secondary"></i>
+      <i class="fa fa-thumbs-down fa-stack-1x fa-inverse"></i>
+    </span>
+    <span class="stats-total"><%= comment.comment_reactions.where(like: false).count %></span>
+    <span class="text-muted small">Ultima modifica: <%=comment.updated_at.to_fs(:short)%></span>
+    <% if comment.user == current_user %>
+      <%= link_to "Modifica", nil, remote: true, method: :get, 
+                  data: {
+                    controller: "comments",
+                    action: "comments#toggleForm",
+                    comments_form_param: "edit-form-#{comment.id}",
+                    comments_body_param: "comment-body-#{comment.id}"
+                  } %>
+      <%= link_to "Elimina", post_comment_path(post.id, comment.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
+      <div id="edit-form-<%= comment.id%>" class="d-none">
+        <%= render "comments/form", post: post, comment: comment, submit_label: "Update" %>
+      </div>
+    <% end %>
+  </div>
+  
+</div>
+  
+

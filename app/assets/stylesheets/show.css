@@ -562,7 +562,8 @@ select.form-control:not([size]):not([multiple]) {
 .timeline-footer {
     background: #fff;
     border-top: 1px solid #e2e7ec;
-    padding-top: 15px
+
+    padding-bottom: 20px;
 }
 
 .timeline-footer a:not(.btn) {

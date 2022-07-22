@@ -1,5 +1,16 @@
-<%= form_with model: [ post, comment, comment.comment_reactions.build ] do |form| %>
-    <%= form.hidden_field :uid, value: current_user.uid %>
-    <%= form.hidden_field :like, value: false%>
-    <%= form.submit "Non mi piace" %>
+<% if comment.comment_reactions.where(uid: current_user.uid).first %>
+    <% @comment_reaction = comment.comment_reactions.where(uid: current_user.uid).first %>
+    <% if @comment_reaction.like == true %>
+        <%= button_to raw('<i class="bi bi-hand-thumbs-down"></i>'), update_post_comment_comment_reaction_path(post.id, comment.id, @comment_reaction.id), class:"btn btn-trasparent", method: :get %>
+    <% else %>
+        <%= button_to raw('<i class="bi bi-hand-thumbs-down-fill"></i>'), post_comment_comment_reaction_path(post.id, comment.id, @comment_reaction.id), class:"btn btn-trasparent", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
+    <% end %>
+<% else %>
+    <%= form_with model: [ post, comment, comment.comment_reactions.build ] do |form| %>
+        <%= form.hidden_field :uid, value: current_user.uid %>
+        <%= form.hidden_field :like, value: false%>
+        <button type="submit" class="btn btn-trasparent">
+            <i class="bi bi-hand-thumbs-down"></i>
+        </button>
+    <% end %>
 <% end %>
