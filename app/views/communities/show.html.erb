@@ -28,27 +28,33 @@
                   <div class="profile-header-content">
                     <!-- BEGIN profile-header-img -->
                     <div class="profile-header-img">
+                      <img src="<%=@playlist.images[0]['url']%>" alt="">
                     </div>
                     <!-- END profile-header-img -->
                     <!-- BEGIN profile-header-info -->
                     <div class="profile-header-info">
                       <h4 class="m-t-10 m-b-5"><%= @community.name %></h4>
                       <p class="m-b-10"><%= @community.description %></p>
-                      <% if @user_participation.present? && @user_participation.role == "admin" %>
-                        <%= button_to "Modifica Community", edit_community_path(community_id: @community.id), method: :get %>
-                        <%= button_to "Elimina Community", community_path(community_id: @community.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
-                      <% elsif current_user.participations.where(community_id: @community.id).first == nil %>
-                        <%= button_to "Entra in community", create_user_community_participation_path(user_id: current_user.id, community_id: @community.id)%>
-                      <% elsif current_user.participations.where(community_id: @community.id, role: :member).first %>
-                        <%= button_to "Abbandona community", user_community_participation_path(user_id: current_user.id, community_id: @community.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
-                      <% end %>
                     </div>
                     <!-- END profile-header-info -->
-                    <div class="pt-2">
-                      <span><%= String(@posts.count()) %> post</span>
+                    <div class="mt-auto">
+                      <span class="ms-2"><%= String(@posts.count()) %> post</span>
                       <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#iscrittiModal">
                         Iscritti
                       </button>
+                    <% if @user_participation.present? && @user_participation.user_id == current_user.id && (@user_participation.role=="admin" || @user_participation.role=="moderator") %>
+                      <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#gestioneModal">
+                        Gestione Iscritti
+                      </button>
+                    <% if @user_participation.present? && @user_participation.role == "admin" %>
+                        <%= link_to "Modifica Community", edit_community_path(community_id: @community.id), class:"btn btn-outline-warning", method: :get %>
+                        <%= link_to "Elimina Community", community_path(community_id: @community.id), class:"btn btn-outline-danger", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
+                      <% elsif current_user.participations.where(community_id: @community.id).first == nil %>
+                        <%= link_to "Entra in community", create_user_community_participation_path(user_id: current_user.id, community_id: @community.id), class:"btn btn-outline-success"%>
+                      <% elsif current_user.participations.where(community_id: @community.id, role: :member).first %>
+                        <%= link_to "Abbandona community", user_community_participation_path(user_id: current_user.id, community_id: @community.id),class:"btn btn-outline-danger",  data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
+                      <% end %>
+                    <% end %>
                       <!-- Modal -->
                       <div class="modal fade" id="iscrittiModal" tabindex="-1" aria-labelledby="iscrittiModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -59,9 +65,9 @@
                             </div>
                             <div class="modal-body">
                              <% @community.participations.each do |participation| %>
-                                <% if participation.role == "admin" || participation.role == "modder" %>
+                                <% if !participation.banned && (participation.role == "admin" || participation.role == "moderator")  %>
                                   <a href="/user/<%= String(participation.user.uid) %>" ><%= participation.user.uid %></a>  <strong class="text-dark">(<%= participation.role %>)</strong><br>
-                                <% else %>
+                                <% elsif !participation.banned %>
                                   <a href="/user/<%= String(participation.user.uid) %>" ><%= participation.user.uid %></a>
                                 <% end %>
                               <% end %>
@@ -69,6 +75,30 @@
                           </div>
                         </div>
                       </div>
+                    <% if @user_participation.present? && @user_participation.user_id == current_user.id && (@user_participation.role=="admin" || @user_participation.role=="moderator") %>
+                      <div class="modal fade" id="gestioneModal" tabindex="-1" aria-labelledby="gestioneModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="gestioneModalLabel">Gestione utenti</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <% @community.participations.each do |participation| %>
+                                <% if participation.banned%>
+                                  <a href="/user/<%= String(participation.user.uid) %>" ><%= participation.user.uid %></a> <strong class="text-dark"><%= link_to "Riammetti", unban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id) %></strong><br>
+                                <% elsif !participation.banned && participation.role=="modder"  %>
+                                  <a href="/user/<%= String(participation.user.uid) %>" ><%= participation.user.uid %></a> <strong><%= link_to "Bandisci utente", ban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"text-dark"%> <%= link_to "Rendi proprietario", move_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"text-dark" %></strong><br> 
+                                <% elsif !participation.banned && participation.role=="member"  %>
+                                  <a href="/user/<%= String(participation.user.uid) %>" ><%= participation.user.uid %></a> <strong><%= link_to "Bandisci utente", ban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"text-dark"%> <%= link_to "Promuovi a moderatore", promote_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"text-dark" %></strong><br>
+
+                                <% end %>
+                              <% end %>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <% end %>
                     </div>
                   </div>
                   <!-- END profile-header-content -->
@@ -85,9 +115,9 @@
               </div>
               <!-- end profile -->
               <!-- begin profile-content -->
-              <div class="profile-content">
+              <div class="profile-content row">
                 <% if @user_participation.present? %>
-                  <%= button_to "Crea post!", new_community_post_path(@community.id), method: :get %>
+                  <%= link_to "Crea un nuovo post", new_community_post_path(@community.id),class:"btn btn-outline-success", method: :get %>
                 <% end %>
                 <!-- begin tab-content -->
                 <div class="tab-content p-0">
@@ -95,33 +125,6 @@
                   <div class="tab-pane fade active show" id="profile-post">
                     <!-- begin timeline -->
                     <ul class="timeline">
-                      <% if @user_participation.present? && @user_participation.user_id == current_user.id %>
-                        <% @community.participations.each do |participation| %>
-                          <p> <b><%= participation.user.uid %></b> come <%= participation.role %>
-                            <% if participation.banned %>
-                              BANNATO 
-                              <%= button_to "Riammetti", unban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id) %>
-                            <% elsif participation.role == "member" %>
-                              <%= button_to "Bandisci utente", ban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id)%>
-                              <%= button_to "Promuovi a moderatore", promote_user_community_participation_path(user_id: participation.user_id, community_id: @community.id) %>
-                            <% elsif participation.role == "moderator" && participation.user_id != current_user.id%>
-                              <%= button_to "Bandisci utente", ban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id) %>
-                              <%= button_to "Rendi proprietario", move_user_community_participation_path(user_id: participation.user_id, community_id: @community.id) %>
-                            <% end %>
-                          </p>
-                        <% end %>
-                      <% elsif @user_participation.present? && @user_participation.role == "moderator"  %>
-                        <% @community.participations.each do |participation| %>
-                          <p> <b><%= participation.user.uid %></b> come <%= participation.role %>
-                            <% if participation.banned %>
-                              BANNATO 
-                              <%= button_to "Riammetti", unban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id) %>
-                            <% elsif participation.role == "member"  %>
-                              <%= button_to "Bandisci utente", ban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id)%>
-                            <% end %>
-                          </p>
-                        <% end %>
-                      <% end %>
                       <% @posts.each do |community_post| %>
                         <li>
                           <!-- begin timeline-time -->
@@ -140,17 +143,13 @@
                             <div class="timeline-header">
                               <span class="userimage"><img src="<%=community_post.user.avatar_url%>" alt=""></span>
                               <span class="username"><a href="/user/<%= String(community_post.user.uid) %>"><%= community_post.user.uid %></a> <small>su <a href="/communities/<%= String(@community.id) %>"><%= @community.name %></a></small></span>
-                              <div class="pull-right">
+                              <span class="text-muted">
+                                ultima modifica: <%=community_post.updated_at.to_fs(:short)%>
                                 <% if community_post.user == current_user%>
-                                  <span><%= button_to "Modifica", edit_post_path(community_post), method: :get %></span>
-                                  <span><%= button_to "Elimina", post_path(community_post), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %></span>
-                                <% elsif @user_participation.role == "moderator" %>
-                                  <span><%= button_to "Elimina", post_path(community_post), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %></span>
+                                  <%= link_to "Modifica", edit_post_path(community_post), method: :get %>
+                                  <%= link_to "Elimina", post_path(community_post), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
                                 <% end %>
-                                <span class="text-muted">
-                                  ultima modifica: <%=community_post.updated_at.to_fs(:short)%>
-                                </span>
-                              </div>
+                              </span>
                             </div>
                             <div class="timeline-content">
                               <h3><%= community_post.title %></h3>
@@ -174,22 +173,12 @@
                               </div>
                             </div>
                             <div class="timeline-footer">
-                              <% if community_post.reactions.where(uid: current_user.uid).first %>
-                                <% @reaction = community_post.reactions.where(uid: current_user.uid).first %>
-                                <% if @reaction.like == true %>
-                                  <%= button_to "Mi piace", post_reaction_path(community_post.id, @reaction.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete%>
-                                  <%= button_to "Non mi piace", update_post_reaction_path(community_post.id, @reaction.id), method: :get%>
-                                <% else %>
-                                  <%= button_to "Mi piace", update_post_reaction_path(community_post.id, @reaction.id), method: :get%>
-                                  <%= button_to "Non mi piace", post_reaction_path(community_post.id, @reaction.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete%>
-                                <% end %>
-                              <% else %>
+                              <div style="float: left; width: auto;">
                                 <%= render "reactions/like", post: community_post %>
+                              </div>
+                              <div style="float: left; width: auto;">
                                 <%= render "reactions/dislike", post: community_post %>
-                              <% end %>
-                              <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-thumbs-up fa-fw fa-lg m-r-3"></i></a>
-                              <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-thumbs-down fa-fw fa-lg m-r-3"></i></a>
-                              <!--<a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-comments fa-fw fa-lg m-r-3"></i> Commenta</a> -->
+                              </div>
                             </div>
                             <div class="timeline-comment-box">
                               <% community_post.comments.each do |comment| %>
@@ -201,14 +190,6 @@
                                   <%= form.text_field :body %>
                                   <%= form.submit "commenta" %>
                                 <% end %>
-                                <!--<form action="">
-                                       <div class="input-group">
-                                          <input type="text" class="form-control rounded-corner" placeholder="Write a comment...">
-                                          <span class="input-group-btn p-l-10">
-                                          <button class="btn btn-primary f-s-12 rounded-corner" type="button">Comment</button>
-                                          </span>
-                                       </div>
-                                    </form>-->
                               </div>
                             </div>
                           </div>

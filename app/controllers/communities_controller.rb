@@ -10,6 +10,8 @@ class CommunitiesController < ApplicationController
   end
 
   def show
+    @pid = (@community.playlist).slice! "https://open.spotify.com/playlist/"
+    @playlist = RSpotify::Playlist.find("Bloodyblade49",@community.playlist ) #@community.creator è null
     @posts = @community.posts.all.order(created_at: :desc)
   end
 
@@ -22,7 +24,7 @@ class CommunitiesController < ApplicationController
     give_community_tags(@community, params[:community][:tag_ids])
     if is_a_playlist?(@community.playlist)
       if @community.save
-        @community.creator = current_user
+        @community.creator = current_user.id
         @participation = @community.participations.new(user_id: current_user.id, community_id: @community.id,
                                                        role: :admin, banned: false)
         if @participation.save
