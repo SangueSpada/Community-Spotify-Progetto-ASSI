@@ -1,0 +1,6 @@
+<div class="cont-<%=message.user.id%>">
+    <div class="message-box msg-<%= message.user.id%>">
+            <%= message.body %>
+            <p style="font-size: 50%"><%= message.created_at.to_fs(:short) %></p>
+    </div>
+</div>

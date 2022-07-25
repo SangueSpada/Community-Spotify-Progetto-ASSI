@@ -4,14 +4,16 @@
 <ul>
 <% @chats.each do |chat| %>
     <% if chat.user1==current_user %>
-        <li>
-            <%= chat.user2.email %>
+        <li>   
+            <h4><%=chat.id%></h4>
+            <%= link_to chat.user2.email, chat %>
             <%= button_to "Elimina", chat_path(chat), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
         </li>
     <% elsif chat.user2==current_user%>
         <li>
-            <%= chat.user1.email%>
-             <%= button_to "Elimina", chat_path(chat), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
+            <h4><%=chat.id%></h4>
+            <%= link_to chat.user1.email, chat %>
+            <%= button_to "Elimina", chat_path(chat), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
         </li>
     <% end %>
 <% end %>
