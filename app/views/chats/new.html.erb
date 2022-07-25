@@ -1,20 +1,26 @@
-<h1>New Chat</h1>
+<%= render "partials/navbar" %>
+<div class="row justify-content-center">
+  <div style="padding: 70px"></div> 
+    <div class="col-sm-8 col-md-6 ">
+      <h1>New Chat</h1>
 
-<%= form_with model: @chat do |form| %>
-  <div>
-    <%= form.label :user2 %><br>
-    <%= form.text_field :user2_id %>
-  </div>
-    
+      <%= form_with model: @chat do |form| %>
+        <div>
+          <%= form.label :user2 %><br>
+          <%= form.text_field :user2_id %>
+        </div>
+          
 
 
-  
+        
 
-  <div>
-  
-    <%= form.submit %>
-  </div>
-
-<% end %>
+        <div>
+        
+          <%= form.submit %>
+        </div>
+      <% end %>
+    </div> 
+  </div> 
+</div> 
 
   

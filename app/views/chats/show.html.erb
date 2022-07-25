@@ -1,0 +1,19 @@
+<body class="bg-light">
+    <%= render "partials/navbar" %>
+    
+    <div class="row justify-content-center">
+        <div style="padding: 70px"></div> 
+        <div class="col-sm-8 col-md-6 ">
+            <% if @chat.user1==current_user %>
+                <h1><%= @chat.user2.email %></h1>
+            <% elsif @chat.user2==current_user%>
+                <h1><%= @chat.user1.email %></h1>
+            <%end%>
+                <%=turbo_stream_from @chat %>
+            <div id="messages">
+                <%= render  @messages%>
+            </div>
+            <%=render '/messages/form' %>
+        </div>  
+    </div> 
+</body>  

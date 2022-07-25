@@ -7,7 +7,9 @@ class ChatsController < ApplicationController
     @chats = Chat.all
   end
   def show
-    @chat = Chat.find(params[:uid])
+    @chat = Chat.find(params[:id])
+    @message= Message.new
+    @messages=  @chat.messages.order(created_at: :asc)
   end
   def new
     @chat = Chat.new
@@ -15,7 +17,7 @@ class ChatsController < ApplicationController
   end
   def destroy
     @chat.destroy
-    redirect_to root_path
+    redirect_to chat_path(@chat)
   end
 
   
@@ -26,10 +28,12 @@ class ChatsController < ApplicationController
       @chat.user2 = User.find(chat_params[:user2_id])
       @chat.user1 = current_user
       if(@chat.save)
-        redirect_to root_path
+        redirect_to chat_path(@chat)
       else
         render :new, status: :unprocessable_entity
       end
+    else
+      redirect_to chat_path(@chat)
     end
 =begin    chat_messages_path(@chat)  
 =end
@@ -43,7 +47,6 @@ private
 
   def set_chat
     @chat = Chat.find(params[:id])
-    print "porco dioooooooooooooo "+@chat.id.to_s+"\n"
   rescue ActiveRecord::RecordNotFound => e
     redirect_to root_path, notice: e.message
   end
