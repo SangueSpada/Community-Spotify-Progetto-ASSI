@@ -14,3 +14,32 @@
  *= require_self
  //= require dd
  */
+ body {
+    overflow: hidden;
+  }
+  .msg-form {
+    width: 100%;
+    height: 56px;
+    padding: 10px;
+  } 
+  
+  #messages {
+    height: calc(80vh - 150px);
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+  
+  .msg-content {
+    width: 80%;
+    margin-right: 5px;
+  }
+  .message-box {
+    word-wrap: break-word;
+    width: fit-content;
+    max-width: 40%;
+    min-width: 10%;
+    padding: 5px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    background-color: #a8a8a8;
+  }
