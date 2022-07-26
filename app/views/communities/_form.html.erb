@@ -3,10 +3,17 @@
         <%= form.label :name %>
         <%= form.text_field :name %>
     </div>
-
     <div>
         <%= form.label :description %>
         <%= form.text_area :description %>
+    </div>
+    <% if @playlist != [] %>
+    <div>
+        <select name="playlist" id="playlist" is="ms-dropdown">
+            <% @playlist.each do |p,index| %>
+                <option data-image="<%=p.images[0]['url']%>)" value="<%=index%>"><%= p.name %></option>
+            <% end %>
+        </select>
     </div>
     <div>
         <input type="hidden" name="community[playlist]" value="" autocomplete="off">
@@ -20,9 +27,12 @@
             </div>
         <% end %> 
     </div>    
-   
-
     <div>
         <%= form.submit %>
     </div>
+    <% else %>
+    <div>
+    <p class="text-danger">Non hai alcuna playlist Spotify! Creane una e poi potrai creare una community.
+    </div>
+    <% end %>
 <% end %>
