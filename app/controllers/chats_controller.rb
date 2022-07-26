@@ -6,16 +6,20 @@ class ChatsController < ApplicationController
   def index
     @chats = Chat.all
   end
+  
   def show
     @chat = Chat.find(params[:id])
     @message= Message.new
-    @messages=  @chat.messages.order(created_at: :asc)
+    pagy_messages=  @chat.messages.order(created_at: :desc)
+    @pagy, messages = pagy(pagy_messages,items: 20)
+    @messages = messages.reverse
   end
+
   def new
     @chat = Chat.new
     
   end
-  def destroy
+  def destroy 
     @chat.destroy
     redirect_to chat_path(@chat)
   end

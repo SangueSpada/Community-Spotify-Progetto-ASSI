@@ -9,9 +9,13 @@
             <% elsif @chat.user2==current_user%>
                 <h1><%= @chat.user1.email %></h1>
             <%end%>
-                <%=turbo_stream_from @chat %>
-            <div id="messages">
-                <%= render  @messages%>
+            <%=turbo_stream_from @chat %>
+            <div id="messages" data-controller="scroll">
+                <%= turbo_frame_tag "page_handler"%>
+                <%= render "messages/pager", pagy: @pagy%>
+                <div id="messages-container">
+                    <%=render @messages%>
+                </div>
             </div>
             <%=render '/messages/form' %>
         </div>  
