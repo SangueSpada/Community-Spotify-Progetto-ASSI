@@ -26,17 +26,19 @@ class ChatsController < ApplicationController
 
   
   def create
+    @chat = Chat.new
     if check?
       
-      @chat = Chat.new
-      @chat.user2 = User.find(chat_params[:user2_id])
+      @chat.user2 = User.find(params[:user2_id])
       @chat.user1 = current_user
       if(@chat.save)
         redirect_to chat_path(@chat)
       else
-        render :new, status: :unprocessable_entity
+        @chat=Chat.where(user2_id: params[:user2_id],user1_id: current_user.id).first
+        redirect_to chat_path(@chat)
       end
     else
+      @chat = Chat.between(current_user.id,params[:user2_id]).first
       redirect_to chat_path(@chat)
     end
 =begin    chat_messages_path(@chat)  
@@ -56,13 +58,13 @@ private
   end
 
   def check?
-    if params[:chat][:user2_id] == ""
+    if params[:user2_id] == ""
+      return false
+    end 
+    if current_user.id.to_s == params[:user2_id]
       return false
     end
-    if current_user.id.to_s == params[:chat][:user2_id]
-      return false
-    end
-    if Chat.between(current_user.id,params[:chat][:user2_id]).present?
+    if Chat.between(current_user.id,params[:user2_id]).present?
       return false
     end
     return true

@@ -66,10 +66,10 @@
 53. Confermare partecipazione ad un evento comunità
 54. Annullare partecipazione ad un evento comunità
 55. Salvare un evento con oauth Google Calendar
-56. Visualizzare chat private MANCA IL FRONT END
-57. Iniziare una chat privata MANCA IL FRONT END
-58. Inviare messaggi chat MANCA IL FRONT END
-59. Visualizzare messaggi chat MANCA IL FRONT END
+56. Visualizzare chat private ✅
+57. Iniziare una chat privata ✅
+58. Inviare messaggi chat ✅
+59. Visualizzare messaggi chat ✅
 
 
 

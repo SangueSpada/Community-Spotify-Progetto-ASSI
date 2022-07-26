@@ -29,7 +29,9 @@
                   <div class="profile-header-content">
                      <!-- BEGIN profile-header-img -->
                      <div class="profile-header-img">
-                        <img src="<%=@user.images[0]['url']%>" alt="">
+                        <%if @user.images[0]!=nil%>
+                           <img src="<%=@user.images[0]['url']%>" alt="">
+                        <%end%>
                      </div>
                      <!-- END profile-header-img -->
                      <!-- BEGIN profile-header-info -->
@@ -51,6 +53,10 @@
                         <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#communityModal">
                         <%= String(@communities.count()) %> Community
                         </button>
+
+                        <% unless @u==current_user %>
+                           <%= button_to "Chat", create_chat_path(@u.id),:class => "btn btn-outline-info" %>
+                        <%end%>
                         <section id="all-links"class="mt-2">
                             <% if @u.uid == current_user.uid %>
                                 <%= button_to "Logout", destroy_user_session_path, data: {turbo: "false"}, method: :delete, :class => "btn btn-outline-warning" %>

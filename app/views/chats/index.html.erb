@@ -3,7 +3,6 @@
     <div style="padding: 70px"></div> 
         <div class="col-sm-8 col-md-6 ">
         <h1>Chats</h1>
-            <%= link_to "New Chat", new_chat_path %>
             <ul class="list-group">
             <% @chats.each do |chat| %>
                 <% if chat.user1==current_user %>

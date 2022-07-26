@@ -35,7 +35,9 @@ Rails.application.routes.draw do
   resources :chats do
     resources :messages
   end
-
+  post '/chats/:user2_id',
+       to: 'chats#create',
+       as: 'create_chat'
   post '/users/:user_id/communities/:community_id/participations/create',
        to: 'participations#create',
        as: 'create_user_community_participation'
