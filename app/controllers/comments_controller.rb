@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-    before_action :authenticate_user!
+    before_action :authenticate_person!
     def create
         @post = Post.find(params[:post_id])
         @comment = @post.comments.new(comment_params)
@@ -50,13 +50,16 @@ class CommentsController < ApplicationController
     def destroy
         @post = Post.find(params[:post_id])
         @comment = @post.comments.find(params[:id])
-        @comment.destroy
-        if @post.community_id != nil
-            @community = Community.find(@post.community_id)
-            redirect_to community_path(@community)
-        else
-            redirect_to root_path
-        end 
+        if (current_user == @comment.user || current_modder)
+            @comment.destroy
+        
+            if @post.community_id != nil
+                @community = Community.find(@post.community_id)
+                redirect_to community_path(@community)
+            else
+                redirect_to root_path
+            end
+        end    
     end
 
     private

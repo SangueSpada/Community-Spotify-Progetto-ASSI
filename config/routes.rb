@@ -1,9 +1,15 @@
 Rails.application.routes.draw do
+  
   post 'search', to: 'search#index'
   root 'pages#home'
   devise_for :users, controllers: {
     omniauth_callbacks: 'users/omniauth_callbacks',
     sessions: 'users/sessions'
+  }
+  devise_for :modders, controllers: {
+    sessions: 'modders/sessions',
+    passwords: 'modders/passwords',
+    registrations: 'modders/registrations'
   }
   get '/chats/index'
   get '/user/:uid', to: 'users#show'

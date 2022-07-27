@@ -41,6 +41,12 @@
         <%= render "comments/form", post: post, comment: comment, submit_label: "Update" %>
       </div>
     <% end %>
+    <% if current_modder %>
+      <%= link_to "Elimina", post_comment_path(post.id, comment.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
+      <div id="edit-form-<%= comment.id%>" class="d-none">
+        <%= render "comments/form", post: post, comment: comment, submit_label: "Update" %>
+      </div>
+    <% end %>
   </div>
   
 </div>

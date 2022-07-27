@@ -1,0 +1,32 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+
+    <title>Signin</title>
+  </head>
+
+  <body>
+    <div class="container text-center">
+ 
+      <div style="margin: 30%"></div> 
+      <div class="row align-items-center">
+        <div class="col">
+          <img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+          <%= render "users/shared/links" %>
+        </div>
+        <div class="col">
+          <h2>Login per moderatori</h2>
+          <p>Sei un moderatore o vuoi diventarlo? Registrati e autenticati qui!<p>
+          <%=link_to 'Login', new_modder_session_path %>
+          <%=link_to 'Sign up', new_modder_registration_path %>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -13,8 +13,8 @@
 ## COSA MANCA?
 1. Registrazione ✅
 2. Login/OAuth utente semplice ✅ 
-3. Registrazione tecnico
-4. Login tecnico
+3. Registrazione tecnico ✅ 
+4. Login tecnico ✅ 
 5. Logout ✅
 6. Feed 
 7. Visualizzare profilo personale ✅

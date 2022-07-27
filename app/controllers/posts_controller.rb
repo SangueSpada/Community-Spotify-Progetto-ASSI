@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!, :set_post, only: %i[edit update destroy]
+  before_action :authenticate_person!, :set_post, only: %i[edit update destroy]
   skip_before_action :verify_authenticity_token
 
   def home
@@ -36,7 +36,7 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    if current_user != @post.user
+    if (current_user != @post.user && !current_modder)
       redirect_to root_path, notice: 'Non puoi accedere a questa sezione!'
     else
       @post.destroy

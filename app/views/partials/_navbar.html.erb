@@ -1,22 +1,25 @@
 <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark" aria-label="Main navigation">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">Community spotify</a>
-    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item dropdown" >
-          <a class="nav-link" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Icona aggiungi post</a>
-          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdown01">
-            <li><a class="dropdown-item" href="/communities/new">Crea Community</a></li>
-            <li><a class="dropdown-item" href="/posts/new">Crea Post</a></li>
-          </ul>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Icona esplora</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/chats">Icona chat</a>
-        </li>
+    <%unless current_modder%>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item dropdown" >
+            <a class="nav-link" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Icona aggiungi post</a>
+            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdown01">
+              <li><a class="dropdown-item" href="/communities/new">Crea Community</a></li>
+              <li><a class="dropdown-item" href="/posts/new">Crea Post</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Icona esplora</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/chats">Icona chat</a>
+          </li>
 
-    </ul>
+      </ul>
+
+    <%end%>
     <!-- <form class="navbar-nav me-auto mb-2">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
@@ -24,10 +27,16 @@
     <ul class="navbar-nav mb-2" id="profile">
         <li class="nav-item dropdown">
             <a href="#" class=" nav-link d-block text-decoration-none" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                Benvenuto <%= current_user.uid %> <img id="profilo_imm" src="<%=current_user.avatar_url%>" alt="mdo" width="48" height="48" class="rounded-circle">
+              <%if current_modder%>
+                Benvenuto Modder <%= current_modder.email %>
+              <%else%>
+                Benvenuto <%= current_user.email %> <img id="profilo_imm" src="<%=current_user.avatar_url%>" alt="mdo" width="48" height="48" class="rounded-circle">
+              <%end%>
             </a>
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="dropdownUser1" style="position: absolute;">
+              <%unless current_modder%>
                 <li><a class="dropdown-item" href="/user/<%=current_user.uid%>" >Profilo</a></li>
+              <%end%>
                 <li>
                     <hr class="dropdown-divider">
                 </li>

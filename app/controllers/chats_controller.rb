@@ -28,7 +28,6 @@ class ChatsController < ApplicationController
   def create
     @chat = Chat.new
     if check?
-      
       @chat.user2 = User.find(params[:user2_id])
       @chat.user1 = current_user
       if(@chat.save)

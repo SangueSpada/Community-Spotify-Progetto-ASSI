@@ -15,7 +15,7 @@
  //= require dd
  */
  body {
-    overflow: hidden;
+    overflow: scroll;
   }
   .msg-form {
     width: 100%;

@@ -1,20 +1,15 @@
 # frozen_string_literal: true
 
-class DeviseCreateUsers < ActiveRecord::Migration[7.0]
+class DeviseCreateModders < ActiveRecord::Migration[7.0]
   def change
-    create_table :users do |t|
+    create_table :modders do |t|
       ## Database authenticatable
-      t.string :email,              null: false, default: "", unique: true
-      t.string :name,              null: false, default: "", unique: true
-      t.string :uid,                unique: true, null: false, default: ""
+      t.string :email,              null: false, default: ""
       t.string :encrypted_password, null: false, default: ""
-      t.string :provider
-      t.string :avatar_url
-      
-      
+
       ## Recoverable
-      #t.string   :reset_password_token
-      #t.datetime :reset_password_sent_at
+      t.string   :reset_password_token
+      t.datetime :reset_password_sent_at
 
       ## Rememberable
       t.datetime :remember_created_at
@@ -41,16 +36,9 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.0]
       t.timestamps null: false
     end
 
-    def password_required?
-      false
-    end
-
-    add_index :users, :uid, unique: true
-    # add_index :users, :email,                unique: true
-    # add_index :users, :reset_password_token, unique: true
-    # add_index :users, :confirmation_token,   unique: true
-    # add_index :users, :unlock_token,         unique: true
+    add_index :modders, :email,                unique: true
+    add_index :modders, :reset_password_token, unique: true
+    # add_index :modders, :confirmation_token,   unique: true
+    # add_index :modders, :unlock_token,         unique: true
   end
-
-  
 end
