@@ -53,10 +53,6 @@
                         <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#communityModal">
                         <%= String(@communities.count()) %> Community
                         </button>
-
-                        <% unless @u==current_user %>
-                           <%= button_to "Chat", create_chat_path(@u.id),:class => "btn btn-outline-info" %>
-                        <%end%>
                         <section id="all-links"class="mt-2">
                             <% if @u.uid == current_user.uid %>
                                 <%= button_to "Logout", destroy_user_session_path, data: {turbo: "false"}, method: :delete, :class => "btn btn-outline-warning" %>
@@ -68,9 +64,10 @@
                             
                             <br>
                         </section>
-                        
-                           
-                      
+                        <% unless @u==current_user %>
+                           <%= button_to "Chat", create_chat_path(@u.id),:class => "btn btn-outline-info" %>
+                        <%end%>
+                     </div>
                         <!-- Modal -->
                         <div class="modal fade" id="followingModal" tabindex="-1" aria-labelledby="followingModalLabel" aria-hidden="true">
                           <div class="modal-dialog">

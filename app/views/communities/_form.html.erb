@@ -7,26 +7,16 @@
         <%= form.label :description %>
         <%= form.text_area :description %>
     </div>
+    <div>
     <% if @playlist != [] %>
     <div>
-        <select name="playlist" id="playlist" is="ms-dropdown">
-            <% @playlist.each do |p,index| %>
-                <option data-image="<%=p.images[0]['url']%>)" value="<%=index%>"><%= p.name %></option>
+    <label> Playlist </label>
+        <select name="community[playlist]" id="community_playlist" is="ms-dropdown">
+            <% @playlist.each.with_index do |p, index| %>
+                <option data-image="<%=p.images[0]['url']%>" value="<%= p.id %>"><%= p.name %></option>
             <% end %>
         </select>
-    </div>
-    <div>
-        <input type="hidden" name="community[playlist]" value="" autocomplete="off">
-        <% @playlist.each do |p| %>
-            <div class="form-check" required>
-                <input class="form-check-input" type="radio" name="community[playlist]" value="<%= p.id %>" id="community_playlist_<%= p.id %>">
-                <label class="form-check-label" for="community_playlist_<%= p.id %>">
-                <%= p.name %>
-                </label>
-                <img src="<%=p.images[0]['url']%>" width='20px', heigth='20px'>
-            </div>
-        <% end %> 
-    </div>    
+    </div>   
     <div>
         <%= form.submit %>
     </div>

@@ -12,12 +12,10 @@
 
 ActiveRecord::Schema[7.0].define(version: 2022_07_27_135304) do
   create_table "chats", force: :cascade do |t|
-    t.integer "user1_id"
-    t.integer "user2_id"
+    t.string "user1"
+    t.string "user2"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user1_id"], name: "index_chats_on_user1_id"
-    t.index ["user2_id"], name: "index_chats_on_user2_id"
   end
 
   create_table "comment_reactions", force: :cascade do |t|
@@ -77,7 +75,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_27_135304) do
     t.index ["reset_password_token"], name: "index_modders_on_reset_password_token", unique: true
   end
 
-  create_table "participations", force: :cascade do |t|
+  create_table "participations", id: false, force: :cascade do |t|
     t.integer "community_id"
     t.integer "user_id"
     t.integer "role", default: 0
@@ -124,7 +122,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_27_135304) do
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
-    t.string "name", default: "", null: false
     t.string "uid", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "provider"
