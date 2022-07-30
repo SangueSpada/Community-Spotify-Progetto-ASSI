@@ -8,6 +8,7 @@ class SearchController < ApplicationController
       @users = []
     end
     respond_to do |format|
+      puts @communities, @users
       format.turbo_stream do
         render turbo_stream: turbo_stream.update("search_results", partial: "search/search_results", locals: {communities: @communities, users: @users})
       end

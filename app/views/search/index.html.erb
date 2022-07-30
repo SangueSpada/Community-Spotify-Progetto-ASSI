@@ -2,13 +2,13 @@
 
 <div class="container">
     <table class="table table-dark table-striped">
-        <thread>
+        <thead>
             <tr>
                 <th><%= sort_link(@query, :name, "Nome", deafult_order: :asc) %></th>
                 <th><%= sort_link(@query, :description, "Descrizione") %></th>
                 <th><%= sort_link(@query, :creator, "Proprietario") %></th>
             </tr>
-        </thread>
+        </thead>
 
         <tbody>
             <% @communities.each do |community| %>

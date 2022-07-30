@@ -1,9 +1,48 @@
+<% @str="[" %>
 <% communities.each do |community| %>
-    <%= community.name %>
-    <br>
+    <% @str+='{"label":"'+community.name'", "category":"COMMUNITIES"},' %>
 <% end %>
 
 <% users.each do |user| %>
-    <%= user.uid %>
-    <br>
+    <% @str+='{"label":"'+user.uid'", "category":"USERS"},' %>
 <% end %>
+<% @str+="]" %>
+<script>
+        
+        var db_string="[";
+        hot.forEach(item => {db_string+='{"label":"'+item+'", "category":"HOTELS"},' });
+        ci.forEach(item => {db_string+='{"label":"'+item+'", "category":"CITTÀ"},' });
+        db_string=db_string.slice(0,-1);
+        db_string+=']';
+        var db=JSON.parse(db_string);
+        
+        $( function() {
+            $.widget( "custom.catcomplete", $.ui.autocomplete, {
+              _create: function() {
+                this._super();
+                this.widget().menu( "option", "items", "> :not(.ui-autocomplete-category)" );
+              },
+              _renderMenu: function( ul, items ) {
+                var that = this,
+                  currentCategory = "";
+                $.each( items, function( index, item ) {
+                  var li;
+                  if ( item.category != currentCategory ) {
+                    ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
+                    currentCategory = item.category;
+                  }
+                  li = that._renderItemData( ul, item );
+                  if ( item.category ) {
+                    li.attr( "aria-label", item.category + " : " + item.label );
+                  }
+                });
+              }
+            });
+
+            $( "#Search" ).catcomplete({
+              delay: 0,
+              source: db
+            });
+        });
+
+</script>

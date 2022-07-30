@@ -51,9 +51,9 @@
                         <%= link_to "Modifica Community", edit_community_path(community_id: @community.id), class:"btn btn-outline-warning", method: :get %>
                         <%= link_to "Elimina Community", community_path(community_id: @community.id), class:"btn btn-outline-danger", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
                       <% elsif current_user.participations.where(community_id: @community.id).first == nil %>
-                        <%= link_to "Entra in community", create_user_community_participation_path(user_id: current_user.id, community_id: @community.id), class:"btn btn-outline-success"%>
+                        <%= button_to "Entra in community", create_user_community_participation_path(user_id: current_user.id, community_id: @community.id), class:"btn btn-outline-success"%>
                       <% elsif current_user.participations.where(community_id: @community.id, role: :member).first %>
-                        <%= link_to "Abbandona community", user_community_participation_path(user_id: current_user.id, community_id: @community.id),class:"btn btn-outline-danger",  data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
+                        <%= button_to "Abbandona community", user_community_participation_path(user_id: current_user.id, community_id: @community.id),class:"btn btn-outline-danger",  data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
                       <% end %>
                     
                       <!-- Modal -->

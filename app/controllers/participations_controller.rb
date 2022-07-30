@@ -76,6 +76,7 @@ class ParticipationsController < ApplicationController
       redirect_to root_path, notice: 'Non puoi accedere a questa sezione!'
     else
       @participation = @community.participations.where(user_id: @user.id).first
+      puts @community.participations.where(user_id: @user.id).first
       @participation.destroy
       redirect_to community_path(@community)
     end

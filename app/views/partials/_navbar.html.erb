@@ -1,30 +1,30 @@
 <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark" aria-label="Main navigation">
-  <div class="container-fluid">
+  <div class="container-fluid ">
     <a class="navbar-brand" href="/">Community spotify</a>
     <%unless current_modder%>
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item dropdown" >
-            <a class="nav-link" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Icona aggiungi post</a>
+            <a class="nav-link" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-file-earmark-play"></i></a>
             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdown01">
               <li><a class="dropdown-item" href="/communities/new">Crea Community</a></li>
               <li><a class="dropdown-item" href="/posts/new">Crea Post</a></li>
             </ul>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Icona esplora</a>
+            <a class="nav-link" href="#"><i class="bi bi-compass"></i></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/chats">Icona chat</a>
+          
+            <a class="nav-link" href="/chats"><i class="bi bi-chat"></i></a>
           </li>
 
       </ul>
 
     <%end%>
-    <!-- <form class="navbar-nav me-auto mb-2">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-    </form> -->
-    <ul class="navbar-nav mb-2" id="profile">
+    <form class="navbar-nav me-auto mb-2 mb-lg-0 col-lg-6" action='/' method='get'>
+        <input class="form-control" type="search" name="Search" id="Search" placeholder="Cerca su CommunitySpotify">
+    </form>
+    <ul class="navbar-nav mb-2 mb-lg-0" id="profile">
         <li class="nav-item dropdown">
             <a href="#" class=" nav-link d-block text-decoration-none" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
               <%if current_modder%>
