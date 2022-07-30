@@ -7,9 +7,17 @@ class Modders::RegistrationsController < Devise::RegistrationsController
   # def new
   #   super
   # end
-
   # POST /resource
+  def create
+    if check
+      super
+    else
+      flash[:alert] = 'Modder key errata, Riprova.'
+      redirect_to new_modder_registration_path
+      return
+    end
 
+  end
 
   # GET /resource/edit
   # def edit
@@ -56,4 +64,13 @@ class Modders::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+  private
+  def check
+    if (params[:modder][:modder_key]!="pippo" || params[:modder][:password]!=params[:modder][:password_confirmation])
+      puts "cazzo scrivi"
+       return false
+    end
+    true
+  end
 end
+
