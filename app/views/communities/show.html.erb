@@ -150,7 +150,7 @@
                             </div>
                             <div class="timeline-likes">
                               <div class="stats-right">
-                                <span class="stats-text"><%= community_post.comments.count %> Commenti</span>
+                                <span class="stats-text" onclick="HideShow<%=community_post.id %>()"><%= community_post.comments.count %> Commenti</span>
                               </div>
                               <div class="stats">
                                 <span class="fa-stack fa-fw stats-icon">
@@ -173,7 +173,7 @@
                                 <%= render "reactions/dislike", post: community_post %>
                               </div>
                             </div>
-                            <div class="timeline-comment-box">
+                            <div class="timeline-comment-box" id="comment_post_<%=community_post.id %>" style="display: none">
                               <% community_post.comments.each do |comment| %>
                                 <%= render "comments/comment", post: community_post, comment: comment%>
                               <% end %>
@@ -185,6 +185,16 @@
                                 <% end %>
                               </div>
                             </div>
+                            <script>
+                              function HideShow<%=community_post.id %>() {
+                                var x = document.getElementById("comment_post_<%=community_post.id %>");
+                                if (x.style.display === "none") {
+                                  x.style.display = "block";
+                                } else {
+                                  x.style.display = "none";
+                                }
+                              }
+                            </script>
                           </div>
                           <!-- end timeline-body -->
                         </li>
@@ -217,3 +227,4 @@
     <p>SEI BANNATO, <%= link_to "TORNA ALLA HOME", root_path %> </p>
   <% end %>
 </html>
+

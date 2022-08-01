@@ -1,7 +1,7 @@
 <div id="comment-body-<%= comment.id%>" style="background: #fbfdff;">
   <p>
     <div class="user me-1"><img src="<%=comment.user.avatar_url%>"></div>
-    <%= comment.user.uid %>
+    <a class="text-dark" href="/user/<%= String(comment.user.uid) %>"><%= comment.user.uid %></a>
     <br>
     <span class="text-muted small"><%=comment.created_at.to_fs(:short)%></span>
   </p>

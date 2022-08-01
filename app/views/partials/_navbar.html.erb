@@ -23,9 +23,7 @@
           </li>
       </ul>
     <%end%>
-    <form class="navbar-nav me-auto mb-2 mb-lg-0 col-lg-6" action='/' method='get'>
-        <input class="form-control" type="search" name="Search" id="Search" placeholder="Cerca su CommunitySpotify">
-    </form>
+    <%= render "search/form" %>
     <ul class="navbar-nav mb-2 mb-lg-0" id="profile">
         <li class="nav-item dropdown">
             <a href="#" class=" nav-link d-block text-decoration-none" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">

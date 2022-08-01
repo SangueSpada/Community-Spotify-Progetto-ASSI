@@ -38,7 +38,7 @@
     </div>
     <div class="timeline-likes">
         <div class="stats-right">
-            <span class="stats-text"><%= post.comments.count %> Commenti</span>
+            <span class="stats-text" onclick="HideShow<%=post.id %>()"><%= post.comments.count %> Commenti</span>
         </div>
         <div class="stats">
             <span class="fa-stack fa-fw stats-icon">
@@ -61,7 +61,7 @@
         <%= render "reactions/dislike", post: post %>
         </div>
     </div>
-    <div class="timeline-comment-box">
+    <div class="timeline-comment-box" id="comment_post_<%=post.id %>" style="display: none">
         <% post.comments.each do |comment| %>
         <%= render "comments/comment", post: post, comment: comment%>
         <% end %>
@@ -72,17 +72,19 @@
             <%= form.text_field :body %>
             <%= form.submit "commenta" %>
             <% end %>
-        <!--<form action="">
-            <div class="input-group">
-                <input type="text" class="form-control rounded-corner" placeholder="Write a comment...">
-                <span class="input-group-btn p-l-10">
-                <button class="btn btn-primary f-s-12 rounded-corner" type="button">Comment</button>
-                </span>
-            </div>
-        </form>-->
         </div>
         <%end%>
     </div>
     </div>
     <!-- end timeline-body -->
     </li>
+<script>
+function HideShow<%=post.id %>() {
+  var x = document.getElementById("comment_post_<%=post.id %>");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>
