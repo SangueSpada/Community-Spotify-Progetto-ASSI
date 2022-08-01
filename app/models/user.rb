@@ -31,6 +31,7 @@ class User < ApplicationRecord
       user.provider = auth.provider
       user.email = auth.info.email
       user.avatar_url = auth.info.image
+      
     end
   
   end

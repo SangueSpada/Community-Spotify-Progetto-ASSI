@@ -21,12 +21,12 @@
 8. Creare un post MANCA LA POSSIBILITA' DI AGGIUNGERE IFRAME
 9. Modificare un post ✅
 10. Eliminare post ✅
-11. Eliminare post da tecnico
+11. Eliminare post da tecnico  ✅
 12. Interazione con un post ✅
 13. Commentare un post ✅
 14. Elimina commento da un post MANCA IL FRONT END
 15. Eliminare commenti da un mio post MANCA IL FRONT END
-16. Elimina commento da un post da tecnico 
+16. Elimina commento da un post da tecnico  ✅
 17. Follow utente
 18. Unfollow utente
 19. ...
