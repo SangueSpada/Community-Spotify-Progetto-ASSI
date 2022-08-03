@@ -1,5 +1,10 @@
+<div class="form-group">
 <%= form_with model: [ post, comment ] do |form| %>
-    <%= form.text_field :body %>
-    <%= form.submit submit_label %>
+    <div class="input-group" style="padding-top: 10px">
+        <%= form.text_field :body,  class:"form-control"%>
+        <%= form.submit submit_label ,class: 'btn btn-primary'%>
+    </div>
 <% end %>
+</div>
    
+ 

@@ -1,7 +1,7 @@
 <li>
     <!-- begin timeline-time -->
     <div class="timeline-time">
-        <span class="date"><%=post.created_at.to_fs(:short)%></span>
+
         <span class="time"><%=post.created_at.to_fs(:short)%></span>
     </div>
     <!-- end timeline-time -->
@@ -12,77 +12,64 @@
     <!-- end timeline-icon -->
     <!-- begin timeline-body -->
     <div class="timeline-body">
-    <div class="timeline-header">
-        <span class="userimage"><img src="<%=post.user.avatar_url%>" alt=""></span>
-        <span class="username"><a href="/user/<%= String(post.user.uid) %>"><%= post.user.uid %></a></span>
-        <%if post.community_id%>
-        <span class="username" style="font-size:80%"> >> <a href="/communities/<%= String(post.community_id) %>"><%= communities.where(id: post.community_id).first().name %></a></span>
-        <%end%>
-        <small></small>
-        <div>
-            <span class="text-muted">
-                ultima modifica: <%=post.updated_at.to_fs(:short)%>
+        <div class="row timeline-header">
+            <div class="col-10 col-md-11 post-header align-content-center">
+                <span class="userimage"><img src="<%=post.user.avatar_url%>" alt="" width="32" height="32" class="rounded-circle"></span>
+                <span class="username"><a href="/user/<%= String(post.user.uid) %>"><%= post.user.name %></a></span>
+                <%if post.community_id && communities!=nil%>
+                <span class="username" style="font-size:80%"> >> <a href="/communities/<%= String(post.community_id) %>"><%= communities.where(id: post.community_id).first().name %></a></span>
+                <%end%>
+                <small></small>
+            </div>
+            <div class="col-1 justify-content-end" > 
+                <a class="nav-link" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></a>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdown01">
                 <% if current_modder%>
-                <%= link_to "Elimina", post_path(post), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
+                    <li><%= link_to "Elimina", post_path(post),class: "dropdown-item", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %></li>
                 <% elsif post.user == current_user%>
-                <%= link_to "Modifica", edit_post_path(post), method: :get %>
-                <%= link_to "Elimina", post_path(post), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
+                    <li><%= link_to "Modifica", edit_post_path(post),class: "dropdown-item", method: :get %></li>
+                    <li><%= link_to "Elimina", post_path(post),class: "dropdown-item", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %></li>
+                <% end %>
+            </div>
+        </div>
+        <div class="timeline-content">
+            <h3><%= post.title %></h3>
+            <p><%= post.body %></p>
+        </div>
+        <div class="timeline-likes">
+            <div class="stats-right">
+                <span class="stats-text"><%= post.comments.count %> Commenti</span>
+            </div>
+            <div class="row stats">
+                <div class="stats-icon"style="float: left; width: auto;">
+                <%= render "reactions/like", post: post %>
+                </div>
+                <div class="col-1 stats-total" style="padding-left: 0px; margin-top: 4px"><h5><%= post.reactions.where(like: true).count %></h5></div>
+                <div class="stats-icon" style="float: left; width: auto;">
+                <%= render "reactions/dislike", post: post %>
+                </div>
+                <div class="col-1 stats-total" style="padding-left: 0px; margin-top: 4px"><h5><%= post.reactions.where(like: false).count %></h5></div>
+            </div>
+        </div>
+        
+        <div class="timeline-comment-box row" >
+            <ul class="list-group">
+                <% post.comments.each do |comment| %>
+                <%= render "comments/comment", post: post, comment: comment%>
                 <% end %>
                 
-            </span>
-        </div>
-    </div>
-    <div class="timeline-content">
-        <h3><%= post.title %></h3>
-        <p><%= post.body %></p>
-    </div>
-    <div class="timeline-likes">
-        <div class="stats-right">
-            <span class="stats-text"><%= post.comments.count %> Commenti</span>
-        </div>
-        <div class="stats">
-            <span class="fa-stack fa-fw stats-icon">
-                <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                <i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
-            </span>
-            <span class="stats-total"><%= post.reactions.where(like: true).count %></span>
-            <span class="fa-stack fa-fw stats-icon">
-                <i class="fa fa-circle fa-stack-2x text-secondary"></i>
-                <i class="fa fa-thumbs-down fa-stack-1x fa-inverse"></i>
-            </span>
-            <span class="stats-total"><%= post.reactions.where(like: false).count %></span>
-        </div>
-    </div>
-    <div class="timeline-footer">
-        <div style="float: left; width: auto;">
-        <%= render "reactions/like", post: post %>
-        </div>
-        <div style="float: left; width: auto;">
-        <%= render "reactions/dislike", post: post %>
-        </div>
-    </div>
-    <div class="timeline-comment-box">
-        <% post.comments.each do |comment| %>
-        <%= render "comments/comment", post: post, comment: comment%>
-        <% end %>
-        <%unless current_modder%>
-        <div class="user"><img src="<%=current_user.avatar_url%>"></div>
-        <div class="input">
-            <%= form_with model: [ post, post.comments.build ] do |form| %>
-            <%= form.text_field :body %>
-            <%= form.submit "commenta" %>
-            <% end %>
-        <!--<form action="">
-            <div class="input-group">
-                <input type="text" class="form-control rounded-corner" placeholder="Write a comment...">
-                <span class="input-group-btn p-l-10">
-                <button class="btn btn-primary f-s-12 rounded-corner" type="button">Comment</button>
-                </span>
+            </ul>
+            <%unless current_modder%>
+            <div class="col-12 form-group input " style= "padding-left: 0px">
+                <%= form_with model: [ post, post.comments.build ] do |form| %>
+                    <div class="input-group" style="padding-top: 10px">
+                        <%= form.text_field :body,class:"form-control comment-content" %>
+                        <%= form.submit "Invia",class: 'btn btn-primary', style:"font: 10px" %>
+                    </div>
+                <% end %>
             </div>
-        </form>-->
+            <%end%>
         </div>
-        <%end%>
-    </div>
     </div>
     <!-- end timeline-body -->
-    </li>
+</li>

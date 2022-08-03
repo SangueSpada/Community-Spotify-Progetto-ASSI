@@ -140,89 +140,12 @@
                   <div class="tab-pane fade active show" id="profile-post">
                      <!-- begin timeline -->
                      <ul class="timeline">
-                        <% @posts.each do |post| %>
-                        <li>
-                           <!-- begin timeline-time -->
-                           <div class="timeline-time">
-                              <span class="date"><%=post.created_at.to_fs(:short)%></span>
-                              <span class="time"><%=post.created_at.to_fs(:short)%></span>
-                           </div>
-                           <!-- end timeline-time -->
-                           <!-- begin timeline-icon -->
-                           <div class="timeline-icon">
-                              <a href="javascript:;">&nbsp;</a>
-                           </div>
-                           <!-- end timeline-icon -->
-                           <!-- begin timeline-body -->
-                           <div class="timeline-body">
-                              <div class="timeline-header">
-                                 <span class="userimage"><img src="<%=post.user.avatar_url%>" alt=""></span>
-                                 <span class="username"><a href="/user/<%= String(post.user.uid) %>"><%= post.user.uid %></a> <small></small></span>
-                                 <div>  
-                                 <span class="text-muted">
-                                   ultima modifica: <%=post.updated_at.to_fs(:short)%>
-                                   <% if current_modder%>
-                                     <%= link_to "Elimina", post_path(post), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
-                                   <% elsif post.user == current_user%>
-                                     <%= link_to "Modifica", edit_post_path(post), method: :get %>
-                                     <%= link_to "Elimina", post_path(post), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
-                                   <% end %>
-                                 </span>
-                                 </div>
-                              </div>
-                              <div class="timeline-content">
-                                <h3><%= post.title %></h3>
-                                <p><%= post.body %></p>
-                              </div>
-                              <div class="timeline-likes">
-                                 <div class="stats-right">
-                                    <span class="stats-text"><%= post.comments.count %> Commenti</span>
-                                 </div>
-                                 <div class="stats">
-                                    <span class="fa-stack fa-fw stats-icon">
-                                    <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                                    <i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                    <span class="stats-total"><%= post.reactions.where(like: true).count %></span>
-                                    <span class="fa-stack fa-fw stats-icon">
-                                    <i class="fa fa-circle fa-stack-2x text-secondary"></i>
-                                    <i class="fa fa-thumbs-down fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                    <span class="stats-total"><%= post.reactions.where(like: false).count %></span>
-                                 </div>
-                              </div>
-                              <div class="timeline-footer">
-                                <div style="float: left; width: auto;">
-                                  <%= render "reactions/like", post: post %>
-                                </div>
-                                <div style="float: left; width: auto;">
-                                  <%= render "reactions/dislike", post: post %>
-                                </div>
-                              </div>
-                              <div class="timeline-comment-box">
-                              <% post.comments.each do |comment| %>
-                                <%= render "comments/comment", post: post, comment: comment%>
-                              <% end %> 
-                                 <div class="user"><img src="<%=current_user.avatar_url%>"></div>
-                                 <div class="input">
-                                  <%= form_with model: [ post, post.comments.build ] do |form| %>
-                                      <%= form.text_field :body %>
-                                      <%= form.submit "commenta" %>
-                                  <% end %>
-                                    <!--<form action="">
-                                       <div class="input-group">
-                                          <input type="text" class="form-control rounded-corner" placeholder="Write a comment...">
-                                          <span class="input-group-btn p-l-10">
-                                          <button class="btn btn-primary f-s-12 rounded-corner" type="button">Comment</button>
-                                          </span>
-                                       </div>
-                                    </form>-->
-                                 </div>
-                              </div>
-                           </div>
-                           <!-- end timeline-body -->
-                        </li>
+                         <% @posts.each do |post| %>
+                           <% if post.user==@u %>
+                              <%= render "posts/post", post: post, communities: @communities%>
+                           <% end %>
                         <% end %>
+                     </ul>
                   </div>
                   <!-- end #profile-post tab -->
                </div>

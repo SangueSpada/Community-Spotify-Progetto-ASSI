@@ -2,6 +2,164 @@ body{
     margin-top:20px;
     background:#eee;
 }
+.chat-header {
+    position: relative;
+    overflow: hidden
+}
+
+.chat-header .chat-header-cover {
+    background-image: url(https://bootdey.com/img/Content/bg1.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    border-radius: 10px;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0
+}
+
+.chat-header .chat-header-cover:before {
+    content: '';
+    position: absolute;
+    border-radius: 4px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, .75) 100%)
+}
+.chat-header  .chat-header-content {
+    color: rgb(177, 230, 245);
+    padding: 25px;
+    margin: 0 0 10px;
+}
+.chat-header .chat-header-content {
+    position: relative
+}
+.chat-header .userimage {
+    float: left;
+    width: 70px;
+    height: 70px;
+    border-radius: 40px;
+    overflow: hidden;
+    margin: -2px 10px -2px 0
+}
+
+.chat-header .username {
+    font-size: 32px;
+    font-weight: 600;
+
+}
+.chat-header  a:link {
+    color: rgb(255, 255, 255);
+    background-color: transparent;
+    text-decoration: none;
+  }
+  
+.chat-header a:visited {
+    color: rgb(255, 255, 255);
+    background-color: transparent;
+    text-decoration: none;
+  }
+  
+.chat-header a:hover {
+    color: rgba(255, 255, 255, 0.596);
+    background-color: transparent;
+  }
+  
+.chat-header a:active{
+    color: rgba(255, 255, 255, 0.596);
+    background-color: transparent;
+}
+.chat-header img {
+    max-width: 100%;
+    display: block
+}
+
+.chat-item {
+    position: relative;
+    border-radius: 10px;
+    width: 60vh;
+    height: 10vh;
+    margin: -2px 10px -2px 0
+}
+.chat-item .chat-header-background {
+    background-size: cover;
+    border-radius: 10px;
+}
+.chat-item .chat-header-cover {
+    overflow: hidden;
+    background-position: center center;
+    background-repeat: no-repeat;
+    position: absolute;
+    border-radius: 10px;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0
+}
+
+.chat-item .chat-header-cover:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+.chat-item  .chat-header-content {
+    color: rgb(177, 230, 245);
+    padding: 10px;
+    margin: 0 0 10px;
+}
+.chat-item .chat-header-content {
+    position: relative
+}
+.chat-item .userimage {
+    float: left;
+    width: 50px;
+    height: 50px;
+    border-radius: 40px;
+    overflow: hidden;
+    margin: -2px 10px -2px 0
+}
+
+.chat-item .username {
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.chat-item .chat-button{
+    padding: 10px;
+    float: right;
+}
+.chat-item  a:link {
+    color: rgb(0, 0, 0);
+    background-color: transparent;
+    text-decoration: none;
+  }
+  
+.chat-item a:visited {
+    color: rgb(0, 0, 0);
+    background-color: transparent;
+    text-decoration: none;
+  }
+  
+.chat-item a:hover {
+    color:rgb(59, 59, 59);
+    background-color: transparent;
+  }
+  
+.chat-item a:active {
+    color:rgb(59, 59, 59);
+    background-color: transparent;
+}
+.chat-item img {
+    max-width: 100%;
+    display: block
+}
 
 .profile-header {
     position: relative;
@@ -185,7 +343,7 @@ body{
 
 .profile-content {
     padding: 25px;
-    border-radius: 4px
+    border-radius: 4px;
 }
 
 .profile-content:after,
@@ -536,6 +694,36 @@ select.form-control:not([size]):not([multiple]) {
 .timeline-header .username a {
     color: #2d353c
 }
+.comment-box{
+    width: 100%;
+    min-height: 5vh;
+    border-radius: 10px;
+    padding-top: 10px;
+    overflow-wrap: break-word;
+}
+
+.comment-box .userimage {
+    float: left;
+    width: 34px;
+    height: 34px;
+    border-radius: 40px;
+    overflow: hidden;
+
+}
+
+.comment-box .username {
+    font-size: 16px;
+    font-weight: 600
+}
+
+.comment-box .username,
+.comment-box .username a {
+    color: #2d353c
+}
+.comment-header{
+    padding-top: 5px;
+    
+}
 
 .timeline img {
     max-width: 100%;
@@ -590,9 +778,11 @@ select.form-control:not([size]):not([multiple]) {
     line-height: 20px
 }
 
-.timeline-likes .stats-icon {
+.stats-icon {
     float: left;
-    margin-right: 5px;
+    margin-right: -10px;
+    padding-left: 0px;
+    padding-right: 10px;
     font-size: 9px
 }
 
@@ -612,20 +802,22 @@ select.form-control:not([size]):not([multiple]) {
     background: #f2f3f4;
     margin-left: -25px;
     margin-right: -25px;
-    padding: 20px 25px
+    padding: 20px 25px;
 }
 
 .timeline-comment-box .user {
     float: left;
-    width: 34px;
-    height: 34px;
+    width: 32px;
+    height: 32px;
     overflow: hidden;
-    border-radius: 30px
+    border-radius: 30px;
+    margin: -2px 10px -2px 0
 }
 
 .timeline-comment-box .user img {
     max-width: 100%;
-    max-height: 100%
+    max-height: 100%; 
+    margin: -2px 10px -2px 0
 }
 
 .timeline-comment-box .user+.input {

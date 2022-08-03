@@ -14,19 +14,39 @@
  *= require_self
  //= require dd
  */
- body {
-    overflow: scroll;
-  }
+
   .msg-form {
     width: 100%;
     height: 56px;
     padding: 10px;
   } 
-  
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  border-radius: 10px;
+  background: #555;
+}
   #messages {
-    height: calc(80vh - 150px);
+    height: calc(87vh - 150px);
     overflow-x: hidden;
     overflow-y: scroll;
+    padding-right: 15px;
+    padding-left: 15px;
   }
   
   .msg-content {
@@ -43,3 +63,11 @@
     margin-bottom: 10px;
     background-color: #a8a8a8;
   }
+
+  .comment-content {
+    width: 100%;
+    margin-right: 5px;
+  }
+post-header{
+  padding-top: 800px;
+}
