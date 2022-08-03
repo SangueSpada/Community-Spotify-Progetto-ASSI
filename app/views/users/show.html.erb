@@ -36,10 +36,12 @@
                      <!-- END profile-header-img -->
                      <!-- BEGIN profile-header-info -->
                      <div class="profile-header-info">
-                        <h4 class="m-t-10 m-b-5"><%=@user.display_name%></h4>
+                        <div class="profile-header-name">
+                        <h4 class=" m-t-10 m-b-5"><%=@user.display_name%> <a href="https://open.spotify.com/user/<%=@user.id%>"><i class="bi bi-spotify"></i></a></h4>
                         <%if(@currently_playing)%>
-                           <h4 class="m-t-10 m-b-5">In ascolto: <%=link_to @currently_playing.name,"https://open.spotify.com/track/"+@currently_playing.id %> di <%=link_to @currently_playing.artists.first.name, @currently_playing.artists.first.external_urls[:spotify]%> </h4>
+                           <h4 class=" m-t-10 m-b-5">In ascolto: <%=link_to @currently_playing.name,"https://open.spotify.com/track/"+@currently_playing.id %> di <%=link_to @currently_playing.artists.first.name, @currently_playing.artists.first.external_urls[:spotify]%> </h4>
                         <%end%>
+                        </div>
                         <p class="m-b-10">La maremma è maiala</p>
                         <% if @u==current_user %>
                         <a href="#" class="btn btn-sm btn-info mb-2">Edit Profile</a>

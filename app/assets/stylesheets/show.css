@@ -156,6 +156,27 @@ body{
     color:rgb(59, 59, 59);
     background-color: transparent;
 }
+.profile-header-name  a:link {
+    color: #1DB954;
+    background-color: transparent;
+    text-decoration: none;
+  }
+  
+.profile-header-name a:visited {
+    color: #1DB954;
+    background-color: transparent;
+    text-decoration: none;
+  }
+  
+.profile-header-name a:hover {
+    color:#1db9547a;
+    background-color: transparent;
+  }
+  
+.profile-header-name a:active {
+    color:#1db9547a;
+    background-color: transparent;
+}
 .chat-item img {
     max-width: 100%;
     display: block
