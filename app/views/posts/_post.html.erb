@@ -38,7 +38,7 @@
         </div>
         <div class="timeline-likes">
             <div class="stats-right">
-                <span class="stats-text"><%= post.comments.count %> Commenti</span>
+                <span class="stats-text" onclick="HideShow<%=post.id %>()"><%= post.comments.count %> Commenti</span>
             </div>
             <div class="row stats">
                 <div class="stats-icon"style="float: left; width: auto;">
@@ -52,7 +52,7 @@
             </div>
         </div>
         
-        <div class="timeline-comment-box row" >
+        <div class="timeline-comment-box row" id="comment_post_<%=post.id %>" style=  "display: none" >
             <ul class="list-group">
                 <% post.comments.each do |comment| %>
                 <%= render "comments/comment", post: post, comment: comment%>

@@ -3,14 +3,24 @@ class UsersController < ApplicationController
   before_action :authenticate_user!
   def show
     @u = User.where(uid: params[:uid]).first
-    @user = RSpotify::User.find(@u.uid)
     @communities = Community.joins(:participations).where(participations: {user_id: @u})
     #puts "le community sono:"+ String(@communities.count())
     @posts = @u.posts.order(created_at: :desc)
     @communities.each do |co|
       #puts co.id
     end
-    
+    @user = RSpotify::User.new(JSON.parse(@u.spotify_hash.gsub('=>', ':').gsub('nil', 'null')))
+    #@user = RSpotify::User.find(@u.uid)
+    @top_artist=@user.top_artists().first
+    @top_tracks=@user.top_tracks(:limit => 5)
+    @player=@user.player
+    begin
+      @player.currently_playing
+    rescue NoMethodError
+      @currently_playing=nil
+    else
+      @currently_playing=@player.currently_playing
+    end
   end
   
   def follow

@@ -7,7 +7,7 @@
     <% end %>
 <% else %>
         <% unless current_modder %>
-        <%= form_with model: [ post, post.reactions.build ] do |form| %>
+        <%= form_with(model: [ post, post.reactions.build ],remote: true) do |form| %>
             <%= form.hidden_field :uid, value: current_user.uid %>
             <%= form.hidden_field :like, value: true%>
             <button type="submit" class="btn btn-trasparent">

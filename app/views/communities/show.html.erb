@@ -11,7 +11,7 @@
     <!-- Custom styles for this template -->
   </head>
   <% if !@user_participation.present? || (@user_participation.present? && !@user_participation.banned)%>
-    <body class="bg-light">
+    <body>
       <%= render "partials/navbar" %>
       <div style="padding: 40pt"></div>
       <div class="container">
@@ -87,11 +87,11 @@
                             <div class="modal-body">
                               <% @community.participations.each do |participation| %>
                                 <% if participation.banned%>
-                                  <a href="/user/<%= String(participation.user.uid) %>" ><%= participation.user.uid %></a> <strong class="text-dark"><%= link_to "Riammetti", unban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id) %></strong><br>
+                                  <a href="/user/<%= String(participation.user.uid) %>" ><%= participation.user.uid %></a> <strong class="text-dark"><%= button_to "Riammetti", unban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id) %></strong><br>
                                 <% elsif !participation.banned && participation.role=="modder"  %>
-                                  <a href="/user/<%= String(participation.user.uid) %>" ><%= participation.user.uid %></a> <strong><%= link_to "Bandisci utente", ban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"text-dark"%> <%= link_to "Rendi proprietario", move_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"text-dark" %></strong><br> 
+                                  <a href="/user/<%= String(participation.user.uid) %>" ><%= participation.user.uid %></a> <strong><%= button_to "Bandisci utente", ban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"text-dark"%> <%= button_to "Rendi proprietario", move_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"text-dark" %></strong><br> 
                                 <% elsif !participation.banned && participation.role=="member"  %>
-                                  <a href="/user/<%= String(participation.user.uid) %>" ><%= participation.user.uid %></a> <strong><%= link_to "Bandisci utente", ban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"text-dark"%> <%= link_to "Promuovi a moderatore", promote_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"text-dark" %></strong><br>
+                                  <a href="/user/<%= String(participation.user.uid) %>" ><%= participation.user.uid %></a> <strong><%= button_to "Bandisci utente", ban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"text-dark"%> <%= button_to "Promuovi a moderatore", promote_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"text-dark" %></strong><br>
 
                                 <% end %>
                               <% end %>
