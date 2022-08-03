@@ -73,3 +73,13 @@
     </div>
     <!-- end timeline-body -->
 </li>
+<script>
+function HideShow<%=post.id %>() {
+  var x = document.getElementById("comment_post_<%=post.id %>");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>

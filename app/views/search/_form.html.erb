@@ -1,7 +1,7 @@
-<%= form_with(url: search_path, method: :post, class: 'd-flex') do |form| %>
+<div class='navbar-nav mx-auto col-6'>
+<%= form_with(url: search_path, method: :post, class:"col-6 me-1") do |form| %>
     <% @results = Community.all.name + User.all.name%>
-    <%= form.search_field :name_search, placeholder: "Cerca qui!", class: "form-control me-2",oninput:"this.form.requestSubmit()" %>
-    <div id="search_results"></div>
-    <%= form.submit "Cerca", class: "btn btn-outline-success" %>
+    <%= form.search_field :name_search, placeholder: "Cerca su CommunitySpotify!", class: "form-control",oninput:"this.form.requestSubmit()" %>
 <% end %>
-
+<div id="search_results" class="col-6 ms-1"></div>
+</div>
