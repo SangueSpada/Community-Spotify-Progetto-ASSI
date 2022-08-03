@@ -26,119 +26,60 @@
                   <div class="profile-header-cover"></div>
                   <!-- END profile-header-cover -->
                   <!-- BEGIN profile-header-content -->
-                  <div class="profile-header-content">
+                  <div class="profile-header-content row" >
                      <!-- BEGIN profile-header-img -->
-                     <div class="profile-header-img">
-                        <%if @user.images[0]!=nil%>
-                           <img src="<%=@user.images[0]['url']%>" alt="" width= "120" height= "114">
-                        <%end%>
-                     </div>
-                     <!-- END profile-header-img -->
-                     <!-- BEGIN profile-header-info -->
-                     <div class="profile-header-info">
-                        <div class="profile-header-name">
-                        <h4 class=" m-t-10 m-b-5"><%=@user.display_name%> <a href="https://open.spotify.com/user/<%=@user.id%>"><i class="bi bi-spotify"></i></a></h4>
-                        <%if(@currently_playing)%>
-                           <h4 class=" m-t-10 m-b-5">In ascolto: <%=link_to @currently_playing.name,"https://open.spotify.com/track/"+@currently_playing.id %> di <%=link_to @currently_playing.artists.first.name, @currently_playing.artists.first.external_urls[:spotify]%> </h4>
-                        <%end%>
+                     <div class="profile-header-content col-10" style= "padding-bottom: 60px">
+                        <div class="profile-header-img">
+                           <%if @user.images[0]!=nil%>
+                              <img src="<%=@user.images[0]['url']%>" alt="" width= "120" height= "114">
+                           <%end%>
                         </div>
-                        <p class="m-b-10">La maremma è maiala</p>
-                        <% if @u==current_user %>
-                        <a href="#" class="btn btn-sm btn-info mb-2">Edit Profile</a>
-                        <%end%>
-                     </div>
-                     <!-- END profile-header-info -->
-                     <div class="pt-2">
-                        <span><%= String(@posts.count()) %> post</span>
-                        <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#followersModal">
-                        <%= String(@u.followers.length()) %> Followers
-                        </button>
-                        <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#followingModal">
-                        <%= String(@u.followings.length()) %> Following
-                        </button>
-                        <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#communityModal">
-                        <%= String(@communities.count()) %> Community
-                        </button>
-                        <section id="all-links"class="mt-2">
-                            <% if @u.uid == current_user.uid %>
-                                <%= button_to "Logout", destroy_user_session_path, data: {turbo: "false"}, method: :delete, :class => "btn btn-outline-warning" %>
-                            <% elsif current_user.followings.include?(@u) %>
-                                <h5><%= button_to "Unfollow",unfollow_user_path, method: "POST",:class => "btn btn-outline-danger" %></h5>
-                            <% else %>
-                                <h5><%= button_to "Follow", follow_user_path, method: "POST", :class => "btn btn-outline-success" %></h5>
-                            <% end%>
-                            
-                            <br>
-                        </section>
-                        <% unless @u==current_user %>
-                           <%= button_to "Chat", create_chat_path(@u.id),:class => "btn btn-outline-info" %>
-                        <%end%>
-                        <nav>
-                           <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                              <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Posts</button>
-                              <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Tastes</button>
+                        <!-- END profile-header-img -->
+                        <!-- BEGIN profile-header-info -->
+                        <div class="profile-header-info">
+                           <div class="profile-header-name">
+                              
+                              <h4 class=" m-t-10 m-b-5"><%=@user.display_name%> <a href="https://open.spotify.com/user/<%=@user.id%>" target="_blank"><i class="bi bi-spotify"></i></a></h4>
+                              <%if(@currently_playing)%>
+                                 <h4 class=" m-t-10 m-b-5">In ascolto: <%=link_to @currently_playing.name,"https://open.spotify.com/track/"+@currently_playing.id, target:"_blank" %> di <%=link_to @currently_playing.artists.first.name, @currently_playing.artists.first.external_urls[:spotify], target:"_blank"%> </h4>
+                              <%end%>
                            </div>
-                        </nav>
-                     </div>
-                        <!-- Modal -->
-                        <div class="modal fade" id="followingModal" tabindex="-1" aria-labelledby="followingModalLabel" aria-hidden="true">
-                          <div class="modal-dialog">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h5 class="modal-title" id="followingModalLabel">Following</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                              </div>
-                              <div class="modal-body">
-                                 <% @u.followings.each  do |following| %>
-                                    <a href="/user/<%= String(following.uid) %>" ><%= following.name %></a><br>
-                                 <% end %>
-                              </div>
-                            </div>
-                          </div>
+                           <p class="m-b-10">La maremma è maiala</p>
+                           
                         </div>
-                        <div class="modal fade" id="followersModal" tabindex="-1" aria-labelledby="followersModalLabel" aria-hidden="true">
-                          <div class="modal-dialog">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h5 class="modal-title" id="followersModalLabel">Followers</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                              </div>
-                              <div class="modal-body">
-                                 <% @u.followers.each  do |followers| %>
-                                    <a href="/user/<%= String(followers.uid) %>" ><%= followers.name %></a><br>
-                                 <% end %>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="modal fade" id="communityModal" tabindex="-1" aria-labelledby="communityModalLabel" aria-hidden="true">
-                          <div class="modal-dialog">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h5 class="modal-title" id="communityModalLabel">Community</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                              </div>
-                              <div class="modal-body">
-                                 <% @communities.each do |co| %>
-                                    <a href="/communities/<%= String(co.id) %>" ><%= co.name %></a><br>
-                                 <% end %>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                        <!-- END profile-header-info -->
                         
                      </div>
+                     <div class="profile-header-content col-2">
+                        <div class="row pt-2">
+                          
+                           <section id=" all-links"class="mt-2">
+                              <% unless @u==current_user %>
+                                 <% if current_user.followings.include?(@u) %>
+                                    <h5><%= button_to "Unfollow",unfollow_user_path, method: "POST",:class => "btn btn-outline-danger mb-2" %></h5>
+                                 <% else %>
+                                    <h5><%= button_to "Follow", follow_user_path, method: "POST", :class => "btn btn-outline-success mb-2" %></h5>
+                                 <% end%>
+                                 <%= button_to "Chat", create_chat_path(@u.id),:class => "btn btn-outline-info mb-2" %>
+                              <br>
+                              <%end%>
+                              <% if @u==current_user %>
+                                 <a href="#" class="btn btn-sm btn-info mb-2">Edit Profile</a>
+                              <%end%>
+                           </section>
+                           
+                        </div>
+                     </div>
+                     <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                           <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Posts</button>
+                           <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Tastes</button>
+                           <button class="nav-link" id="nav-followers-tab" data-bs-toggle="tab" data-bs-target="#nav-followers" type="button" role="tab" aria-controls="nav-followers" aria-selected="false">Followers (<%= String(@u.followers.length()) %>)</button>
+                           <button class="nav-link" id="nav-following-tab" data-bs-toggle="tab" data-bs-target="#nav-following" type="button" role="tab" aria-controls="nav-following" aria-selected="false">Following (<%= String(@u.followings.length()) %>)</button>
+                           <button class="nav-link" id="nav-communities-tab" data-bs-toggle="tab" data-bs-target="#nav-communities" type="button" role="tab" aria-controls="nav-communities" aria-selected="false">Communities (<%= String(@communities.count()) %>)</button>
+                        </div>
+                     </nav>
                   </div>
-                  <!-- END profile-header-content -->
-                  <!-- BEGIN profile-header-tab 
-                  <ul class="profile-header-tab nav nav-tabs">
-                     <li class="nav-item"><a href="https://www.bootdey.com/snippets/view/bs4-profile-with-timeline-posts" target="__blank" class="nav-link_">POSTS</a></li>
-                     <li class="nav-item"><a href="https://www.bootdey.com/snippets/view/bs4-profile-about" target="__blank" class="nav-link_">ABOUT</a></li>
-                     <li class="nav-item"><a href="https://www.bootdey.com/snippets/view/profile-photos" target="__blank" class="nav-link_">PHOTOS</a></li>
-                     <li class="nav-item"><a href="https://www.bootdey.com/snippets/view/profile-videos" target="__blank" class="nav-link_">VIDEOS</a></li>
-                     <li class="nav-item"><a href="https://www.bootdey.com/snippets/view/bs4-profile-friend-list" target="__blank" class="nav-link_ active show">FRIENDS</a></li>
-                  </ul>-->
-                  <!-- END profile-header-tab -->
                </div>
             </div>
             <!-- end profile -->
@@ -166,7 +107,7 @@
                   </div>
                </div>
                <div class="tab-pane fade " id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
-                  <div class="container text-center">
+                  <div class="container text-center" style= "padding-top: 50px">
                      <div class="row align-items-start">
                         <div class="col-6">
                               <div class="card">
@@ -199,6 +140,28 @@
                      </div>
                   </div>
                </div>
+               <div class="tab-pane fade " id="nav-followers" role="tabpanel" aria-labelledby="nav-followers-tab" tabindex="0">
+                  <div class="container text-center" style= "padding-top: 50px">
+                     <% @u.followers.each  do |followers| %>
+                        <a href="/user/<%= String(followers.uid) %>" ><%= followers.name %></a><br>
+                     <% end %>
+                  </div>
+               </div>
+               <div class="tab-pane fade " id="nav-following" role="tabpanel" aria-labelledby="nav-following-tab" tabindex="0">
+                  <div class="container text-center" style= "padding-top: 50px">
+                     <% @u.followings.each  do |following| %>
+                        <a href="/user/<%= String(following.uid) %>" ><%= following.name %></a><br>
+                     <% end %>
+                  </div>
+               </div>
+               <div class="tab-pane fade " id="nav-communities" role="tabpanel" aria-labelledby="nav-communities-tab" tabindex="0">
+                  <div class="container text-center" style= "padding-top: 50px">
+                     <% @communities.each do |co| %>
+                        <a href="/communities/<%= String(co.id) %>" ><%= co.name %></a><br>
+                     <% end %>
+                  </div>
+               </div>
+
             </div>
             <!-- end profile-content -->
          </div>
