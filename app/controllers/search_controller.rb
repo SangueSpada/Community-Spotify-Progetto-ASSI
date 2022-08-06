@@ -23,11 +23,12 @@ class SearchController < ApplicationController
       @playlists = RSpotify::Playlist.search("%#{params[:name_search]}%", limit: 5)
       @songs = RSpotify::Track.search("%#{params[:name_search]}%", limit: 5, market: 'IT')
     else
-      @communities = []
-      @users = []
+      @albums = []
+      @artists = []
       @playlists = []
       @songs = []
     end
+
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: turbo_stream.update("spotify_results", partial: "search/spotify_results", locals: {artists: @artists, albums: @albums, playlists: @playlists, songs: @songs})

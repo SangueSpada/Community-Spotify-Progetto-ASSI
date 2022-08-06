@@ -1,34 +1,56 @@
+
+<% if songs != [] || albums != [] || playlists != [] || artists != []%>
 <ul id="select_spotify_results">
   <ul class="list-group"><strong>CANZONI</strong>
-  <% songs.each do |song|%>
-    <li class="list-group-item">
-      <iframe style="border-radius:12px" src="https://open.spotify.com/embed?uri=<%=song.uri %>" width="50%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-      <button class="btn btn-outline-success" id="<%=song.uri %>" onclick="select(this.id)">Select</button>
-    </li>
+  <%if songs != [] %>
+    <% songs.each do |song|%>
+      <li class="list-group-item">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed?uri=<%=song.uri %>" width="50%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+        <button class="btn btn-outline-success" id="<%=song.uri %>" onclick="select(this.id)">Select</button>
+      </li>
+    <% end %>
+  <% else %>
+    <p class="text-danger">Nessuna canzone trovata</p>
   <% end %>
   </ul>
   <ul class="list-group"><strong>ALBUM</strong>
-  <% albums.each do |album|%>
-    <li class="list-group-item">
-      <iframe style="border-radius:12px" src="https://open.spotify.com/embed?uri=<%=album.uri %>" width="50%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-      <button class="btn btn-outline-success" id="<%=album.uri %>" onclick="select(this.id)">Select</button>
-    </li>
+   <%if albums != [] %>
+    <% albums.each do |album|%>
+      <li class="list-group-item">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed?uri=<%=album.uri %>" width="50%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+        <button class="btn btn-outline-success" id="<%=album.uri %>" onclick="select(this.id)">Select</button>
+      </li>
+    <% end %>
+  <% else %>
+    <p class="text-danger">Nessun album trovato</p>
   <% end %>
   </ul>
   <ul class="list-group"><strong>PLAYLIST</strong>
-  <% playlists.each do |playlist|%>
-    <li class="list-group-item">
-      <iframe style="border-radius:12px" src="https://open.spotify.com/embed?uri=<%=playlist.uri %>" width="50%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-      <button class="btn btn-outline-success" id="<%=playlist.uri %>" onclick="select(this.id)">Select</button>
-    </li>
+  <%if playlists != [] %>
+    <% playlists.each do |playlist|%>
+      <li class="list-group-item">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed?uri=<%=playlist.uri %>" width="50%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+        <button class="btn btn-outline-success" id="<%=playlist.uri %>" onclick="select(this.id)">Select</button>
+      </li>
+    <% end %>
+  <% else %>
+    <p class="text-danger">Nessuna playlist trovata</p>
   <% end %>
   </ul>
   <ul class="list-group"><strong>ARTIST</strong>
-  <% artists.each do |artist|%>
-    <li class="list-group-item">
-      <iframe style="border-radius:12px" src="https://open.spotify.com/embed?uri=<%=artist.uri %>" width="50%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-      <button class="btn btn-outline-success" id="<%=artist.uri %>" onclick="select(this.id)">Select</button>
-    </li>
-  <% end %>
+  <%if artists != [] %>
+    <% artists.each do |artist|%>
+      <li class="list-group-item">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed?uri=<%=artist.uri %>" width="50%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+        <button class="btn btn-outline-success" id="<%=artist.uri %>" onclick="select(this.id)">Select</button>
+      </li>
+    <% end %>
+  <% else %>
+    <p class="text-danger">Nessuna playlist trovata</p>
+  <% end %>  
   </ul>
 </ul>
+<%else%>
+<%end%>
+
+

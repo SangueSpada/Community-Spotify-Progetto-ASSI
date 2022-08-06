@@ -1,6 +1,5 @@
 <div>
 <%= form_with(url: search_spotify_path, method: :post, class:"ms-2 col-6") do |form| %>
-    <% @results = Community.all.name + User.all.name%>
     <%= form.search_field :name_search, placeholder: "Cerca canzoni artisti album o playlists", class: "form-control",oninput:"this.form.requestSubmit()" %>
 <% end %>
 <div id="spotify_results" class="row"></div>
@@ -13,8 +12,8 @@
         var results = document.getElementById("spotify_results");
         sc.value=btn_id;
         si.innerHTML='<iframe style="border-radius:12px" src="https://open.spotify.com/embed?uri='+btn_id+'" width="50%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>';
-        input.value=null;
-        //results.removeChild(results.parentNode);
+        input.value="";
+        results.innerHTML="";
 
         
     }
@@ -23,8 +22,8 @@
 <% if community == nil %>
     <%= form_with model: @post do |form| %>
         <div>
-            <%= form.label :spotify_content %>
-            <%= form.text_field :spotify_content, disabled: true %>
+            Hai selezionato:
+            <%= form.hidden_field :spotify_content %>
             <div id="spotify_iframe">
             </div>
         </div>
@@ -41,8 +40,10 @@
 <% else %>
     <%= form_with model: [community, community.posts.build] do |form| %>
         <div>
-            <%= form.label :spotify_content %>
-            <%= form.text_field :spotify_content, disabled: true  %>
+            Hai selezionato:
+            <%= form.hidden_field :spotify_content %>
+            <div id="spotify_iframe">
+            </div>
         </div>
 
         <div>
