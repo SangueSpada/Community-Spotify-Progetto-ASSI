@@ -19,14 +19,14 @@
         
     }
 </script>
-
+<div id="spotify_iframe">
+            </div>
 <% if community == nil %>
     <%= form_with model: @post do |form| %>
         <div>
             <%= form.label :spotify_content %>
-            <%= form.text_field :spotify_content, disabled: true %>
-            <div id="spotify_iframe">
-            </div>
+            <%= form.hidden_field :spotify_content%>
+            
         </div>
 
         <div>
@@ -42,7 +42,7 @@
     <%= form_with model: [community, community.posts.build] do |form| %>
         <div>
             <%= form.label :spotify_content %>
-            <%= form.text_field :spotify_content, disabled: true  %>
+            <%= form.hidden_field :spotify_content%>
         </div>
 
         <div>
