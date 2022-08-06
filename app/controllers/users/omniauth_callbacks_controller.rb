@@ -3,9 +3,18 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # GET|POST /users/auth/spotify/callback
   def spotify
-    spotify_user=RSpotify::User.new(auth)
     user = User.from_omniauth(auth)
-    user.spotify_hash=spotify_user.to_hash
+    spotify_user=RSpotify::User.new(auth)
+    spotify_hash=spotify_user.to_hash
+    spotify_hash.delete("images")
+    credentials= spotify_hash.fetch("credentials").to_hash
+    followers= spotify_hash.fetch("followers").to_hash
+    external_urls= spotify_hash.fetch("external_urls").to_hash
+    spotify_hash["credentials"]=credentials
+    spotify_hash["followers"]=followers
+    spotify_hash["external_urls"]=external_urls
+    user.spotify_hash=spotify_hash
+    user.save
     if user.present?
       sign_out_all_scopes
       flash[:success] = t 'devise.omniauth_callbacks.success',kind: 'Spotify'

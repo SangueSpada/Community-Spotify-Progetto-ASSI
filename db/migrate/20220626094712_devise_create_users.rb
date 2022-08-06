@@ -10,7 +10,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.0]
       t.string :provider
       t.string :avatar_url
       t.string :name
-      t.string :spotify_hash
+      t.text :spotify_hash
       
       ## Recoverable
       #t.string   :reset_password_token

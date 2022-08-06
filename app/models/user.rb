@@ -1,4 +1,6 @@
+require "rspotify"
 class User < ApplicationRecord
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :rememberable, :validatable, :omniauthable, :omniauth_providers => [:spotify]
@@ -31,7 +33,6 @@ class User < ApplicationRecord
       user.provider = auth.provider
       user.email = auth.info.email
       user.avatar_url = auth.info.image
-      
     end
   
   end
