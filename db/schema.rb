@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_27_135304) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_04_105918) do
   create_table "chats", force: :cascade do |t|
     t.integer "user1_id"
     t.integer "user2_id"
@@ -89,7 +89,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_27_135304) do
   end
 
   create_table "posts", force: :cascade do |t|
-    t.string "title"
+    t.string "spotify_content"
     t.string "body"
     t.integer "community_id"
     t.integer "user_id", null: false
@@ -129,7 +129,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_27_135304) do
     t.string "provider"
     t.string "avatar_url"
     t.string "name"
+    t.string "spotify_hash"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["uid"], name: "index_users_on_uid", unique: true
   end
+
   add_foreign_key "comment_reactions", "comments"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"

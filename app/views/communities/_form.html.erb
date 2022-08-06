@@ -1,16 +1,16 @@
 <%= form_with model: [community] do |form| %>
     <div>
-        <%= form.label :name %>
+        <%= form.label :name %>:
         <%= form.text_field :name %>
     </div>
     <div>
-        <%= form.label :description %>
+        <%= form.label :description %>:
         <%= form.text_area :description %>
     </div>
     <div>
     <% if @playlist != [] %>
     <div>
-    <label> Playlist </label>
+    <label> Playlist: </label>
         <select name="community[playlist]" id="community_playlist" is="ms-dropdown">
             <% @playlist.each.with_index do |p, index| %>
                 <option data-image="<%=p.images[0]['url']%>" value="<%= p.id %>"><%= p.name %></option>
@@ -18,11 +18,16 @@
         </select>
     </div>   
     <div>
+    <div>
+        <%= form.label :tag_ids %>:
+        <%= form.collection_check_boxes :tag_ids, Tag.order(:name), :id, :name%>
+    </div>
         <%= form.submit %>
     </div>
     <% else %>
     <div>
     <p class="text-danger">Non hai alcuna playlist Spotify! Creane una e poi potrai creare una community.
-    </div>
+    </div>    
     <% end %>
+    
 <% end %>

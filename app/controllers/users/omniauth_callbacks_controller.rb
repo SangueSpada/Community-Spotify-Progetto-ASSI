@@ -6,6 +6,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     spotify_user=RSpotify::User.new(auth)
     user = User.from_omniauth(auth)
     user.spotify_hash=spotify_user.to_hash
+    user.save
     if user.present?
       sign_out_all_scopes
       flash[:success] = t 'devise.omniauth_callbacks.success',kind: 'Spotify'

@@ -13,6 +13,7 @@ class CommunitiesController < ApplicationController
     
     @admin_participation = @community.participations.where(role: 'admin').first
     @playlist = RSpotify::Playlist.find(@admin_participation.user.uid, @community.playlist)
+    #@spotify_user = RSpotify::User.new(JSON.parse(current_user.spotify_hash.gsub('=>', ':').gsub('nil', 'null')))
     @posts = @community.posts.all.order(created_at: :desc)
   end
 
@@ -96,9 +97,12 @@ class CommunitiesController < ApplicationController
   end
 
   def give_community_tags(community, tags)
+    puts "yeah"+tags.to_s
     community.taggables.destroy_all
-    tags.to_a.each do |tag|
-      community.tags << Tag.find(tag)
+    tags.each do |tag|
+      if tag != ""
+        community.tags << Tag.find(tag)
+      end
     end
   end
 

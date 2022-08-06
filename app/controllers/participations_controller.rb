@@ -14,59 +14,61 @@ class ParticipationsController < ApplicationController
   end
 
   def ban
-    if @community.creator != current_user.uid || @user_participation.role == 'moderator'
-      puts 'Non puoi accedere a questa sezione!'
-      redirect_to root_path, notice: 'Non puoi accedere a questa sezione!'
-    else
+    if @user_participation.role == 'moderator' || @user_participation.role == 'admin'
       @participation = @community.participations.where(user_id: @user.id).first
       @participation = @participation.update(role: :banned, banned: :true)
-      redirect_to community_path(@community)
+      redirect_to community_path(@community) 
+    else
+      puts 'Non puoi accedere a questa sezione!'
+      redirect_to root_path, notice: 'Non puoi accedere a questa sezione!'
     end
   end
 
   def unban
-    if @community.creator != current_user.uid || @user_participation.role == 'moderator'
-      puts 'Non puoi accedere a questa sezione!'
-      redirect_to root_path, notice: 'Non puoi accedere a questa sezione!'
-    else
+    if @user_participation.role == 'moderator' || @user_participation.role == 'admin'
       @participation = @community.participations.where(user_id: @user.id).first
       @participation = @participation.update(role: :member, banned: :false)
       redirect_to community_path(@community)
+    else
+      puts 'Non puoi accedere a questa sezione!'
+      redirect_to root_path, notice: 'Non puoi accedere a questa sezione!'
     end
   end
 
   def promote
-    if @community.creator != current_user.uid
-      puts 'Non puoi accedere a questa sezione!'
-      redirect_to root_path, notice: 'Non puoi accedere a questa sezione!'
-    else
+    
+    if @user_participation.role == 'admin'
       @participation = @community.participations.where(user_id: @user.id).first
       @participation = @participation.update(role: :moderator)
       redirect_to community_path(@community)
+    else
+      puts 'Non puoi accedere a questa sezione!'
+      redirect_to root_path, notice: 'Non puoi accedere a questa sezione!'
     end
   end
 
   def demote
-    if @community.creator != current_user.uid
-      puts 'Non puoi accedere a questa sezione!'
-      redirect_to root_path, notice: 'Non puoi accedere a questa sezione!'
-    else
+    if @user_participation.role == 'admin'
       @participation = @community.participations.where(user_id: @user.id).first
       @participation = @participation.update(role: :member)
       redirect_to community_path(@community)
+    else
+      puts 'Non puoi accedere a questa sezione!'
+      redirect_to root_path, notice: 'Non puoi accedere a questa sezione!'
     end
   end
 
   def move
-    if @community.creator != current_user.uid
-      puts 'Non puoi accedere a questa sezione!'
-      redirect_to root_path, notice: 'Non puoi accedere a questa sezione!'
-    else
+    
+    if @user_participation.role == 'admin'
       @admin_participation = @community.participations.where(role: :admin).first
       @admin_participation = @admin_participation.update(role: :moderator)
       @new_admin_participation = @community.participations.where(user_id: @user.id).first
       @new_admin_participation = @new_admin_participation.update(role: :admin)
       redirect_to community_path(@community)
+    else
+      puts 'Non puoi accedere a questa sezione!'
+      redirect_to root_path, notice: 'Non puoi accedere a questa sezione!'
     end
   end
 

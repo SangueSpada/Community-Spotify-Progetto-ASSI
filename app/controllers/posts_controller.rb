@@ -53,6 +53,6 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:title, :body, :community_id)
+    params.require(:post).permit(:spotify_content, :body, :community_id)
   end
 end

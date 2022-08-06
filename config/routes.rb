@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   
-  post 'search', to: 'search#index'
+  post 'search/searchbar', to: 'search#searchbar'
+  post 'search/spotify', to: 'search#spotify'
   root 'pages#home'
   devise_for :users, controllers: {
     omniauth_callbacks: 'users/omniauth_callbacks',

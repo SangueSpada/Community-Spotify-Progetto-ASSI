@@ -36,6 +36,12 @@
                       <div class="profile-header-info" >
                         <h4 class="m-t-10 m-b-5"><%= @community.name %></h4>
                         <p class="m-b-10"><%= @community.description %></p>
+                        <strong>TAGS:</strong>
+                        <p class="m-b-10">
+                          <%@community.tags.each do |tag|%>
+                            #<%=tag.name %> 
+                          <%end%>
+                        </p>
                       </div>
                       <!-- END profile-header-info -->
                     </div>
@@ -55,6 +61,9 @@
                       <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Posts</button>
                       <button class="nav-link" id="nav-playlist-tab" data-bs-toggle="tab" data-bs-target="#nav-playlist" type="button" role="tab" aria-controls="nav-playlist" aria-selected="false">Playlist</button>
                       <button class="nav-link" id="nav-iscritti-tab" data-bs-toggle="tab" data-bs-target="#nav-iscritti" type="button" role="tab" aria-controls="nav-iscritti" aria-selected="false">Iscritti</button>
+                       <% if @user_participation.present? && ( @user_participation.role == "admin" || @user_participation.role == "moderator") %>
+                        <button class="nav-link" id="nav-gestIscritti-tab" data-bs-toggle="tab" data-bs-target="#nav-gestIscritti" type="button" role="tab" aria-controls="nav-gestIscritti" aria-selected="false">Gestione Iscritti</button>
+                      <% end %>
                     </div>
                   </div>
                   
@@ -89,31 +98,70 @@
                 </div>
                 <div class="tab-pane fade show" id="nav-playlist" role="tabpanel" aria-labelledby="nav-playlist-tab" tabindex="0">
                   <iframe class="pt-2" style="border-radius:20px; margin: 0 auto; display:block; " src="https://open.spotify.com/embed/playlist/<%=@playlist.id%>?utm_source=generator" width="75%" height="250" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                  <!--< if @playlist.is_followed_by?(Array(current_user))  >
+                    <button class="btn btn-danger", onclick="<@spotify_user.unfollow(@playlist)>">Rimuovi dalla mie playlist</button>
+                  < else >
+                  <button class="btn btn-success", onclick="<@spotify_user.follow(@playlist)>">Salva nelle mie playlist</button>
+                  <end>  !!!!!!!!!!!!!!!!!!!!!!!! inserire le % dove opportuno prima di levare il commento-->
+
                 </div>
                 <div class="tab-pane fade show" id="nav-iscritti" role="tabpanel" aria-labelledby="nav-iscritti-tab" tabindex="0">
-                  <% if @user_participation.present? && (@user_participation.role=="admin" || @user_participation.role=="moderator") %>
-                    <% @community.participations.each do |participation| %>
-                      <% if participation.banned%>
-                        <a href="/user/<%= String(participation.user.uid) %>" ><%= participation.user.name %></a> <strong class="text-dark"><%= button_to "Riammetti", unban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id) %></strong><br>
-                      <% elsif !participation.banned && participation.role=="admin" %>
+                  <% @community.participations.each do |participation| %>
+                    <% if @user_participation.present? && !participation.banned %>
                         <a href="/user/<%= String(participation.user.uid) %>" ><%= participation.user.uid %></a>  <strong class="text-dark">(<%= participation.role %>)</strong><br>
-                      <% elsif !participation.banned && participation.role=="moderator" %>
-                        <a href="/user/<%= String(participation.user.uid) %>" ><%= participation.user.name %></a> 
-                        <strong class="text-dark">(<%= participation.role %>)</strong><br>
-                        <strong>
-                          <%= button_to "Bandisci utente", ban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"text-dark"%> 
-                          <%= button_to "Rendi proprietario", move_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"text-dark" %>
-                        </strong><br> 
-                      <% elsif !participation.banned && participation.role=="member"  %>
-                        <a href="/user/<%= String(participation.user.uid) %>" ><%= participation.user.name %></a> <strong><%= button_to "Bandisci utente", ban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"text-dark"%> <%= button_to "Promuovi a moderatore", promote_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"text-dark" %></strong><br>
+                    <% end %>
+                  <% end %>
+                </div>
+                <div class="tab-pane fade show" id="nav-gestIscritti" role="tabpanel" aria-labelledby="nav-gestIscritti-tab" tabindex="0">
+                  <% if @user_participation.present? && @user_participation.role=="admin" %> <!-- GESTIONE ADMIN-->
+                    <% @community.participations.each do |participation| %>
+                      <% if participation.banned%> <!-- utente bannato -->
+                        <a href="/user/<%= String(participation.user.uid) %>" class="text-red"><%= participation.user.name %></a>
+                        <strong class="text-dark"><%= button_to "Riammetti", unban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"btn btn-warning" %></strong><br>
+                      <% else %>
+                        <% if  participation.user.uid == @user_participation.user.uid  %> <!-- CURRENT USER -->
+                          <a href="/user/<%= String(participation.user.uid) %>" class="text-success" ><%= participation.user.name %></a> 
+                          <strong class="text-dark">(Tu - <%= participation.role %>)</strong><br>
+                        <% elsif  participation.user != @user_participation.user.uid  && participation.role=="moderator" %> <!-- utente not current non bannato modder -->
+                          <a href="/user/<%= String(participation.user.uid) %>" ><%= participation.user.name %></a> 
+                          <strong class="text-dark">(<%= participation.role %>)</strong>
+                          <strong>
+                            <%= button_to "Bandisci utente", ban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:" btn btn-warning text-dark"%> 
+                            <%= button_to "Rendi proprietario", move_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"btn btn-warning text-dark" %>
+                          </strong>
+                          <br>
+                        <% elsif participation.user != @user_participation && participation.role=="member"  %> <!-- utente not current non bannato membro -->
+                          <a href="/user/<%= String(participation.user.uid) %>" ><%= participation.user.name %></a> 
+                          <strong class="text-dark">(<%= participation.role %>)</strong>
+                          <strong>
+                            <%= button_to "Bandisci utente", ban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:" btn btn-warning text-dark"%> 
+                            <%= button_to "Promuovi a moderatore", move_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"btn btn-warning text-dark" %>
+                          </strong>
+                          <br>
+                        <% end %> 
                       <% end %>
                     <% end %>
-                  <% else%>
+                  
+                  <% elsif @user_participation.present? && @user_participation.role=="moderator" %> <!-- GESTIONE MODERATOR-->
                     <% @community.participations.each do |participation| %>
-                      <% if !participation.banned && (participation.role == "admin" || participation.role == "moderator")  %>
-                        <a href="/user/<%= String(participation.user.uid) %>" ><%= participation.user.uid %></a>  <strong class="text-dark">(<%= participation.role %>)</strong><br>
-                      <% elsif !participation.banned %>
+                      <% if participation.banned%> <!-- utente bannato -->
+                        <a href="/user/<%= String(participation.user.uid) %>" class="text-red"><%= participation.user.name %></a>
+                        <strong class="text-dark"><%= button_to "Riammetti", unban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"btn btn-warning" %></strong><br>
+                      <% else %>
+                        <% if  participation.user.uid == @user_participation.user.uid  %> <!-- CURRENT USER -->
+                          <a href="/user/<%= String(participation.user.uid) %>" class="text-success" ><%= participation.user.name %></a> 
+                          <strong class="text-dark">(Tu - <%= participation.role %>)</strong><br>
+                        <% elsif  participation.user != @user_participation.user.uid  && !(participation.role=="member") %> <!-- utente non bannato admin o modder -->
                         <a href="/user/<%= String(participation.user.uid) %>" ><%= participation.user.uid %></a>
+                        <strong class="text-dark">(<%= participation.role %>)</strong><br>
+                        <% elsif  participation.role=="member" %> <!-- utente non bannato member -->
+                          <a href="/user/<%= String(participation.user.uid) %>" ><%= participation.user.name %></a> 
+                          <strong class="text-dark">(<%= participation.role %>)</strong>
+                          <strong>
+                            <%= button_to "Bandisci utente", ban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:" btn btn-warning text-dark"%> 
+                          </strong>
+                          <br>
+                        <% end %>
                       <% end %>
                     <% end %>
                   <% end %>
