@@ -1,0 +1,7 @@
+<%= render "partials/navbar" %>
+  <div style="padding: 40px"></div> 
+<h4>Tags</h4>
+<%=button_to "Nuovo", new_tag_path, method: "get" %>
+<ul class="list-group">
+    <%= render @tags%>
+</ul>

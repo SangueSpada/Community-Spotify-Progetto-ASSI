@@ -1,0 +1,5 @@
+<li class="list-group-item">
+    #<%=tag.name %>
+    <%=button_to "Elimina", tag_path(tag),data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete  %>
+    <%=button_to "Modifica", edit_tag_path(tag), method: :get %>
+</li>

@@ -12,7 +12,7 @@ class UsersController < ApplicationController
       #puts co.id
     end
     puts "aoaoaoaoa"+String(@u.spotify_hash)
-    @user = RSpotify::User.new(JSON.parse(@u.spotify_hash.gsub('=>', ':').gsub('nil', 'null')))
+    @user = RSpotify::User.new(@u.spotify_hash.to_hash)
     #@user = RSpotify::User.find(@u.uid)
     @top_artist=@user.top_artists().first
     @top_tracks=@user.top_tracks(:limit => 5)
