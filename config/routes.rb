@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   }
   get '/chats/index'
   get '/user/:uid', to: 'users#show'
+  get '/user/:uid/edit', to: 'users#edit'
   post '/users/:uid/follow', to: 'users#follow', as: 'follow_user'
   post '/users/:uid/unfollow', to: 'users#unfollow', as: 'unfollow_user'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

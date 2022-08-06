@@ -20,10 +20,3 @@ Tag.create(name: 'Alternative')
 Tag.create(name: 'Sperimentale')
 Tag.create(name: 'Hardcore')
 Tag.create(name: 'Groovy')
-
-@community = Community.create(name: 'Community True', creator: 'valeriolorito', description: 'blablabla',
-                              playlist: 'https://open.spotify.com/playlist/37i9dQZF1DZ06evO44UDS4?si=cb6a8c42fee54a28', tags: [Tag.find(2), Tag.find(10)])
-@user = User.where(uid: 'valeriolorito').first
-@participation = @community.participations.create(user_id: @user.id, community_id: 3, role: :admin, banned: :false)
-@participation.user = @user
-@participation.community = @community

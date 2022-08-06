@@ -12,7 +12,7 @@ class UsersController < ApplicationController
       #puts co.id
     end
     puts "aoaoaoaoa"+String(@u.spotify_hash)
-    @user = RSpotify::User.new(@u.spotify_hash.to_hash)
+    @user = RSpotify::User.new(JSON.parse(@u.spotify_hash.gsub('=>', ':').gsub('nil', 'null')))
     #@user = RSpotify::User.find(@u.uid)
     @top_artist=@user.top_artists().first
     @top_tracks=@user.top_tracks(:limit => 5)
@@ -40,6 +40,20 @@ class UsersController < ApplicationController
     spotify_user.unfollow(RSpotify::User.find(@user.uid))
     current_user.given_follows.find_by(followed_user_id: @user.id).destroy
     redirect_back(fallback_location: {action: "show", uid: @user.uid})
+  end
+
+  def edit
+    redirect_to root_path, notice: 'Non puoi modificare i tag di un altro utente!' if current_user.uid != params[:uid]
+    @tags = Tag.all
+  end
+  
+  def give_user_tags(user, tags)
+    user.taggables.destroy_all
+    tags.each do |tag|
+      if tag != ""
+        community.tags << Tag.find(tag)
+      end
+    end
   end
 
 end

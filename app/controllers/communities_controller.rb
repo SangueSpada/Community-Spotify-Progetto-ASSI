@@ -97,7 +97,6 @@ class CommunitiesController < ApplicationController
   end
 
   def give_community_tags(community, tags)
-    puts "yeah"+tags.to_s
     community.taggables.destroy_all
     tags.each do |tag|
       if tag != ""

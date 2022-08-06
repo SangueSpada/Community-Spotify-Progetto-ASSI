@@ -106,7 +106,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_04_105918) do
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_reactions_on_post_id"
   end
-
+  
+  #Valerio mortacci tua potevi fare l id generico ora devo rifare tutto taggables
   create_table "taggables", force: :cascade do |t|
     t.integer "community_id", null: false
     t.integer "tag_id", null: false
@@ -141,6 +142,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_04_105918) do
   add_foreign_key "comments", "users"
   add_foreign_key "posts", "users"
   add_foreign_key "reactions", "posts"
+  add_foreign_key "taggables", "users"
   add_foreign_key "taggables", "communities"
   add_foreign_key "taggables", "tags"
 end
