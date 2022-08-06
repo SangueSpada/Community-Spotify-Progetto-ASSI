@@ -5,7 +5,9 @@ class UsersController < ApplicationController
     @u = User.where(uid: params[:uid]).first
     @communities = Community.joins(:participations).where(participations: {user_id: @u})
     #puts "le community sono:"+ String(@communities.count())
-    @posts = @u.posts.order(created_at: :desc)
+    unless !@u.posts
+      @posts = @u.posts.order(created_at: :desc)
+    end
     @communities.each do |co|
       #puts co.id
     end

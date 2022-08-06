@@ -129,7 +129,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_04_105918) do
     t.string "provider"
     t.string "avatar_url"
     t.string "name"
-    t.string "spotify_hash"
+    t.text "spotify_hash"
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

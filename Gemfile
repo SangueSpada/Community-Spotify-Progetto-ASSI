@@ -85,3 +85,6 @@ gem 'solargraph'
 gem 'ransack', '~> 3.2'
 
 gem "pagy", "~> 5.10"
+
+gem "oauth2", "~> 2.0"
+gem "psych",  "4.0.0"
