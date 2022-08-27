@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_04_105918) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_22_104434) do
   create_table "chats", force: :cascade do |t|
     t.integer "user1_id"
     t.integer "user2_id"
@@ -46,6 +46,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_04_105918) do
     t.string "playlist"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.string "title"
+    t.text "body"
+    t.integer "community_id"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_events_on_user_id"
   end
 
   create_table "follows", force: :cascade do |t|
@@ -106,8 +116,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_04_105918) do
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_reactions_on_post_id"
   end
-  
-  #Valerio mortacci tua potevi fare l id generico ora devo rifare tutto taggables
+
   create_table "taggables", force: :cascade do |t|
     t.integer "community_id", null: false
     t.integer "tag_id", null: false
@@ -140,9 +149,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_04_105918) do
   add_foreign_key "comment_reactions", "comments"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
+  add_foreign_key "events", "users"
   add_foreign_key "posts", "users"
   add_foreign_key "reactions", "posts"
-  add_foreign_key "taggables", "users"
   add_foreign_key "taggables", "communities"
   add_foreign_key "taggables", "tags"
 end

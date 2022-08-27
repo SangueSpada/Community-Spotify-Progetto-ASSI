@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :events
   
   post 'search/searchbar', to: 'search#searchbar'
   post 'search/spotify', to: 'search#spotify'
@@ -28,8 +29,11 @@ Rails.application.routes.draw do
     resources :reactions, only: %i[create update destroy]
   end
 
+  resources :events
+
   resources :communities do
     resources :posts
+    resources :events
   end
 
   resources :users do

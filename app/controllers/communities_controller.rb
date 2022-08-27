@@ -15,6 +15,7 @@ class CommunitiesController < ApplicationController
     @playlist = RSpotify::Playlist.find(@admin_participation.user.uid, @community.playlist)
     #@spotify_user = RSpotify::User.new(JSON.parse(current_user.spotify_hash.gsub('=>', ':').gsub('nil', 'null')))
     @posts = @community.posts.all.order(created_at: :desc)
+    @events = @community.events.all.order(created_at: :desc)
   end
 
   def new

@@ -1,0 +1,44 @@
+<li>
+    <!-- begin timeline-time -->
+    <div class="timeline-time">
+
+        <span class="time"><%=event.created_at.to_fs(:short)%></span>
+    </div>
+    <!-- end timeline-time -->
+    <!-- begin timeline-icon -->
+    <div class="timeline-icon">
+        <a href="javascript:;">&nbsp;</a>
+    </div>
+    <!-- end timeline-icon -->
+    <!-- begin timeline-body -->
+    <div class="timeline-body">
+        <div class="row timeline-header">
+            <div class="col-10 col-md-11 post-header align-content-center">
+                <span class="userimage"><img src="<%=event.user.avatar_url%>" alt="" width="32" height="32" class="rounded-circle"></span>
+                <span class="username"><a href="/user/<%= String(event.user.uid) %>"><%= event.user.name %></a></span>
+                <%if event.community_id && communities!=nil%>
+                <span class="username" style="font-size:80%"> >> <a href="/communities/<%= String(event.community_id) %>"><%= communities.where(id: event.community_id).first().name %></a></span>
+                <%end%>
+                <small></small>
+            </div>
+
+            <div class="col-1 justify-content-end" > 
+                <a class="nav-link" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></a>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdown01">
+                <% if current_modder%>
+                    <li><%= link_to "Elimina", event_path(event),class: "dropdown-item", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %></li>
+                <% elsif event.user == current_user%>
+                    <li><%= link_to "Modifica", edit_event_path(event),class: "dropdown-item", method: :get %></li>
+                    <li><%= link_to "Elimina", event_path(event),class: "dropdown-item", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %></li>
+                <% end %>
+            </div>
+        </div>
+
+        <div class="timeline-content">
+            <h3><%= event.title %></h3>
+            <p><%= event.body %></p>
+        </div>
+        
+    </div>
+    <!-- end timeline-body -->
+</li>
