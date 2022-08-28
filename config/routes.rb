@@ -1,23 +1,34 @@
 Rails.application.routes.draw do
-  resources :events
+
+  root 'pages#home'
   
   post 'search/searchbar', to: 'search#searchbar'
   post 'search/spotify', to: 'search#spotify'
-  root 'pages#home'
+  
   devise_for :users, controllers: {
     omniauth_callbacks: 'users/omniauth_callbacks',
     sessions: 'users/sessions'
   }
+
   devise_for :modders, controllers: {
     sessions: 'modders/sessions',
     passwords: 'modders/passwords',
     registrations: 'modders/registrations'
   }
+
+  #Routes per l'OAuth di Google
+  get '/redirect', to: 'events#redirect', as: 'redirect'
+  get '/callback', to: 'events#callback', as: 'callback'
+  get '/calendars', to: 'events#calendars', as: 'calendars'
+
+  post '/events/:calendar_id', to: 'example#new_event', as: 'new_event', calendar_id: /[^\/]+/
+
   get '/chats/index'
   get '/user/:uid', to: 'users#show'
   get '/user/:uid/edit', to: 'users#edit'
   post '/users/:uid/follow', to: 'users#follow', as: 'follow_user'
   post '/users/:uid/unfollow', to: 'users#unfollow', as: 'unfollow_user'
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

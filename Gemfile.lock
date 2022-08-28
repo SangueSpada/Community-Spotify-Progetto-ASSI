@@ -399,7 +399,7 @@ DEPENDENCIES
   debug
   devise
   erb-formatter
-  google-api-client (~> 0.53.0)
+  google-api-client
   importmap-rails
   jbuilder
   jquery-rails

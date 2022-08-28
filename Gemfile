@@ -81,7 +81,7 @@ gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-spotify'
 gem 'rspotify'
 gem 'solargraph'
-gem 'google-api-client', '~> 0.53.0'
+gem 'google-api-client', require: 'google/apis/calendar_v3'
 
 gem 'ransack', '~> 3.2'
 
