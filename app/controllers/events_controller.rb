@@ -59,8 +59,6 @@ class EventsController < ApplicationController
   def redirect
     client = Signet::OAuth2::Client.new(client_options)
 
-    puts client_options
-
     redirect_to client.authorization_uri.to_s, allow_other_host: true
   end
 
@@ -83,26 +81,82 @@ class EventsController < ApplicationController
     service.authorization = client
 
     @calendar_list = service.list_calendar_lists
+
+  rescue Google::Apis::AuthorizationError
+    response = client.refresh!
+
+    session[:authorization] = session[:authorization].merge(response)
+
+    retry
   end
 
-  def new_event
+  def new_googlecalendar_event
+    
     client = Signet::OAuth2::Client.new(client_options)
     client.update!(session[:authorization])
 
     service = Google::Apis::CalendarV3::CalendarService.new
     service.authorization = client
 
-    today = Date.today
+    @event = Event.find(params[:id])
 
-    event = Google::Apis::CalendarV3::Event.new({
-      start: Google::Apis::CalendarV3::EventDateTime.new(date: today),
-      end: Google::Apis::CalendarV3::EventDateTime.new(date: today + 1),
-      summary: 'New event!'
-    })
+    event_id = @event.id.to_s + "assi"
+    event_date = @event.start_date
+    event_title = @event.title
 
-    service.insert_event(params[:calendar_id], event)
+    event = {
+      id: event_id,
+      summary: event_title,
+      start: {
+        date: event_date
+      },
+      end: {
+        date: event_date + 1
+      }
+    }
 
-    redirect_to events_url(calendar_id: params[:calendar_id])
+    puts event[:id]
+
+    service.insert_event('primary', event)
+
+    redirect_to root_path
+
+  rescue Google::Apis::AuthorizationError
+    response = client.refresh!
+
+    session[:authorization] = session[:authorization].merge(response)
+
+    retry
+  end
+
+  def delete_googlecalendar_event
+    
+    client = Signet::OAuth2::Client.new(client_options)
+    client.update!(session[:authorization])
+
+    service = Google::Apis::CalendarV3::CalendarService.new
+    service.authorization = client
+
+    @event = Event.find(params[:id])
+
+    event_id = @event.id.to_s + "assi"
+
+    @event_list = service.list_events('primary')
+
+    @event_list.items.each do |event|
+      if event.id == event_id
+        service.delete_event('primary', event.id)
+      end
+    end
+
+    redirect_to root_path
+
+  rescue Google::Apis::AuthorizationError
+    response = client.refresh!
+
+    session[:authorization] = session[:authorization].merge(response)
+
+    retry
   end
 
   private
@@ -113,7 +167,7 @@ class EventsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def event_params
-      params.require(:event).permit(:title, :body, :community_id, :user_id)
+      params.require(:event).permit(:title, :body, :start_date, :start_time, :community_id, :user_id)
     end
 
     #Crea la struttura con i dati richiesti per effettuare le chiamate API

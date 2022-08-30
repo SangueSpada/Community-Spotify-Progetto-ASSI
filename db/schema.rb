@@ -51,6 +51,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_22_104434) do
   create_table "events", force: :cascade do |t|
     t.string "title"
     t.text "body"
+    t.date "start_date"
+    t.time "start_time"
     t.integer "community_id"
     t.integer "user_id", null: false
     t.datetime "created_at", null: false

@@ -21,7 +21,8 @@ Rails.application.routes.draw do
   get '/callback', to: 'events#callback', as: 'callback'
   get '/calendars', to: 'events#calendars', as: 'calendars'
 
-  post '/events/:calendar_id', to: 'example#new_event', as: 'new_event', calendar_id: /[^\/]+/
+  post '/events/:id/:calendar_id', to: 'events#new_googlecalendar_event', as: 'new_googlecalendar_event', calendar_id: /[^\/]+/
+  delete '/events/:id/:calendar_id', to: 'events#delete_googlecalendar_event', as: 'delete_googlecalendar_event', calendar_id: /[^\/]+/
 
   get '/chats/index'
   get '/user/:uid', to: 'users#show'
