@@ -82,9 +82,10 @@ class EventsController < ApplicationController
 
     puts "Authorization code: " + client.code.to_s
 
-    if !client.code
+    if !session[:authorization]
       puts "Non ho un auth code"
-      redirect_to redirect_path and return
+
+      redirect_to client.authorization_uri.to_s, allow_other_host: true and return
     end
 
     client.update!(session[:authorization])

@@ -16,6 +16,9 @@ class CommunitiesController < ApplicationController
     #@spotify_user = RSpotify::User.new(JSON.parse(current_user.spotify_hash.gsub('=>', ':').gsub('nil', 'null')))
     @posts = @community.posts.all.order(created_at: :desc)
     @events = @community.events.all.order(created_at: :desc)
+    if !session[:authorization]
+      @client = Signet::OAuth2::Client.new(client_options)
+    end
   end
 
   def new
@@ -108,5 +111,17 @@ class CommunitiesController < ApplicationController
 
   def is_a_playlist?(link)
     !!link.match(%r{https://open.spotify.com/playlist/\w})
+  end
+
+  #Crea la struttura con i dati richiesti per effettuare le chiamate API
+  def client_options
+    {
+      client_id: Rails.application.credentials[:google_client_id],
+      client_secret: Rails.application.credentials[:google_client_secret],
+      authorization_uri: 'https://accounts.google.com/o/oauth2/auth',
+      token_credential_uri: 'https://accounts.google.com/o/oauth2/token',
+      scope: Google::Apis::CalendarV3::AUTH_CALENDAR,
+      redirect_uri: callback_url
+    }
   end
 end
