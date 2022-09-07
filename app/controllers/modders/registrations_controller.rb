@@ -67,8 +67,7 @@ class Modders::RegistrationsController < Devise::RegistrationsController
   private
   def check
     if (params[:modder][:modder_key]!="pippo" || params[:modder][:password]!=params[:modder][:password_confirmation])
-      puts "cazzo scrivi"
-       return false
+      return false
     end
     true
   end
