@@ -19,7 +19,6 @@ Rails.application.routes.draw do
   #Routes per l'OAuth di Google
   get '/redirect', to: 'events#redirect', as: 'redirect'
   get '/callback', to: 'events#callback', as: 'callback'
-  get '/calendars', to: 'events#calendars', as: 'calendars'
 
   post '/events/:id/:calendar_id', to: 'events#new_googlecalendar_event', as: 'new_googlecalendar_event', calendar_id: /[^\/]+/
   delete '/events/:id/:calendar_id', to: 'events#delete_googlecalendar_event', as: 'delete_googlecalendar_event', calendar_id: /[^\/]+/
