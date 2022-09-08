@@ -4,7 +4,7 @@
         <span class="userimage"><img src="<%=comment.user.avatar_url%>" alt="" width="32" height="32" class="rounded-circle"></span>
       </div>
       <div class="comment-header col-6 col-md-10">
-        <span style="padding-left: 5px padding-bottom: 10px"><span class="username"><a href="/user/<%= String(comment.user.uid) %>"><%= comment.user.name %></a> </span><%= comment.body %>
+        <span style="padding-left: 5px padding-bottom: 10px"><span class="username"><a href="/users/<%= String(comment.user.uid) %>"><%= comment.user.name %></a> </span><%= comment.body %>
                 <span style="font-size:10px"><%=comment.created_at.to_fs(:short)%></span>
         </span>
         <div class="row justiify-content-end" style= "padding: 0px">

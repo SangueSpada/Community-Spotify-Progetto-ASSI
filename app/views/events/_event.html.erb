@@ -15,7 +15,7 @@
         <div class="row timeline-header">
             <div class="col-10 col-md-11 post-header align-content-center">
                 <span class="userimage"><img src="<%=event.user.avatar_url%>" alt="" width="32" height="32" class="rounded-circle"></span>
-                <span class="username"><a href="/user/<%= String(event.user.uid) %>"><%= event.user.name %></a></span>
+                <span class="username"><a href="/users/<%= String(event.user.uid) %>"><%= event.user.name %></a></span>
                 <%if event.community_id && communities!=nil%>
                 <span class="username" style="font-size:80%"> >> <a href="/communities/<%= String(event.community_id) %>"><%= communities.where(id: event.community_id).first().name %></a></span>
                 <%end%>

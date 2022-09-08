@@ -16,13 +16,7 @@
     <body class="bg-light">
         <%= render "partials/navbar" %>
         <div style="padding: 40pt"></div>
-        <h1> Modifica Tag utente </h1>
-        <%= form_with model: [community] do |form| %>
-            <div>
-                <%= form.label :tag_ids %>:
-                <%= form.collection_check_boxes :tag_ids, Tag.order(:name), :id, :name%>
-            </div>
-            <%= form.submit %>
-        <% end %>
-    </body>
+        <h1>Modifica User</h1>
+        <%= render "form", user: @user, tags: @tags %>
+        </body>
 </html>
