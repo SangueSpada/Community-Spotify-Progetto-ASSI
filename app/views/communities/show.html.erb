@@ -117,22 +117,26 @@
                 
                 <div class="tab-pane fade show" id="nav-eventi" role="tabpanel" aria-labelledby="nav-eventi-tab" tabindex="0">
                   <div class="profile-content row text-start">
-                    <% if @user_participation.present? && (@user_participation.role == "admin" || @user_participation.role == "moderator") %>
+                    <% if @client %>
+                      <%= link_to "Login con Google", redirect_path(), class:"btn btn-outline-success", method: :get %>
+                    <% else %>
+                      <% if @user_participation.present? && (@user_participation.role == "admin" || @user_participation.role == "moderator") %>
                       <%= link_to "Crea un nuovo evento", new_community_event_path(@community.id), class:"btn btn-outline-success", method: :get %>
+                        <% end %>
+                        <div class="tab-content p-0">
+                          <!-- begin #profile-post tab -->
+                          <div class="tab-pane fade active show" id="profile-post">
+                            <!-- begin timeline -->
+                            <ul class="timeline">
+                            <% @events.each do |event| %>
+                                  <%= render "events/event", event: event, communities: nil%>
+                                <% end %>
+                            </ul>
+                          </div>
+                          <!-- end #profile-post tab -->
+                        </div>
+                        <!-- end tab-content -->
                     <% end %>
-                    <div class="tab-content p-0">
-                      <!-- begin #profile-post tab -->
-                      <div class="tab-pane fade active show" id="profile-post">
-                        <!-- begin timeline -->
-                        <ul class="timeline">
-                        <% @events.each do |event| %>
-                              <%= render "events/event", event: event, communities: nil%>
-                            <% end %>
-                        </ul>
-                      </div>
-                      <!-- end #profile-post tab -->
-                    </div>
-                    <!-- end tab-content -->
                   </div>
 
                 </div>

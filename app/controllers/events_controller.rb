@@ -82,11 +82,6 @@ class EventsController < ApplicationController
 
     puts "Authorization code: " + client.code.to_s
 
-    if !client.code
-      puts "Non ho un auth code"
-      redirect_to redirect_path and return
-    end
-
     client.update!(session[:authorization])
 
     service = Google::Apis::CalendarV3::CalendarService.new
@@ -101,8 +96,11 @@ class EventsController < ApplicationController
     event = service.get_event('primary', event_id)
 
     if event
-
       event.status = 'confirmed'
+      event.summary = event_title
+      event.start.date = event_date
+      event.end.date = event_date + 1
+      
       service.update_event('primary', event_id, event)
       
     else
@@ -179,7 +177,7 @@ class EventsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def event_params
-      params.require(:event).permit(:title, :body, :start_date, :start_time, :community_id, :user_id)
+      params.require(:event).permit(:title, :body, :start_date, :community_id, :user_id)
     end
 
     #Crea la struttura con i dati richiesti per effettuare le chiamate API
