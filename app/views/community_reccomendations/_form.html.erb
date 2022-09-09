@@ -1,0 +1,17 @@
+<%= form_with(model: community_reccomendation) do |form| %>
+  <% if community_reccomendation.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(community_reccomendation.errors.count, "error") %> prohibited this community_reccomendation from being saved:</h2>
+
+      <ul>
+        <% community_reccomendation.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

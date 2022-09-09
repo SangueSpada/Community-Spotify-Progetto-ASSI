@@ -1,0 +1,24 @@
+<%= render "partials/navbar" %>
+<div style="padding: 40pt"></div>
+
+<div id="reccomendations_generator">
+  <%= link_to "Genera reccomendations", new_reccomendation_path(), class:"btn btn-primary" %>
+</div>
+
+<h1>Community Reccomendations</h1>
+
+<div id="community_reccomendations">
+
+  <%= render @community_reccomendations %>
+  
+</div>
+
+<h1>User Reccomendations</h1>
+
+<div id="user_reccomendations">
+
+  <% @user_reccomendations.each do |reccomendation| %>
+    <%= render reccomendation %>
+  <% end %>
+  
+</div>

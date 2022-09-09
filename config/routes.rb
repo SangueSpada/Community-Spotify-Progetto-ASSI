@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
-  resources :reccomendations
+  resources :user_reccomendations
+  resources :community_reccomendations
 
   root 'pages#home'
+
+  get '/reccomendations', to: 'pages#reccomendations'
   
   post 'search/searchbar', to: 'search#searchbar'
   post 'search/spotify', to: 'search#spotify'

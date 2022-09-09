@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @user_reccomendation %>
+
+<div>
+  <%= link_to "Edit this user reccomendation", edit_user_reccomendation_path(@user_reccomendation) %> |
+  <%= link_to "Back to user reccomendations", user_reccomendations_path %>
+
+  <%= button_to "Destroy this user reccomendation", @user_reccomendation, method: :delete %>
+</div>

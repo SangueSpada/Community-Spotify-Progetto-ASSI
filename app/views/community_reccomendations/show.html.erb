@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @community_reccomendation %>
+
+<div>
+  <%= link_to "Edit this community reccomendation", edit_community_reccomendation_path(@community_reccomendation) %> |
+  <%= link_to "Back to community reccomendations", community_reccomendations_path %>
+
+  <%= button_to "Destroy this community reccomendation", @community_reccomendation, method: :delete %>
+</div>

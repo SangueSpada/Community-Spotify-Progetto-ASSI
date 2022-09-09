@@ -1,0 +1,29 @@
+<li>
+    <!-- begin timeline-icon -->
+    <div class="timeline-icon">
+        <a href="javascript:;">&nbsp;</a>
+    </div>
+    <!-- end timeline-icon -->
+
+    <!-- begin timeline-body -->
+    <div class="timeline-body">
+        <div class="row timeline-header">
+            <div class="col-10 col-md-11 post-header align-content-center">
+                <h3>Dai un'occhiata a <%= community_reccomendation.body %>, potreste avere in comune più di quello che pensi</h3>
+                <small></small>
+            </div>
+        </div>
+
+        <div class="timeline-content">
+            <a href="/communities/<%= community_reccomendation.resource_id.to_s %>"><%= community_reccomendation.community.name %></a>
+
+            <% if community_reccomendation.resource_img %>
+                <div class="profile-header-img">
+                    <img src="<%=community_reccomendation.resource_img%>" alt="">
+                </div>
+            <% end %>
+        </div>
+        
+    </div>
+    <!-- end timeline-body -->
+</li>

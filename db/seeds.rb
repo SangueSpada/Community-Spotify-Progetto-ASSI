@@ -25,18 +25,18 @@ Community.create(name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA"
 Community.create(name: "COCK", creator: "Pluto", description: "BBBBBBBBBBBBBBBB", playlist: "https://open.spotify.com/playlist/00fyBjjIZWbUya1sg9n9FI?si=2dd08635ebc249c7")
 Community.create(name: "BRO", creator: "Paperino", description: "CCCCCCCCCCCCCCCC", playlist: "https://open.spotify.com/playlist/3Efd5k4pAbgcr9Phd3GkcM?si=fdbddb4f01364f41")
 
-TaggableCommunity.create(community_id: 2, tag_id: 6)
-TaggableCommunity.create(community_id: 2, tag_id: 10)
+TaggableCommunity.create(community_id: 1, tag_id: 6)
+TaggableCommunity.create(community_id: 1, tag_id: 10)
 
-TaggableCommunity.create(community_id: 3, tag_id: 1)
-TaggableCommunity.create(community_id: 3, tag_id: 2)
-TaggableCommunity.create(community_id: 3, tag_id: 3)
+TaggableCommunity.create(community_id: 2, tag_id: 1)
+TaggableCommunity.create(community_id: 2, tag_id: 2)
+TaggableCommunity.create(community_id: 2, tag_id: 3)
 
-TaggableCommunity.create(community_id: 4, tag_id: 4)
-TaggableCommunity.create(community_id: 4, tag_id: 6)
-TaggableCommunity.create(community_id: 4, tag_id: 10)
+TaggableCommunity.create(community_id: 3, tag_id: 4)
+TaggableCommunity.create(community_id: 3, tag_id: 6)
+TaggableCommunity.create(community_id: 3, tag_id: 10)
 
-User.first_or_create!(email: "daniele@example.com",password: "password");
-Reccomendation.create(body: 'questa community', resource_id: 2, resource_flag: 0)
-Reccomendation.create(body: 'questa community', resource_id: 3, resource_flag: 0)
-Reccomendation.create(body: 'questa community', resource_id: 4, resource_flag: 0)
+User.first_or_create!(email: "daniele@example.com", password: "password");
+CommunityReccomendation.create(body: 'questa community', resource_id: 2, community_id: 2, user_id:1)
+CommunityReccomendation.create(body: 'questa community', resource_id: 3, community_id: 3, user_id:1)
+CommunityReccomendation.create(body: 'questa community', resource_id: 4, community_id: 4, user_id:1)

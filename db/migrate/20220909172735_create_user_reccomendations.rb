@@ -1,14 +1,14 @@
-class CreateReccomendations < ActiveRecord::Migration[7.0]
+class CreateUserReccomendations < ActiveRecord::Migration[7.0]
   def change
-    create_table :reccomendations do |t|
-
+    create_table :user_reccomendations do |t|
       t.string :body
 
       t.integer :resource_id, null: false
-      t.binary :resource_flag, null: false
       t.string :resource_img
 
       t.binary :viewed
+
+      t.references :user, null: false, foreign_key: true
 
       t.timestamps
     end
