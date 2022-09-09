@@ -101,7 +101,7 @@ class CommunitiesController < ApplicationController
   end
 
   def give_community_tags(community, tags)
-    community.taggables.destroy_all
+    community.taggableCommunities.destroy_all
     tags.each do |tag|
       if tag != ""
         community.tags << Tag.find(tag)

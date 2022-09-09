@@ -1,6 +1,6 @@
 require "test_helper"
 
-class TaggableTest < ActiveSupport::TestCase
+class TaggableUserTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

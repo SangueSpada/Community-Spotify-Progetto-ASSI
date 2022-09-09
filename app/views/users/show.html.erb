@@ -46,7 +46,9 @@
                            </div>
                            <p class="m-b-10">
                            <strong>TAGS:</strong>
-                           li avevo quasi fatti ma ho scoperto che devo rifare tutto taggables visto che non l ha fatto generico, mortacci de valerio :)
+                              <%@u.tags.each do |tag|%>
+                                #<%=tag.name %> 
+                              <%end%>
                            </p>
                            
                         </div>
@@ -67,7 +69,8 @@
                               <br>
                               <%end%>
                               <% if @u==current_user %>
-                                 <a href="#" class="btn btn-sm btn-info mb-2">Edit Profile</a>
+                                 <%= link_to "Modifica Tags utente", edit_user_path(@u.uid), class:"btn btn-sm btn-info mb-2", method: :get %>
+                                 
                               <%end%>
                            </section>
                            
@@ -146,14 +149,14 @@
                <div class="tab-pane fade " id="nav-followers" role="tabpanel" aria-labelledby="nav-followers-tab" tabindex="0">
                   <div class="container text-center" style= "padding-top: 50px">
                      <% @u.followers.each  do |followers| %>
-                        <a href="/user/<%= String(followers.uid) %>" ><%= followers.name %></a><br>
+                        <a href="/users/<%= String(followers.uid) %>" ><%= followers.name %></a><br>
                      <% end %>
                   </div>
                </div>
                <div class="tab-pane fade " id="nav-following" role="tabpanel" aria-labelledby="nav-following-tab" tabindex="0">
                   <div class="container text-center" style= "padding-top: 50px">
                      <% @u.followings.each  do |following| %>
-                        <a href="/user/<%= String(following.uid) %>" ><%= following.name %></a><br>
+                        <a href="/users/<%= String(following.uid) %>" ><%= following.name %></a><br>
                      <% end %>
                   </div>
                </div>

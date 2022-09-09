@@ -25,8 +25,8 @@ Rails.application.routes.draw do
   delete '/events/:id/:calendar_id', to: 'events#delete_googlecalendar_event', as: 'delete_googlecalendar_event', calendar_id: /[^\/]+/
 
   get '/chats/index'
-  get '/user/:uid', to: 'users#show'
-  get '/user/:uid/edit', to: 'users#edit'
+  get '/users/:uid', to: 'users#show', as: 'uid_user'
+  get '/users/:uid/edit', to: 'users#edit', as: 'edit_user'
   post '/users/:uid/follow', to: 'users#follow', as: 'follow_user'
   post '/users/:uid/unfollow', to: 'users#unfollow', as: 'unfollow_user'
 

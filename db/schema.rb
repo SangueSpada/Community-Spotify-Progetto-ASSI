@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_22_104434) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_07_175349) do
   create_table "chats", force: :cascade do |t|
     t.integer "user1_id"
     t.integer "user2_id"
@@ -118,13 +118,22 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_22_104434) do
     t.index ["post_id"], name: "index_reactions_on_post_id"
   end
 
-  create_table "taggables", force: :cascade do |t|
+  create_table "taggable_communities", force: :cascade do |t|
     t.integer "community_id", null: false
     t.integer "tag_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["community_id"], name: "index_taggables_on_community_id"
-    t.index ["tag_id"], name: "index_taggables_on_tag_id"
+    t.index ["community_id"], name: "index_taggable_communities_on_community_id"
+    t.index ["tag_id"], name: "index_taggable_communities_on_tag_id"
+  end
+
+  create_table "taggable_users", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tag_id"], name: "index_taggable_users_on_tag_id"
+    t.index ["user_id"], name: "index_taggable_users_on_user_id"
   end
 
   create_table "tags", force: :cascade do |t|
@@ -153,6 +162,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_22_104434) do
   add_foreign_key "events", "users"
   add_foreign_key "posts", "users"
   add_foreign_key "reactions", "posts"
-  add_foreign_key "taggables", "communities"
-  add_foreign_key "taggables", "tags"
+  add_foreign_key "taggable_communities", "communities"
+  add_foreign_key "taggable_communities", "tags"
+  add_foreign_key "taggable_users", "tags"
+  add_foreign_key "taggable_users", "users"
 end

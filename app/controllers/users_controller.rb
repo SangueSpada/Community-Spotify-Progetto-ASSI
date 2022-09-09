@@ -1,6 +1,6 @@
 require 'json'
 class UsersController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :set_user, only: %i[show edit update]
   def show
     @u = User.where(uid: params[:uid]).first
     @communities = Community.joins(:participations).where(participations: {user_id: @u})
@@ -11,7 +11,6 @@ class UsersController < ApplicationController
     @communities.each do |co|
       #puts co.id
     end
-    puts "aoaoaoaoa"+String(@u.spotify_hash)
     @user = RSpotify::User.new(JSON.parse(@u.spotify_hash.gsub('=>', ':').gsub('nil', 'null')))
     #@user = RSpotify::User.find(@u.uid)
     @top_artist=@user.top_artists().first
@@ -43,15 +42,33 @@ class UsersController < ApplicationController
   end
 
   def edit
+    puts @user
+    puts "MAREMMA MAIAAALAAAA"
     redirect_to root_path, notice: 'Non puoi modificare i tag di un altro utente!' if current_user.uid != params[:uid]
     @tags = Tag.all
   end
-  
+
+  def update
+    @user = User.where(id: params[:id]).first
+    give_user_tags(@user, params[:user][:tag_ids])
+    redirect_to action: 'show', uid: @user.uid
+  end
+
+  def user_params
+    params.require(:community).permit(:name, :description, :playlist, tag_ids: [])
+  end
+
+  def set_user
+    @user = User.where(uid: params[:uid]).first
+  rescue ActiveRecord::RecordNotFound => e
+    redirect_to root_path, notice: e.message
+  end
+
   def give_user_tags(user, tags)
-    user.taggables.destroy_all
+    user.taggableUsers.destroy_all
     tags.each do |tag|
       if tag != ""
-        community.tags << Tag.find(tag)
+        user.tags << Tag.find(tag)
       end
     end
   end

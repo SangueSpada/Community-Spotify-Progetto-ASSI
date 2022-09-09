@@ -14,6 +14,14 @@ class User < ApplicationRecord
   has_many :messages, dependent: :destroy
   has_many :events, dependent: :destroy
   has_many :reccomendations, dependent: :destroy
+  has_many :taggableUsers, dependent: :destroy
+  has_many :tags, through: :taggableUsers
+<<<<<<< HEAD
+  has_many :reccomendations, dependent: :destroy
+=======
+  has_many :taggableUsers, dependent: :destroy
+  has_many :tags, through: :taggableUsers
+>>>>>>> 3265f38551d2290a61f80c5413ffb1b6daabf4ec
 
   # Will return an array of follows for the given user instance
   has_many :received_follows, foreign_key: :followed_user_id, class_name: "Follow" #FOLLWING_USERS

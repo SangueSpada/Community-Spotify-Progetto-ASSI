@@ -1,0 +1,8 @@
+<h1> Modifica Tag utente </h1>
+<%= form_with model: [user] do |form| %>
+    <div>
+        <%= form.label :tag_ids %>:
+        <%= form.collection_check_boxes :tag_ids, Tag.order(:name), :id, :name%>
+    </div>
+    <%= form.submit %>
+<% end %>
