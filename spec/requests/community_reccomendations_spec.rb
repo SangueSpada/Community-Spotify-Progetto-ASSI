@@ -16,7 +16,28 @@ RSpec.describe "/community_reccomendations", type: :request do
   
   # This should return the minimal set of attributes required to create a valid
   # CommunityReccomendation. As you add validations to CommunityReccomendation, be sure to
-  # adjust the attributes here as well.
+  # adjust the attributes here as well
+  current_user = User.new(email: "daniele@example.com",password: "password",id:1,uid:"1");
+  before do
+    sign_in current_user
+  end
+  Tag.create(name: 'Rock')
+  Tag.create(name: 'Pop')
+  Tag.create(name: 'Metal')
+  Tag.create(name: 'Indie')
+  Tag.create(name: 'Classica')
+  Tag.create(name: 'Rap')
+  Tag.create(name: 'Electro')
+  Tag.create(name: 'Funk')
+  Tag.create(name: 'Dance')
+  Tag.create(name: 'Chill')
+  Tag.create(name: 'Alternative')
+  Tag.create(name: 'Sperimentale')
+  Tag.create(name: 'Hardcore')
+  TaggableUser.create(user_id: 1, tag_id: 1)
+  TaggableUser.create(user_id: 1, tag_id: 2)
+  TaggableUser.create(user_id: 1, tag_id: 3)
+Tag.create(name: 'Groovy')
   let(:valid_attributes) {
     skip("Add a hash of attributes valid for your model")
   }
@@ -25,96 +46,82 @@ RSpec.describe "/community_reccomendations", type: :request do
     skip("Add a hash of attributes invalid for your model")
   }
 
-  describe "GET /index" do
+=begin   describe "GET /index" do
     it "renders a successful response" do
       CommunityReccomendation.create! valid_attributes
       get community_reccomendations_url
       expect(response).to be_successful
     end
-  end
+  end 
+=end
 
-  describe "GET /show" do
-    it "renders a successful response" do
-      community_reccomendation = CommunityReccomendation.create! valid_attributes
-      get community_reccomendation_url(community_reccomendation)
-      expect(response).to be_successful
-    end
-  end
 
-  describe "GET /new" do
-    it "renders a successful response" do
-      get new_community_reccomendation_url
-      expect(response).to be_successful
-    end
-  end
-
-  describe "GET /edit" do
+=begin   describe "GET /edit" do
     it "renders a successful response" do
       community_reccomendation = CommunityReccomendation.create! valid_attributes
       get edit_community_reccomendation_url(community_reccomendation)
       expect(response).to be_successful
     end
-  end
+  end 
+=end
 
   describe "POST /create" do
-    context "with valid parameters" do
-      it "creates a new CommunityReccomendation" do
+    context "with matching commmunity (by tags 100%)" do
+      Community.create(name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "https://open.spotify.com/playlist/1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
+      TaggableCommunity.create(community_id: 1, tag_id: 1)
+      TaggableCommunity.create(community_id: 1, tag_id: 2)
+      TaggableCommunity.create(community_id: 1, tag_id: 3)
+      it "creates a new CommunityReccomendation for the current user" do
         expect {
-          post community_reccomendations_url, params: { community_reccomendation: valid_attributes }
-        }.to change(CommunityReccomendation, :count).by(1)
+          post community_reccomendations_url
+        }.to change(CommunityReccomendation.where(user: current_user), :count).by(1)
       end
 
-      it "redirects to the created community_reccomendation" do
-        post community_reccomendations_url, params: { community_reccomendation: valid_attributes }
-        expect(response).to redirect_to(community_reccomendation_url(CommunityReccomendation.last))
+      it "redirects to the reccomendation page" do
+        post community_reccomendations_url
+        expect(response).to redirect_to(reccomendations_path)
+      end
+    end
+    context "with matching commmunity (by tags 60%)" do
+      Community.create(name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "https://open.spotify.com/playlist/1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
+      TaggableCommunity.create(community_id: 1, tag_id: 1)
+      TaggableCommunity.create(community_id: 1, tag_id: 2)
+      TaggableCommunity.create(community_id: 1, tag_id: 3)
+      TaggableCommunity.create(community_id: 1, tag_id: 4)
+      TaggableCommunity.create(community_id: 1, tag_id: 5)
+      it "creates a new CommunityReccomendation for the current user" do
+        expect {
+          post community_reccomendations_url
+        }.to change(CommunityReccomendation.where(user: current_user), :count).by(1)
+      end
+
+      it "redirects to the reccomendation page" do
+        post community_reccomendations_url
+        expect(response).to redirect_to(reccomendations_path)
       end
     end
 
-    context "with invalid parameters" do
-      it "does not create a new CommunityReccomendation" do
+    context "with matching commmunity (by tags 20%)" do
+      Community.create(name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "https://open.spotify.com/playlist/1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
+      TaggableCommunity.create(community_id: 1, tag_id: 1)
+      TaggableCommunity.create(community_id: 1, tag_id: 4)
+      TaggableCommunity.create(community_id: 1, tag_id: 5)
+      TaggableCommunity.create(community_id: 1, tag_id: 6)
+      TaggableCommunity.create(community_id: 1, tag_id: 7)
+      it "doesn't creates a new CommunityReccomendation for the current user" do
         expect {
-          post community_reccomendations_url, params: { community_reccomendation: invalid_attributes }
-        }.to change(CommunityReccomendation, :count).by(0)
+          post community_reccomendations_url
+        }.to change(CommunityReccomendation.where(user: current_user), :count).by(0)
       end
 
-      it "renders a successful response (i.e. to display the 'new' template)" do
-        post community_reccomendations_url, params: { community_reccomendation: invalid_attributes }
-        expect(response).to be_successful
+      it "redirects to the reccomendation page" do
+        post community_reccomendations_url
+        expect(response).to redirect_to(reccomendations_path)
       end
     end
   end
 
-  describe "PATCH /update" do
-    context "with valid parameters" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
-
-      it "updates the requested community_reccomendation" do
-        community_reccomendation = CommunityReccomendation.create! valid_attributes
-        patch community_reccomendation_url(community_reccomendation), params: { community_reccomendation: new_attributes }
-        community_reccomendation.reload
-        skip("Add assertions for updated state")
-      end
-
-      it "redirects to the community_reccomendation" do
-        community_reccomendation = CommunityReccomendation.create! valid_attributes
-        patch community_reccomendation_url(community_reccomendation), params: { community_reccomendation: new_attributes }
-        community_reccomendation.reload
-        expect(response).to redirect_to(community_reccomendation_url(community_reccomendation))
-      end
-    end
-
-    context "with invalid parameters" do
-      it "renders a successful response (i.e. to display the 'edit' template)" do
-        community_reccomendation = CommunityReccomendation.create! valid_attributes
-        patch community_reccomendation_url(community_reccomendation), params: { community_reccomendation: invalid_attributes }
-        expect(response).to be_successful
-      end
-    end
-  end
-
-  describe "DELETE /destroy" do
+=begin   describe "DELETE /destroy" do
     it "destroys the requested community_reccomendation" do
       community_reccomendation = CommunityReccomendation.create! valid_attributes
       expect {
@@ -127,5 +134,6 @@ RSpec.describe "/community_reccomendations", type: :request do
       delete community_reccomendation_url(community_reccomendation)
       expect(response).to redirect_to(community_reccomendations_url)
     end
-  end
+  end 
+=end
 end

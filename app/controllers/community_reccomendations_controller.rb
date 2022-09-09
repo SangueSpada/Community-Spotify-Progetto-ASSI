@@ -25,7 +25,7 @@ class CommunityReccomendationsController < ApplicationController
 
     respond_to do |format|
       if @community_reccomendation.save
-        format.html { redirect_back, notice: "Community reccomendation was successfully created." }
+        format.html { redirect_to community_reccomendation_url(@community_reccomendation), notice: "Community reccomendation was successfully created." }
         format.json { render :show, status: :created, location: @community_reccomendation }
       else
         format.html { render :new, status: :unprocessable_entity }

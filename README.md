@@ -18,7 +18,7 @@
 5. Logout ✅
 6. Feed ✅
 7. Visualizzare profilo personale ✅
-8. Creare un post MANCA LA POSSIBILITA' DI AGGIUNGERE IFRAME
+8. Creare un post ✅
 9. Modificare un post ✅
 10. Eliminare post ✅
 11. Eliminare post da tecnico  ✅
@@ -62,10 +62,10 @@
 49. Aggiungere tag ✅
 50. Visualizzare recommendations musicali
 51. Visualizzare recommendations community
-52. Visualizzare eventi comunità
-53. Confermare partecipazione ad un evento comunità
-54. Annullare partecipazione ad un evento comunità
-55. Salvare un evento con oauth Google Calendar
+52. Visualizzare eventi comunità ✅
+53. Confermare partecipazione ad un evento comunità ✅
+54. Annullare partecipazione ad un evento comunità ✅
+55. Salvare un evento con oauth Google Calendar ✅
 56. Visualizzare chat private ✅
 57. Iniziare una chat privata ✅
 58. Inviare messaggi chat ✅

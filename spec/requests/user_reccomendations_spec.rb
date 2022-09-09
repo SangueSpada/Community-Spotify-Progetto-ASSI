@@ -17,7 +17,7 @@ RSpec.describe "/user_reccomendations", type: :request do
   # This should return the minimal set of attributes required to create a valid
   # UserReccomendation. As you add validations to UserReccomendation, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
+=begin   let(:valid_attributes) {
     skip("Add a hash of attributes valid for your model")
   }
 
@@ -127,5 +127,6 @@ RSpec.describe "/user_reccomendations", type: :request do
       delete user_reccomendation_url(user_reccomendation)
       expect(response).to redirect_to(user_reccomendations_url)
     end
-  end
+  end 
+=end
 end

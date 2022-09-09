@@ -149,15 +149,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_09_172735) do
     t.index ["user_id"], name: "index_taggable_users_on_user_id"
   end
 
-  create_table "user_reccomendations", force: :cascade do |t|
-    t.string "body"
-    t.integer "resource_id", null: false
-    t.string "resource_img"
-    t.binary "viewed"
-    t.integer "user_id", null: false
+  create_table "tags", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_user_reccomendations_on_user_id"
   end
 
   create_table "user_reccomendations", force: :cascade do |t|
@@ -193,6 +188,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_09_172735) do
   add_foreign_key "events", "users"
   add_foreign_key "posts", "users"
   add_foreign_key "reactions", "posts"
+  add_foreign_key "taggable_communities", "communities"
+  add_foreign_key "taggable_communities", "tags"
   add_foreign_key "taggable_users", "tags"
   add_foreign_key "taggable_users", "users"
   add_foreign_key "user_reccomendations", "users"
