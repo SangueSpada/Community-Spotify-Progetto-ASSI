@@ -1,0 +1,2 @@
+module CommunityReccomendationsHelper
+end

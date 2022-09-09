@@ -1,0 +1,1 @@
+json.partial! "community_reccomendations/community_reccomendation", community_reccomendation: @community_reccomendation

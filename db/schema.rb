@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_08_142827) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_09_172735) do
   create_table "chats", force: :cascade do |t|
     t.integer "user1_id"
     t.integer "user2_id"
@@ -46,6 +46,19 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_08_142827) do
     t.string "playlist"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "community_reccomendations", force: :cascade do |t|
+    t.string "body"
+    t.integer "resource_id", null: false
+    t.string "resource_img"
+    t.binary "viewed"
+    t.integer "community_id", null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["community_id"], name: "index_community_reccomendations_on_community_id"
+    t.index ["user_id"], name: "index_community_reccomendations_on_user_id"
   end
 
   create_table "events", force: :cascade do |t|
@@ -100,7 +113,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_08_142827) do
   end
 
   create_table "posts", force: :cascade do |t|
-    t.string "title"
+    t.string "spotify_content"
     t.string "body"
     t.integer "community_id"
     t.integer "user_id", null: false
@@ -118,13 +131,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_08_142827) do
     t.index ["post_id"], name: "index_reactions_on_post_id"
   end
 
-  create_table "reccomendations", force: :cascade do |t|
-    t.string "body"
-    t.integer "resource_id"
-    t.binary "resource_flag"
-    t.binary "viewed"
+  create_table "taggable_communities", force: :cascade do |t|
+    t.integer "community_id", null: false
+    t.integer "tag_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["community_id"], name: "index_taggable_communities_on_community_id"
+    t.index ["tag_id"], name: "index_taggable_communities_on_tag_id"
   end
 
   create_table "taggable_users", force: :cascade do |t|
@@ -136,19 +149,26 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_08_142827) do
     t.index ["user_id"], name: "index_taggable_users_on_user_id"
   end
 
-  create_table "taggables", force: :cascade do |t|
-    t.integer "community_id", null: false
-    t.integer "tag_id", null: false
+  create_table "user_reccomendations", force: :cascade do |t|
+    t.string "body"
+    t.integer "resource_id", null: false
+    t.string "resource_img"
+    t.binary "viewed"
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["community_id"], name: "index_taggables_on_community_id"
-    t.index ["tag_id"], name: "index_taggables_on_tag_id"
+    t.index ["user_id"], name: "index_user_reccomendations_on_user_id"
   end
 
-  create_table "tags", force: :cascade do |t|
-    t.string "name"
+  create_table "user_reccomendations", force: :cascade do |t|
+    t.string "body"
+    t.integer "resource_id", null: false
+    t.string "resource_img"
+    t.binary "viewed"
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_reccomendations_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -157,6 +177,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_08_142827) do
     t.string "encrypted_password", default: "", null: false
     t.string "provider"
     t.string "avatar_url"
+    t.string "name"
+    t.text "spotify_hash"
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -166,11 +188,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_08_142827) do
   add_foreign_key "comment_reactions", "comments"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
+  add_foreign_key "community_reccomendations", "communities"
+  add_foreign_key "community_reccomendations", "users"
   add_foreign_key "events", "users"
   add_foreign_key "posts", "users"
   add_foreign_key "reactions", "posts"
   add_foreign_key "taggable_users", "tags"
   add_foreign_key "taggable_users", "users"
-  add_foreign_key "taggables", "communities"
-  add_foreign_key "taggables", "tags"
+  add_foreign_key "user_reccomendations", "users"
 end
