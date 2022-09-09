@@ -89,3 +89,7 @@ gem "pagy", "~> 5.10"
 
 gem "oauth2", "~> 2.0"
 gem "psych",  "4.0.0"
+
+group :development, :test do
+  gem "rspec-rails"
+end
