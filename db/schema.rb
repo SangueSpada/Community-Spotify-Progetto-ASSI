@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_07_175349) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_08_142827) do
   create_table "chats", force: :cascade do |t|
     t.integer "user1_id"
     t.integer "user2_id"
@@ -116,6 +116,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_07_175349) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_reactions_on_post_id"
+  end
+
+  create_table "reccomendations", force: :cascade do |t|
+    t.string "body"
+    t.integer "resource_id"
+    t.binary "resource_flag"
+    t.binary "viewed"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "taggable_communities", force: :cascade do |t|
