@@ -43,6 +43,8 @@ Rails.application.routes.draw do
 
   resources :events
 
+  resources :reccomendation
+
   resources :communities do
     resources :posts
     resources :events

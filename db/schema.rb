@@ -119,8 +119,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_08_142827) do
   end
 
   create_table "reccomendations", force: :cascade do |t|
-    t.integer "id_reference"
-    t.binary "flag"
+    t.string "body"
+    t.integer "resource_id"
+    t.binary "resource_flag"
+    t.binary "viewed"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
