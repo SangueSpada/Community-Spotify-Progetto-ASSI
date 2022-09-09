@@ -20,3 +20,5 @@ Tag.create(name: 'Alternative')
 Tag.create(name: 'Sperimentale')
 Tag.create(name: 'Hardcore')
 Tag.create(name: 'Groovy')
+
+Reccomendation.create()
