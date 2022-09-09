@@ -1,2 +1,37 @@
-<div id="<%= dom_id reccomendation %>">
-</div>
+<li>
+    <!-- begin timeline-icon -->
+    <div class="timeline-icon">
+        <a href="javascript:;">&nbsp;</a>
+    </div>
+    <!-- end timeline-icon -->
+
+    <!-- begin timeline-body -->
+    <div class="timeline-body">
+        <div class="row timeline-header">
+            <div class="col-10 col-md-11 post-header align-content-center">
+                <h3>Dai un'occhiata a <%= reccomendation.body %>, potreste avere in comune più di quello che pensi</h3>
+                <small></small>
+            </div>
+        </div>
+
+        <div class="timeline-content">
+            <% if reccomendation.resource_flag == 0 %>
+                <a href="/communities/<%= String(reccomendation.resource_id) %>"><%= Communities.find(reccomendation.resource_id).name %></a>
+            <% else %>
+                <% reccomended_user = User.find(reccomendation.resource_id) %>
+                <a href="/users/<%= String(reccomendation.resource_id) %>"><%= reccomended_user.name %></a>
+            <% end %>
+
+            <% if reccomendation.resource_img %>
+                <div class="profile-header-img">
+                    <img src="<%=reccomendation.resource_img%>" alt="">
+                </div>
+            <% end %>
+
+            <%= button_to "Aggiungi evento al tuo Calendar", new_googlecalendar_event_path(event, 'primary'), class:"btn btn-primary", method: :post %>
+            <%= button_to "Elimina evento dal tuo Calendar", delete_googlecalendar_event_path(event, 'primary'), class:"btn btn-primary", method: :delete %>
+        </div>
+        
+    </div>
+    <!-- end timeline-body -->
+</li>

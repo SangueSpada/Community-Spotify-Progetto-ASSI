@@ -22,15 +22,8 @@ class ReccomendationsController < ApplicationController
   # POST /reccomendations or /reccomendations.json
   def create
     @reccomendation = Reccomendation.new(reccomendation_params)
-
-    respond_to do |format|
-      if @reccomendation.save
-        format.html { redirect_to reccomendation_url(@reccomendation), notice: "Reccomendation was successfully created." }
-        format.json { render :show, status: :created, location: @reccomendation }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @reccomendation.errors, status: :unprocessable_entity }
-      end
+    if @reccomendation.save
+      redirect_back
     end
   end
 
@@ -71,6 +64,6 @@ class ReccomendationsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def reccomendation_params
-      params.fetch(:reccomendation, {})
+      params.require(:reccomendation).permit(:body, :resource_id, :resource_flag, :resource_img, :viewed)
     end
 end
