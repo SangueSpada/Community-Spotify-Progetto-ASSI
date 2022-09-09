@@ -21,7 +21,7 @@ class ChatsController < ApplicationController
   end
   def destroy 
     @chat.destroy
-    redirect_to chat_path(@chat)
+    redirect_to chat_path
   end
 
   
@@ -36,9 +36,12 @@ class ChatsController < ApplicationController
         @chat=Chat.where(user2_id: params[:user2_id],user1_id: current_user.id).first
         redirect_to chat_path(@chat)
       end
-    else
+    elsif Chat.between(current_user.id,params[:user2_id]).present?
       @chat = Chat.between(current_user.id,params[:user2_id]).first
       redirect_to chat_path(@chat)
+    else
+      #redirect_back(fallback_location: root_path) 
+      redirect_to root_path
     end
 =begin    chat_messages_path(@chat)  
 =end

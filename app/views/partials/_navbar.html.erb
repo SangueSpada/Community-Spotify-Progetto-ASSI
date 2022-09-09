@@ -36,12 +36,12 @@
             <a href="#" class=" nav-link d-block text-decoration-none" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
               <%if current_modder%>
                 Benvenuto Modder <%= current_modder.email %>
-              <%else%>
+              <%elsif current_user%>
                 Benvenuto <%= current_user.name %> <img id="profilo_imm" src="<%=current_user.avatar_url%>" alt="mdo" width="48" height="48" class="rounded-circle">
               <%end%>
             </a>
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="dropdownUser1" style="position: absolute;">
-              <%unless current_modder%>
+              <%if current_user%>
                 <li><a class="dropdown-item" href="/users/<%=current_user.uid%>" >Profilo</a></li>
               <%end%>
                 <li>
