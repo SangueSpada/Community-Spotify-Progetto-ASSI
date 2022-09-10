@@ -3,7 +3,6 @@ class CreateCommunityReccomendations < ActiveRecord::Migration[7.0]
     create_table :community_reccomendations do |t|
       t.string :body
 
-      t.integer :resource_id, null: false
       t.string :resource_img
 
       t.binary :viewed

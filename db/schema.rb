@@ -50,7 +50,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_09_172735) do
 
   create_table "community_reccomendations", force: :cascade do |t|
     t.string "body"
-    t.integer "resource_id", null: false
     t.string "resource_img"
     t.binary "viewed"
     t.integer "community_id", null: false
