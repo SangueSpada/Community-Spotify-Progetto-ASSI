@@ -5,52 +5,52 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-    <%if current_modder%>
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="/tags"><i class="bi bi-tags"></i></a>
-        </li>
-      </ul>
-    <%end%>
-    <%unless current_modder%>
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item dropdown" >
-            <a class="nav-link" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-file-earmark-play"></i></a>
-            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdown01">
-              <li><a class="dropdown-item" href="/communities/new">Crea Community</a></li>
-              <li><a class="dropdown-item" href="/posts/new">Crea Post</a></li>
-            </ul>
-          </li>
+      <%if !current_user && current_modder%>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" href="/reccomendations"><i class="bi bi-compass"></i></a>
+            <a class="nav-link" href="/tags"><i class="bi bi-tags"></i></a>
           </li>
-          <li class="nav-item">
-          
-            <a class="nav-link" href="/chats"><i class="bi bi-chat"></i></a>
+        </ul>
+      <%end%> 
+      <%unless current_modder%>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item dropdown" >
+              <a class="nav-link" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-file-earmark-play"></i></a>
+              <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdown01">
+                <li><a class="dropdown-item" href="/communities/new">Crea Community</a></li>
+                <li><a class="dropdown-item" href="/posts/new">Crea Post</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/reccomendations"><i class="bi bi-compass"></i></a>
+            </li>
+            <li class="nav-item">
+            
+              <a class="nav-link" href="/chats"><i class="bi bi-chat"></i></a>
+            </li>
+        </ul>
+      <%end%>
+      <%= render "search/form" %>
+      <ul class="navbar-nav mb-2 mb-lg-0" id="profile">
+          <li class="nav-item dropdown">
+              <a href="#" class=" nav-link d-block text-decoration-none" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                <%if current_modder%>
+                  Benvenuto Modder <%= current_modder.email %>
+                <%elsif current_user%>
+                  Benvenuto <%= current_user.name %> <img id="profilo_imm" src="<%=current_user.avatar_url%>" alt="mdo" width="48" height="48" class="rounded-circle">
+                <%end%>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="dropdownUser1" style="position: absolute;">
+                <%if current_user%>
+                  <li><a class="dropdown-item" href="/users/<%=current_user.uid%>" >Profilo</a></li>
+                <%end%>
+                  <li>
+                      <hr class="dropdown-divider">
+                  </li>
+                  <li><%= button_to "Logout", destroy_user_session_path, data: {turbo: "false"},class: "dropdown-item", method: :delete %></li>
+              </ul>
           </li>
       </ul>
-    <%end%>
-    <%= render "search/form" %>
-    <ul class="navbar-nav mb-2 mb-lg-0" id="profile">
-        <li class="nav-item dropdown">
-            <a href="#" class=" nav-link d-block text-decoration-none" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-              <%if current_modder%>
-                Benvenuto Modder <%= current_modder.email %>
-              <%elsif current_user%>
-                Benvenuto <%= current_user.name %> <img id="profilo_imm" src="<%=current_user.avatar_url%>" alt="mdo" width="48" height="48" class="rounded-circle">
-              <%end%>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="dropdownUser1" style="position: absolute;">
-              <%if current_user%>
-                <li><a class="dropdown-item" href="/users/<%=current_user.uid%>" >Profilo</a></li>
-              <%end%>
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-                <li><%= button_to "Logout", destroy_user_session_path, data: {turbo: "false"},class: "dropdown-item", method: :delete %></li>
-            </ul>
-        </li>
-    </ul>
     </div>      
   </div>
 </nav>
