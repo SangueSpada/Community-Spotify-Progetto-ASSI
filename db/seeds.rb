@@ -21,9 +21,9 @@ Tag.create(name: 'Sperimentale')
 Tag.create(name: 'Hardcore')
 Tag.create(name: 'Groovy')
 
-Community.create(name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "https://open.spotify.com/playlist/1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
-Community.create(name: "COCK", creator: "Pluto", description: "BBBBBBBBBBBBBBBB", playlist: "https://open.spotify.com/playlist/00fyBjjIZWbUya1sg9n9FI?si=2dd08635ebc249c7")
-Community.create(name: "BRO", creator: "Paperino", description: "CCCCCCCCCCCCCCCC", playlist: "https://open.spotify.com/playlist/3Efd5k4pAbgcr9Phd3GkcM?si=fdbddb4f01364f41")
+Community.create(name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
+Community.create(name: "COCK", creator: "Pluto", description: "BBBBBBBBBBBBBBBB", playlist: "00fyBjjIZWbUya1sg9n9FI?si=2dd08635ebc249c7")
+Community.create(name: "BRO", creator: "Paperino", description: "CCCCCCCCCCCCCCCC", playlist: "3Efd5k4pAbgcr9Phd3GkcM?si=fdbddb4f01364f41")
 
 TaggableCommunity.create(community_id: 1, tag_id: 6)
 TaggableCommunity.create(community_id: 1, tag_id: 10)

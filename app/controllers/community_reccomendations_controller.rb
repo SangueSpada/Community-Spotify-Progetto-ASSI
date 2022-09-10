@@ -4,34 +4,19 @@ class CommunityReccomendationsController < ApplicationController
   # POST /community_reccomendations or /community_reccomendations.json
   def create
     user_tags = current_user.tags
+
     communities = Community.all
+
     @rec_communities = reccomended_communities(user_tags, communities)
 
     @rec_communities.each do |community|
 
-      CommunityReccomendation.create(body: 'questa community', community: community.id, user: @community_reccomendation.user.id)
+      CommunityReccomendation.create(body: 'questa community', community: community, user: current_user)
       
     end
 
+    redirect_back(fallback_location: reccomendations_path)
 
-
-
-
-
-
-=begin 
-    @community_reccomendation = CommunityReccomendation.new(community_reccomendation_params)
-
-    respond_to do |format|
-      if @community_reccomendation.save
-        format.html { redirect_to community_reccomendation_url(@community_reccomendation), notice: "Community reccomendation was successfully created." }
-        format.json { render :show, status: :created, location: @community_reccomendation }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @community_reccomendation.errors, status: :unprocessable_entity }
-      end
-    end 
-=end
   end
 
   # PATCH/PUT /community_reccomendations/1 or /community_reccomendations/1.json
@@ -65,21 +50,22 @@ class CommunityReccomendationsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def community_reccomendation_params
-      params.require(:reccomendation).permit(:body, :resource_img, :viewed, :community_id)
+      params.require(:reccomendation).permit(:body, :resource_img, :viewed, :community, :user)
     end
 
     def reccomended_communities(tags, communities)
-      counter = 0
 
       ret = Array.new
 
       communities.each do |community|
 
+        counter = 0
+
         comm_tags = community.tags.count
 
         tags.each do |tag|
 
-          if community.tags.find(tag.id).present?
+          if community.tags.include?(tag)
             counter+=1
           end
 
@@ -89,12 +75,15 @@ class CommunityReccomendationsController < ApplicationController
           ret.push(community)
         end
 
-        if counter == 3
-          break
+        puts ret.length
+
+        if ret.length == 3
+          return ret
         end
 
       end
 
+      puts ret
       return ret
     end
 
