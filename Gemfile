@@ -69,6 +69,7 @@ group :test do
   gem 'capybara'
   gem 'selenium-webdriver'
   gem 'webdrivers'
+  gem 'factory_bot_rails'
 end
 group :test do
   gem 'warden-rspec-rails'
@@ -94,5 +95,6 @@ gem "oauth2", "~> 2.0"
 gem "psych",  "4.0.0"
 
 group :development, :test do
+  gem 'devise'
   gem "rspec-rails"
 end
