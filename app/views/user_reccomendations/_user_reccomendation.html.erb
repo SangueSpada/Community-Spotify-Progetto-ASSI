@@ -9,17 +9,17 @@
     <div class="timeline-body">
         <div class="row timeline-header">
             <div class="col-10 col-md-11 post-header align-content-center">
-                <h3>Dai un'occhiata a <%= reccomendation.body %>, potreste avere in comune più di quello che pensi</h3>
+                <h3>Dai un'occhiata a <%= user_reccomendation.body %>, potreste avere in comune più di quello che pensi</h3>
                 <small></small>
             </div>
         </div>
 
         <div class="timeline-content">
-            <a href="/communities/<%= reccomendation.user.id.to_s %>"><%= reccomendation.user.name %></a>
+            <span class="username" style="font-size:80%"><a href="/communities/<%= user_reccomendation.user.id.to_s %>"><%= user_reccomendation.user.name %></a></span>
 
-            <% if creccomendation.resource_img %>
+            <% if user_reccomendation.resource_img %>
                 <div class="profile-header-img">
-                    <img src="<%=reccomendation.resource_img%>" alt="">
+                    <img src="<%=user_reccomendation.resource_img%>" alt="">
                 </div>
             <% end %>
         </div>

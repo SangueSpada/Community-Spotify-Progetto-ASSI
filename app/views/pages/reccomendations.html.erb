@@ -1,24 +1,48 @@
 <%= render "partials/navbar" %>
 <div style="padding: 40pt"></div>
 
-<div id="reccomendations_generator">
-  <%= link_to "Genera reccomendations", new_reccomendation_path(), class:"btn btn-primary" %>
+<div id="reccomendations_generator" class="container">
+
+  <div class="row align-text-center">
+    <%= button_to "Genera reccomendations", community_reccomendations_path(), class:"btn btn-primary", method: "POST" %>
+  </div>
+
 </div>
 
-<h1>Community Reccomendations</h1>
+<div id="community_reccomendations" class="container">
+  <div class="row align-text-center">
 
-<div id="community_reccomendations">
+    <h1>Community Reccomendations</h1>
 
-  <%= render @community_reccomendations %>
+  </div>
+
+  <div class="row">
+    <ul class="timeline">
+
+      <% @community_reccomendations.each do |reccomendation| %>
+        <%= render reccomendation %>
+      <% end %>
+
+    </ul>
+  <div>
   
 </div>
 
-<h1>User Reccomendations</h1>
+<div id="user_reccomendations" class="container">
+  <div class="row align-text-center">
 
-<div id="user_reccomendations">
+    <h1>User Reccomendations</h1>
 
-  <% @user_reccomendations.each do |reccomendation| %>
-    <%= render reccomendation %>
-  <% end %>
+  </div>
+
+  <div class="row">
+    <ul class="timeline">
+
+      <% @user_reccomendations.each do |reccomendation| %>
+        <%= render reccomendation %>
+      <% end %>
+
+    </ul>
+  <div>
   
 </div>
