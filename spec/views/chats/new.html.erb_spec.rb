@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "chats/new", type: :view do
-=begin   before(:each) do
+before(:each) do
     assign(:chat, Chat.new())
   end
 
@@ -11,5 +11,4 @@ RSpec.describe "chats/new", type: :view do
     assert_select "form[action=?][method=?]", chats_path, "post" do
     end
   end 
-=end
 end
