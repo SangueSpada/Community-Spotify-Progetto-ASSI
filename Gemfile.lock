@@ -109,6 +109,8 @@ GEM
     e2mmap (0.1.0)
     erb-formatter (0.3.0)
     erubi (1.10.0)
+    factory_bot (6.2.1)
+      activesupport (>= 5.0.0)
     faraday (2.3.0)
       faraday-net_http (~> 2.0)
       ruby2_keywords (>= 0.0.4)
@@ -385,6 +387,7 @@ GEM
     version_gem (1.1.0)
     warden (1.2.9)
       rack (>= 2.0.9)
+    warden-rspec-rails (0.3.0)
     web-console (4.2.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -416,6 +419,7 @@ DEPENDENCIES
   debug
   devise
   erb-formatter
+  factory_bot
   google-api-client
   importmap-rails
   jbuilder
@@ -438,6 +442,7 @@ DEPENDENCIES
   stimulus-rails
   turbo-rails
   tzinfo-data
+  warden-rspec-rails
   web-console
   webdrivers
 

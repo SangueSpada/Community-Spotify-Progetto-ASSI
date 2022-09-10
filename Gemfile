@@ -70,7 +70,10 @@ group :test do
   gem 'selenium-webdriver'
   gem 'webdrivers'
 end
-
+group :test do
+  gem 'warden-rspec-rails'
+end
+gem 'factory_bot'
 # GEMME ESTERNE
 gem 'canard', '~> 0.6.2.pre'
 gem 'devise'

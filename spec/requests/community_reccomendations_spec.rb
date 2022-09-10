@@ -18,20 +18,28 @@ RSpec.describe "/community_reccomendations", type: :request do
   # CommunityReccomendation. As you add validations to CommunityReccomendation, be sure to
   # adjust the attributes here as well
   current_user = User.new(email: "daniele@example.com",password: "password",id:1,uid:"1");
-  before do
+  rock=Tag.new(name: 'Rock')
+  pop=Tag.new(name: 'Pop')
+  metal=Tag.new(name: 'Metal')
+  indie=Tag.new(name: 'Indie')
+  classica=Tag.new(name: 'Classica')
+  rap=Tag.new(name: 'Rap')
+  electro=Tag.new(name: 'Electro')
+  before(:example) do
+    current_user = User.create(email: "daniele@example.com",password: "password",id:1,uid:"1");
+    rock=Tag.create(name: 'Rock')
+    pop=Tag.create(name: 'Pop')
+    metal=Tag.create(name: 'Metal')
+    indie=Tag.create(name: 'Indie')
+    classica=Tag.create(name: 'Classica')
+    rap=Tag.create(name: 'Rap')
+    electro=Tag.create(name: 'Electro')
+    TaggableUser.create(user: current_user, tag: rock)
+    TaggableUser.create(user: current_user, tag: pop)
+    TaggableUser.create(user: current_user, tag: metal)
+       
     sign_in current_user
   end
-  Tag.create(name: 'Rock')
-  Tag.create(name: 'Pop')
-  Tag.create(name: 'Metal')
-  Tag.create(name: 'Indie')
-  Tag.create(name: 'Classica')
-  Tag.create(name: 'Rap')
-  Tag.create(name: 'Electro')
-  TaggableUser.create(user_id: 1, tag_id: 1)
-  TaggableUser.create(user_id: 1, tag_id: 2)
-  TaggableUser.create(user_id: 1, tag_id: 3)
-Tag.create(name: 'Groovy')
   let(:valid_attributes) {
     skip("Add a hash of attributes valid for your model")
   }
@@ -61,10 +69,10 @@ Tag.create(name: 'Groovy')
 
   describe "POST /create" do
     context "with matching commmunity (by tags 100%)" do
-      Community.create(name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "https://open.spotify.com/playlist/1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
-      TaggableCommunity.create(community_id: 1, tag_id: 1)
-      TaggableCommunity.create(community_id: 1, tag_id: 2)
-      TaggableCommunity.create(community_id: 1, tag_id: 3)
+      @comm=Community.create(name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
+      TaggableCommunity.create(community: @comm, tag: rock)
+      TaggableCommunity.create(community: @comm, tag: pop)
+      TaggableCommunity.create(community: @comm, tag: metal) 
       it "creates a new CommunityReccomendation for the current user" do
         expect {
           post community_reccomendations_url
@@ -75,14 +83,15 @@ Tag.create(name: 'Groovy')
         post community_reccomendations_url
         expect(response).to redirect_to(reccomendations_path)
       end
+      @comm.destroy
     end
     context "with matching commmunity (by tags 60%)" do
-      Community.create(name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "https://open.spotify.com/playlist/1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
-      TaggableCommunity.create(community_id: 1, tag_id: 1)
-      TaggableCommunity.create(community_id: 1, tag_id: 2)
-      TaggableCommunity.create(community_id: 1, tag_id: 3)
-      TaggableCommunity.create(community_id: 1, tag_id: 4)
-      TaggableCommunity.create(community_id: 1, tag_id: 5)
+      @comm=Community.create(name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "https://open.spotify.com/playlist/1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
+      TaggableCommunity.create(community: @comm, tag: rock)
+      TaggableCommunity.create(community: @comm, tag: pop)
+      TaggableCommunity.create(community: @comm, tag: metal)
+      TaggableCommunity.create(community: @comm, tag: indie)
+      TaggableCommunity.create(community: @comm, tag: classica)
       it "creates a new CommunityReccomendation for the current user" do
         expect {
           post community_reccomendations_url
@@ -93,15 +102,16 @@ Tag.create(name: 'Groovy')
         post community_reccomendations_url
         expect(response).to redirect_to(reccomendations_path)
       end
+      @comm.destroy
     end
 
     context "with matching commmunity (by tags 20%)" do
-      Community.create(name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "https://open.spotify.com/playlist/1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
-      TaggableCommunity.create(community_id: 1, tag_id: 1)
-      TaggableCommunity.create(community_id: 1, tag_id: 4)
-      TaggableCommunity.create(community_id: 1, tag_id: 5)
-      TaggableCommunity.create(community_id: 1, tag_id: 6)
-      TaggableCommunity.create(community_id: 1, tag_id: 7)
+      @comm=Community.create(name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "https://open.spotify.com/playlist/1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
+      TaggableCommunity.create(community: @comm, tag: rock)
+      TaggableCommunity.create(community: @comm, tag: electro)
+      TaggableCommunity.create(community: @comm, tag: rap)
+      TaggableCommunity.create(community: @comm, tag: indie)
+      TaggableCommunity.create(community: @comm, tag: classica)
       it "doesn't creates a new CommunityReccomendation for the current user" do
         expect {
           post community_reccomendations_url
@@ -112,7 +122,9 @@ Tag.create(name: 'Groovy')
         post community_reccomendations_url
         expect(response).to redirect_to(reccomendations_path)
       end
+      @comm.destroy
     end
+    
   end
 
 =begin   describe "DELETE /destroy" do

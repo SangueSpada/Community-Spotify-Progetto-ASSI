@@ -4,10 +4,9 @@ RSpec.describe "chats/index", type: :view do
   user1 = User.new(email: "daniele@example.com",password: "password",id:1,uid:"1", name:"daniele" );
   user2 = User.new(email: "fabio@example.com",password: "password",id:2,uid:"2" , name: "fabio");
   user3 = User.new(email: "fabio@example.com",password: "password",id:3,uid:"3", name: "fabio" );
-=begin   before do
-    sign_in user1
+  before do
+    
   end 
-=end
   before(:each) do
     @chats=assign(:chats, [
       Chat.create!(user1: user1,user2: user2),
