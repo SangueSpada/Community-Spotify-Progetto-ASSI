@@ -6,31 +6,7 @@
             <ul class="list-group chat-group">
             <% atleast_one  = false%>
             <% @chats.each do |chat| %>
-                <% if chat.user1==current_user %>
-                    <% atleast_one  = true%>
-                    <li class="list-group-item chat-item"> 
-
-                        <div class="chat-header-cover"></div>
-                        <div class="chat-header-content">
-                            <span class="userimage"><img src="<%=chat.user2.avatar_url%>" alt=""width="50" height="50" class="rounded-circle"></span>
-                            <span class="username"><%= link_to "Chat con "+chat.user2.name, chat %></span>
-                            <span class=" chat-button"><%= button_to 'X', chat_path(chat),class: 'btn btn-outline-dark', data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %></span>
-                        </div>
-
-                    </li>
-                <% elsif chat.user2==current_user%>
-                    <% atleast_one  = true%>
-                    <li class="list-group-item chat-item">
-
-                        <div class="chat-header-cover"></div>
-                        <div class="chat-header-content">
-                            <span class="userimage"><img src="<%=chat.user1.avatar_url%>" alt="" width="50" height="50"class="rounded-circle"></span>
-                            <span class="username"><%= link_to "Chat con "+chat.user1.name, chat %></span>
-                            <span class=" chat-button"><%= button_to 'X', chat_path(chat),class: 'btn btn-outline-dark', data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %></span>
-                        </div>
-
-                    </li>
-                <% end %>
+               <%= render chat%>
             <% end %>
             
             </ul>

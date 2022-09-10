@@ -3,7 +3,7 @@ class CommunityReccomendationsController < ApplicationController
 
   # POST /community_reccomendations or /community_reccomendations.json
   def create
-    user_tags = @community_reccomendation.user.tags
+    user_tags = current_user.tags
     communities = Community.all
     @rec_communities = reccomended_communities(user_tags, communities)
 
@@ -79,8 +79,8 @@ class CommunityReccomendationsController < ApplicationController
 
         tags.each do |tag|
 
-          if community.find(tag.id)
-            counter++
+          if community.tags.find(tag.id).present?
+            counter+=1
           end
 
         end

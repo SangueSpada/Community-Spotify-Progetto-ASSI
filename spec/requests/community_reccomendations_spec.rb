@@ -18,25 +18,19 @@ RSpec.describe "/community_reccomendations", type: :request do
   # CommunityReccomendation. As you add validations to CommunityReccomendation, be sure to
   # adjust the attributes here as well
   current_user = User.new(email: "daniele@example.com",password: "password",id:1,uid:"1");
-  rock=Tag.new(name: 'Rock')
-  pop=Tag.new(name: 'Pop')
-  metal=Tag.new(name: 'Metal')
-  indie=Tag.new(name: 'Indie')
-  classica=Tag.new(name: 'Classica')
-  rap=Tag.new(name: 'Rap')
-  electro=Tag.new(name: 'Electro')
   before(:example) do
-    current_user = User.create(email: "daniele@example.com",password: "password",id:1,uid:"1");
-    rock=Tag.create(name: 'Rock')
-    pop=Tag.create(name: 'Pop')
-    metal=Tag.create(name: 'Metal')
-    indie=Tag.create(name: 'Indie')
-    classica=Tag.create(name: 'Classica')
-    rap=Tag.create(name: 'Rap')
-    electro=Tag.create(name: 'Electro')
-    TaggableUser.create(user: current_user, tag: rock)
-    TaggableUser.create(user: current_user, tag: pop)
-    TaggableUser.create(user: current_user, tag: metal)
+    current_user = User.first_or_create(email: "daniele@example.com",password: "password",id:1,uid:"1");
+    rock=Tag.new(name: 'Rock')
+    pop=Tag.new(name: 'Pop')
+    metal=Tag.new(name: 'Metal')
+    indie=Tag.new(name: 'Indie')
+    Tag.new(name: 'Classica')
+    Tag.new(name: 'Rap')
+    Tag.new(name: 'Cazzi')
+
+    TaggableUser.first_or_create(user: current_user, tag: rock)
+    TaggableUser.first_or_create(user: current_user, tag: pop)
+    TaggableUser.first_or_create(user: current_user, tag: metal)
        
     sign_in current_user
   end
@@ -70,9 +64,9 @@ RSpec.describe "/community_reccomendations", type: :request do
   describe "POST /create" do
     context "with matching commmunity (by tags 100%)" do
       @comm=Community.create(name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
-      TaggableCommunity.create(community: @comm, tag: rock)
-      TaggableCommunity.create(community: @comm, tag: pop)
-      TaggableCommunity.create(community: @comm, tag: metal) 
+      TaggableCommunity.create(community: @comm, tag_id: 1)
+      TaggableCommunity.create(community: @comm, tag_id: 2)
+      TaggableCommunity.create(community: @comm, tag_id: 3) 
       it "creates a new CommunityReccomendation for the current user" do
         expect {
           post community_reccomendations_url
@@ -87,11 +81,11 @@ RSpec.describe "/community_reccomendations", type: :request do
     end
     context "with matching commmunity (by tags 60%)" do
       @comm=Community.create(name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "https://open.spotify.com/playlist/1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
-      TaggableCommunity.create(community: @comm, tag: rock)
-      TaggableCommunity.create(community: @comm, tag: pop)
-      TaggableCommunity.create(community: @comm, tag: metal)
-      TaggableCommunity.create(community: @comm, tag: indie)
-      TaggableCommunity.create(community: @comm, tag: classica)
+      TaggableCommunity.create(community: @comm, tag_id: 1)
+      TaggableCommunity.create(community: @comm, tag_id: 2)
+      TaggableCommunity.create(community: @comm, tag_id: 3)
+      TaggableCommunity.create(community: @comm, tag_id: 4)
+      TaggableCommunity.create(community: @comm, tag_id: 5)
       it "creates a new CommunityReccomendation for the current user" do
         expect {
           post community_reccomendations_url
@@ -107,11 +101,11 @@ RSpec.describe "/community_reccomendations", type: :request do
 
     context "with matching commmunity (by tags 20%)" do
       @comm=Community.create(name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "https://open.spotify.com/playlist/1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
-      TaggableCommunity.create(community: @comm, tag: rock)
-      TaggableCommunity.create(community: @comm, tag: electro)
-      TaggableCommunity.create(community: @comm, tag: rap)
-      TaggableCommunity.create(community: @comm, tag: indie)
-      TaggableCommunity.create(community: @comm, tag: classica)
+      TaggableCommunity.create(community: @comm, tag_id: 1)
+      TaggableCommunity.create(community: @comm, tag_id: 6)
+      TaggableCommunity.create(community: @comm, tag_id: 7)
+      TaggableCommunity.create(community: @comm, tag_id: 4)
+      TaggableCommunity.create(community: @comm, tag_id: 5)
       it "doesn't creates a new CommunityReccomendation for the current user" do
         expect {
           post community_reccomendations_url

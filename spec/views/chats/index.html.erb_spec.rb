@@ -14,9 +14,10 @@ RSpec.describe "chats/index", type: :view do
       Chat.create!(user1: user3,user2: user2)
     ])
   end    
-  it "renders a list of chats" do
+  it "renders the chat partial for each chat" do
+    stub_template "chat/_chat.html.erb"
     render
-    assert_select 'li>div>span', text: 'fabio'.to_s,count:2
-    assert_select 'li>div>span', text: 'fabio'.to_s,count:2
+    assert_select 'li>div>span', text: 'fabio'.to_s,count:1
+    assert_select 'li>div>span', text: 'fabio'.to_s,count:1
   end
 end
