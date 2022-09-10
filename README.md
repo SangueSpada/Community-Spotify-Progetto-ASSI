@@ -29,10 +29,10 @@
 16. Elimina commento da un post da tecnico  ✅
 17. Follow utente ✅
 18. Unfollow utente ✅
-19. ...
-20. Visualizzare profilo di un utente ✅
-21. Visualizzare followers utente ✅
-22. Visualizzare following utente ✅
+19. Visualizzare profilo di un utente ✅
+20. Visualizzare followers utente ✅
+21. Visualizzare following utente ✅
+22. Visualizzare tag di un utente ✅
 23. Salvare una playlist ✅
 24. Rimuovere una playlist ✅
 25. Cercare utente per nome ✅
