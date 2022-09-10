@@ -60,7 +60,7 @@
 47. Trasferire ruolo proprietario in una comunità ✅
 48. Eliminare una comunità ✅
 49. Aggiungere tag ✅
-50. Visualizzare recommendations musicali
+50. Visualizzare recommendations users
 51. Visualizzare recommendations community
 52. Visualizzare eventi comunità ✅
 53. Confermare partecipazione ad un evento comunità ✅
