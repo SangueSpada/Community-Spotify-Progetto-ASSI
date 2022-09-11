@@ -3,19 +3,39 @@ class CommunityReccomendationsController < ApplicationController
 
   # POST /community_reccomendations or /community_reccomendations.json
   def create
+
     user_tags = current_user.tags
 
+    puts "Tag dell'utente"
+    user_tags.each do |tag|
+      puts tag.name
+    end
+
     communities = Community.all
+
+    puts "Community nel database"
+    communities.each do |comm|
+      puts comm.name
+    end
 
     @rec_communities = reccomended_communities(user_tags, communities)
 
     @rec_communities.each do |community|
 
-      CommunityReccomendation.create(body: 'questa community', community: community, user: current_user)
+      if !community.users.include?(current_user)
+
+        @new_recc = CommunityReccomendation.new(body: 'questa community', viewed: false, community: community, user: current_user)
+
+        if @new_recc.save
+          puts"Ci sono delle community che non sono state consigliate"
+          puts @new_recc
+        end
+        
+      end
       
     end
 
-    redirect_back(fallback_location: reccomendations_path)
+    redirect_to reccomendations_path
 
   end
 
@@ -50,7 +70,7 @@ class CommunityReccomendationsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def community_reccomendation_params
-      params.require(:reccomendation).permit(:body, :resource_img, :viewed, :community, :user)
+      params.require(:community_reccomendation).permit(:body, :resource_img, :viewed, :community, :user)
     end
 
     def reccomended_communities(tags, communities)
@@ -61,7 +81,7 @@ class CommunityReccomendationsController < ApplicationController
 
         counter = 0
 
-        comm_tags = community.tags.count
+        user_tags = tags.count
 
         tags.each do |tag|
 
@@ -71,11 +91,11 @@ class CommunityReccomendationsController < ApplicationController
 
         end
 
-        if counter/comm_tags >= 0.6
+        puts counter.to_f/user_tags
+
+        if counter.to_f/user_tags >= 0.6
           ret.push(community)
         end
-
-        puts ret.length
 
         if ret.length == 3
           return ret
@@ -83,7 +103,6 @@ class CommunityReccomendationsController < ApplicationController
 
       end
 
-      puts ret
       return ret
     end
 

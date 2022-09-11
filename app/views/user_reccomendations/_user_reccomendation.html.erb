@@ -15,7 +15,7 @@
         </div>
 
         <div class="timeline-content">
-            <span class="username" style="font-size:80%"><a href="/communities/<%= user_reccomendation.user.id.to_s %>"><%= user_reccomendation.user.name %></a></span>
+            <span class="username" style="font-size:80%"><a href="/users/<%= user_reccomendation.user.id.to_s %>"><%= user_reccomendation.resource.name %></a></span>
 
             <% if user_reccomendation.resource_img %>
                 <div class="profile-header-img">

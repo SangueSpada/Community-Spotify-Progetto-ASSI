@@ -1,37 +1,41 @@
 class UserReccomendationsController < ApplicationController
   before_action :set_user_reccomendation, only: %i[ show edit update destroy ]
 
-  # GET /user_reccomendations or /user_reccomendations.json
-  def index
-    @user_reccomendations = UserReccomendation.all
-  end
-
-  # GET /user_reccomendations/1 or /user_reccomendations/1.json
-  def show
-  end
-
-  # GET /user_reccomendations/new
-  def new
-    @user_reccomendation = UserReccomendation.new
-  end
-
-  # GET /user_reccomendations/1/edit
-  def edit
-  end
-
   # POST /user_reccomendations or /user_reccomendations.json
   def create
-    @user_reccomendation = UserReccomendation.new(user_reccomendation_params)
 
-    respond_to do |format|
-      if @user_reccomendation.save
-        format.html { redirect_to user_reccomendation_url(@user_reccomendation), notice: "User reccomendation was successfully created." }
-        format.json { render :show, status: :created, location: @user_reccomendation }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @user_reccomendation.errors, status: :unprocessable_entity }
-      end
+    user_tags = current_user.tags
+
+    puts "Tag dell'utente"
+    user_tags.each do |tag|
+      puts tag.name
     end
+
+    users = User.all
+
+    puts "Utenti nel database"
+    users.each do |usr|
+      puts usr.name
+    end
+
+    @rec_users = reccomended_users(user_tags, users)
+
+    @rec_users.each do |user|
+
+      if user != current_user && !user.followers.include?(current_user)
+        
+        @new_recc = UserReccomendation.new(body: 'questo utente', viewed: false, resource: user, user: current_user)
+
+        if @new_recc.save
+          puts"Ci sono degli utenti che non sono stati consigliati"
+          puts @new_recc
+        end
+
+      end
+      
+    end
+
+    redirect_to reccomendations_path
   end
 
   # PATCH/PUT /user_reccomendations/1 or /user_reccomendations/1.json
@@ -65,6 +69,41 @@ class UserReccomendationsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_reccomendation_params
-      params.fetch(:user_reccomendation, {})
+      params.require(:user_reccomendation).permit(:body, :resource_img, :viewed, :resource, :user)
+    end
+
+    def reccomended_users(tags, users)
+
+      ret = Array.new
+
+      users.each do |user|
+
+        puts user.tags
+
+        counter = 0
+
+        cur_usr_tags = tags.count
+
+        tags.each do |tag|
+
+          if user.tags.include?(tag)
+            counter+=1
+          end
+
+        end
+
+        puts counter.to_f/cur_usr_tags
+
+        if counter.to_f/cur_usr_tags >= 0.6
+          ret.push(user)
+        end
+
+        if ret.length == 3
+          return ret
+        end
+
+      end
+
+      return ret
     end
 end

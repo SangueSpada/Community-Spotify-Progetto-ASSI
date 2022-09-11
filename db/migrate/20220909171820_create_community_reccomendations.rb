@@ -4,7 +4,7 @@ class CreateCommunityReccomendations < ActiveRecord::Migration[7.0]
 
       t.string :body
       t.string :resource_img
-      t.binary :viewed
+      t.boolean :viewed
 
       t.references :community, null: false, foreign_key: true
       t.references :user, null: false, foreign_key: true
