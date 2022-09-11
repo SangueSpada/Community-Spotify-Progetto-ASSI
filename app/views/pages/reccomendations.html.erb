@@ -39,7 +39,6 @@
 
         <% if reccomendation.viewed == false %>
           <%= render reccomendation %>
-          <% reccomendation.viewed = true %>
         <% end %>
 
       <% end %>
@@ -60,10 +59,9 @@
     <ul class="timeline">
 
       <% @user_reccomendations.each do |reccomendation| %>
-      
+
         <% if reccomendation.viewed == false %>
           <%= render reccomendation %>
-          <% reccomendation.viewed = true %>
         <% end %>
 
       <% end %>

@@ -41,7 +41,13 @@ class CommunityReccomendationsController < ApplicationController
 
   # PATCH/PUT /community_reccomendations/1 or /community_reccomendations/1.json
   def update
-    respond_to do |format|
+
+    puts "Sono dentro update"
+
+    if @community_reccomendation.update(viewed: true)
+      redirect_to reccomendations_path
+    end
+=begin respond_to do |format|
       if @community_reccomendation.update(community_reccomendation_params)
         format.html { redirect_to community_reccomendation_url(@community_reccomendation), notice: "Community reccomendation was successfully updated." }
         format.json { render :show, status: :ok, location: @community_reccomendation }
@@ -49,7 +55,8 @@ class CommunityReccomendationsController < ApplicationController
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @community_reccomendation.errors, status: :unprocessable_entity }
       end
-    end
+    end 
+=end
   end
 
   # DELETE /community_reccomendations/1 or /community_reccomendations/1.json
