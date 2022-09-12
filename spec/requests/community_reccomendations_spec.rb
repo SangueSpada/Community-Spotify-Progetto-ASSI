@@ -19,19 +19,18 @@ RSpec.describe "/community_reccomendations", type: :request do
   # adjust the attributes here as well
   current_user = User.new(email: "daniele@example.com",password: "password",id:1,uid:"1");
   before(:example) do
-    current_user = User.first_or_create(email: "daniele@example.com",password: "password",id:1,uid:"1");
-    rock=Tag.new(name: 'Rock')
-    pop=Tag.new(name: 'Pop')
-    metal=Tag.new(name: 'Metal')
-    indie=Tag.new(name: 'Indie')
-    Tag.new(name: 'Classica')
-    Tag.new(name: 'Rap')
-    Tag.new(name: 'Cazzi')
+    current_user = User.create(email: "daniele@example.com",password: "password",id:1,uid:"1");
+    rock=create(:tag,name: 'Rock',id:1)
+    pop=create(:tag,name: 'Pop',id:2)
+    metal=create(:tag,name: 'Metal',id:3)
+    create(:tag,name: 'Indie',id:4)
+    create(:tag,name: 'Classica',id:5)
+    create(:tag,name: 'Rap',id:6)
+    create(:tag,name: 'Electro',id:7)
 
-    TaggableUser.first_or_create(user: current_user, tag: rock)
-    TaggableUser.first_or_create(user: current_user, tag: pop)
-    TaggableUser.first_or_create(user: current_user, tag: metal)
-       
+    TaggableUser.create(user: current_user, tag: rock)
+    TaggableUser.create(user: current_user, tag: pop)
+    TaggableUser.create(user: current_user, tag: metal)
     sign_in current_user
   end
   let(:valid_attributes) {
@@ -63,60 +62,75 @@ RSpec.describe "/community_reccomendations", type: :request do
 
   describe "POST /create" do
     context "with matching commmunity (by tags 100%)" do
-      @comm=Community.create(name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
-      TaggableCommunity.create(community: @comm, tag_id: 1)
-      TaggableCommunity.create(community: @comm, tag_id: 2)
-      TaggableCommunity.create(community: @comm, tag_id: 3) 
+      
       it "creates a new CommunityReccomendation for the current user" do
+        @comm=create(:community,name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
+        TaggableCommunity.create(community: @comm, tag_id: 1)
+        TaggableCommunity.create(community: @comm, tag_id: 2)
+        TaggableCommunity.create(community: @comm, tag_id: 3) 
         expect {
           post community_reccomendations_url
         }.to change(CommunityReccomendation.where(user: current_user), :count).by(1)
       end
 
       it "redirects to the reccomendation page" do
+        @comm=create(:community,name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
+        TaggableCommunity.create(community: @comm, tag_id: 1)
+        TaggableCommunity.create(community: @comm, tag_id: 2)
+        TaggableCommunity.create(community: @comm, tag_id: 3) 
+
         post community_reccomendations_url
         expect(response).to redirect_to(reccomendations_path)
       end
-      @comm.destroy
     end
     context "with matching commmunity (by tags 60%)" do
-      @comm=Community.create(name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "https://open.spotify.com/playlist/1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
-      TaggableCommunity.create(community: @comm, tag_id: 1)
-      TaggableCommunity.create(community: @comm, tag_id: 2)
-      TaggableCommunity.create(community: @comm, tag_id: 3)
-      TaggableCommunity.create(community: @comm, tag_id: 4)
-      TaggableCommunity.create(community: @comm, tag_id: 5)
       it "creates a new CommunityReccomendation for the current user" do
+        @comm=create(:community,name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
+        TaggableCommunity.create(community: @comm, tag_id: 1)
+        TaggableCommunity.create(community: @comm, tag_id: 2)
+        TaggableCommunity.create(community: @comm, tag_id: 3)
+        TaggableCommunity.create(community: @comm, tag_id: 4)
+        TaggableCommunity.create(community: @comm, tag_id: 5)
         expect {
           post community_reccomendations_url
         }.to change(CommunityReccomendation.where(user: current_user), :count).by(1)
       end
 
       it "redirects to the reccomendation page" do
+        @comm=create(:community,name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
+        TaggableCommunity.create(community: @comm, tag_id: 1)
+        TaggableCommunity.create(community: @comm, tag_id: 2)
+        TaggableCommunity.create(community: @comm, tag_id: 3)
+        TaggableCommunity.create(community: @comm, tag_id: 4)
+        TaggableCommunity.create(community: @comm, tag_id: 5)
         post community_reccomendations_url
         expect(response).to redirect_to(reccomendations_path)
       end
-      @comm.destroy
     end
 
     context "with matching commmunity (by tags 20%)" do
-      @comm=Community.create(name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "https://open.spotify.com/playlist/1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
-      TaggableCommunity.create(community: @comm, tag_id: 1)
-      TaggableCommunity.create(community: @comm, tag_id: 6)
-      TaggableCommunity.create(community: @comm, tag_id: 7)
-      TaggableCommunity.create(community: @comm, tag_id: 4)
-      TaggableCommunity.create(community: @comm, tag_id: 5)
       it "doesn't creates a new CommunityReccomendation for the current user" do
+        @comm=create(:community,name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
+        TaggableCommunity.create(community: @comm, tag_id: 1)
+        TaggableCommunity.create(community: @comm, tag_id: 6)
+        TaggableCommunity.create(community: @comm, tag_id: 7)
+        TaggableCommunity.create(community: @comm, tag_id: 4)
+        TaggableCommunity.create(community: @comm, tag_id: 5)
         expect {
           post community_reccomendations_url
         }.to change(CommunityReccomendation.where(user: current_user), :count).by(0)
       end
 
       it "redirects to the reccomendation page" do
+        @comm=create(:community,name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
+        TaggableCommunity.create(community: @comm, tag_id: 1)
+        TaggableCommunity.create(community: @comm, tag_id: 6)
+        TaggableCommunity.create(community: @comm, tag_id: 7)
+        TaggableCommunity.create(community: @comm, tag_id: 4)
+        TaggableCommunity.create(community: @comm, tag_id: 5)
         post community_reccomendations_url
         expect(response).to redirect_to(reccomendations_path)
       end
-      @comm.destroy
     end
     
   end

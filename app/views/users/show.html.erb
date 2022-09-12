@@ -30,7 +30,7 @@
                      <!-- BEGIN profile-header-img -->
                      <div class="profile-header-content col-10" style= "padding-bottom: 60px">
                         <div class="profile-header-img">
-                           <%if @user.images[0]!=nil%>
+                           <%if @user && @user.images[0]!=nil%>
                               <img src="<%=@user.images[0]['url']%>" alt="" width= "120" height= "114">
                            <%end%>
                         </div>
@@ -38,8 +38,9 @@
                         <!-- BEGIN profile-header-info -->
                         <div class="profile-header-info">
                            <div class="profile-header-name">
-                              
-                              <h4 class=" m-t-10 m-b-5"><%=@user.display_name%> <a href="https://open.spotify.com/user/<%=@user.id%>" target="_blank"><i class="bi bi-spotify"></i></a></h4>
+                              <%if@user %>
+                                 <h4 class=" m-t-10 m-b-5"><%=@user.display_name%> <a href="https://open.spotify.com/user/<%=@user.id%>" target="_blank"><i class="bi bi-spotify"></i></a></h4>
+                              <%end%>
                               <%if(@currently_playing)%>
                                  <h4 class=" m-t-10 m-b-5">In ascolto: <%=link_to @currently_playing.name,"https://open.spotify.com/track/"+@currently_playing.id, target:"_blank" %> di <%=link_to @currently_playing.artists.first.name, @currently_playing.artists.first.external_urls[:spotify], target:"_blank"%> </h4>
                               <%end%>
@@ -60,12 +61,12 @@
                           
                            <section id=" all-links"class="mt-2">
                               <% unless @u==current_user %>
-                                 <% if current_user.followings.include?(@u) %>
-                                    <h5><%= button_to "Unfollow",unfollow_user_path, method: "POST",:class => "btn btn-outline-danger mb-2" %></h5>
-                                 <% else %>
-                                    <h5><%= button_to "Follow", follow_user_path, method: "POST", :class => "btn btn-outline-success mb-2" %></h5>
-                                 <% end%>
-                                 <%= button_to "Chat", create_chat_path(@u.id),:class => "btn btn-outline-info mb-2" %>
+                                    <% if current_user.followings.include?(@u) %>
+                                       <h5><%= button_to "Unfollow",unfollow_user_path, method: "POST",:class => "btn btn-outline-danger mb-2" %></h5>
+                                       <%= button_to "Chat", create_chat_path(@u.id),:class => "btn btn-outline-info mb-2" %>
+                                    <% else %>
+                                       <h5><%= button_to "Follow", follow_user_path, method: "POST", :class => "btn btn-outline-success mb-2" %></h5>
+                                    <% end%>     
                               <br>
                               <%end%>
                               <% if @u==current_user %>
@@ -119,7 +120,7 @@
                               <div class="card">
                                  <h5 class="card-header">Top 5 tracks</h5>
                                  <div class="card-body">
-                                    <%if @top_tracks.size==0%>
+                                    <%if !@top_tracks || @top_tracks.size==0%>
                                        <p>L'utente non ha tracce preferite</p>
                                     <%else%>
                                        <ul class="list-group-flush top_5_tracks">
@@ -128,6 +129,7 @@
                                           <% end %>
                                        </ul>
                                     <%end%>
+
                                  </div>
                               </div>
                         </div>

@@ -97,3 +97,9 @@ gem "psych",  "4.0.0"
 group :development, :test do
   gem "rspec-rails"
 end
+group :test do
+  gem 'cucumber-rails', require: false
+  # database_cleaner is not mandatory, but highly recommended
+  gem 'database_cleaner'
+  gem 'cucumber-rails-training-wheels'
+end
