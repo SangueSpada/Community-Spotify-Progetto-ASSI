@@ -2,12 +2,17 @@ class CommentReactionsController < ApplicationController
   before_action :authenticate_user!, :set_comment
 
   def create
-    @comment_reaction = @comment.comment_reactions.create(comment_reaction_params)
-    if !@post.community_id.nil?
-      @community = Community.find(@post.community_id)
-      redirect_to community_path(@community)
+    @comment_reaction = @comment.comment_reactions.new(comment_reaction_params)
+    @comment_reaction.user = current_user
+    if @comment_reaction.save
+      if !@post.community_id.nil?
+        @community = Community.find(@post.community_id)
+        redirect_to community_path(@community)
+      else
+        redirect_to root_path
+      end
     else
-      redirect_to root_path
+      redirect_to root_path, alert: 'Impossibile inserire la reaction'
     end
   end
 
@@ -49,6 +54,6 @@ class CommentReactionsController < ApplicationController
   end
 
   def comment_reaction_params
-    params.require(:comment_reaction).permit(:uid, :like)
+    params.require(:comment_reaction).permit(:like)
   end
 end

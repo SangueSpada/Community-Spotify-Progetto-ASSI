@@ -21,16 +21,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_09_172735) do
   end
 
   create_table "comment_reactions", force: :cascade do |t|
-    t.string "uid"
-    t.boolean "like"
+    t.boolean "like", null: false
     t.integer "comment_id", null: false
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["comment_id"], name: "index_comment_reactions_on_comment_id"
+    t.index ["user_id"], name: "index_comment_reactions_on_user_id"
   end
 
   create_table "comments", force: :cascade do |t|
-    t.string "body"
+    t.string "body", default: "", null: false
     t.integer "post_id", null: false
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
@@ -40,10 +41,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_09_172735) do
   end
 
   create_table "communities", force: :cascade do |t|
-    t.string "name"
-    t.string "creator"
-    t.string "description"
-    t.string "playlist"
+    t.string "name", default: "", null: false
+    t.string "creator", default: "", null: false
+    t.string "description", default: "", null: false
+    t.string "playlist", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -62,9 +63,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_09_172735) do
   end
 
   create_table "events", force: :cascade do |t|
-    t.string "title"
+    t.string "title", default: "", null: false
     t.text "body"
-    t.date "start_date"
+    t.date "start_date", null: false
     t.integer "community_id"
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
@@ -80,7 +81,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_09_172735) do
   end
 
   create_table "messages", force: :cascade do |t|
-    t.text "body"
+    t.text "body", default: "", null: false
     t.integer "chat_id"
     t.integer "user_id"
     t.datetime "created_at", null: false
@@ -114,8 +115,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_09_172735) do
   end
 
   create_table "posts", force: :cascade do |t|
-    t.string "spotify_content"
-    t.string "body"
+    t.string "spotify_content", default: "", null: false
+    t.string "body", default: "", null: false
     t.integer "community_id"
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
@@ -124,12 +125,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_09_172735) do
   end
 
   create_table "reactions", force: :cascade do |t|
-    t.string "uid"
-    t.boolean "like"
+    t.boolean "like", null: false
     t.integer "post_id", null: false
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_reactions_on_post_id"
+    t.index ["user_id"], name: "index_reactions_on_user_id"
   end
 
   create_table "taggable_communities", force: :cascade do |t|
@@ -151,7 +153,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_09_172735) do
   end
 
   create_table "tags", force: :cascade do |t|
-    t.string "name"
+    t.string "name", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -174,8 +176,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_09_172735) do
     t.string "uid", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "provider"
-    t.string "avatar_url"
-    t.string "name"
+    t.string "avatar_url", default: "", null: false
+    t.string "name", default: "", null: false
     t.text "spotify_hash"
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
@@ -184,6 +186,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_09_172735) do
   end
 
   add_foreign_key "comment_reactions", "comments"
+  add_foreign_key "comment_reactions", "users"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
   add_foreign_key "community_reccomendations", "communities"
@@ -191,6 +194,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_09_172735) do
   add_foreign_key "events", "users"
   add_foreign_key "posts", "users"
   add_foreign_key "reactions", "posts"
+  add_foreign_key "reactions", "users"
   add_foreign_key "taggable_communities", "communities"
   add_foreign_key "taggable_communities", "tags"
   add_foreign_key "taggable_users", "tags"
