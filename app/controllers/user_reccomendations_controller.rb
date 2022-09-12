@@ -40,15 +40,13 @@ class UserReccomendationsController < ApplicationController
 
   # PATCH/PUT /user_reccomendations/1 or /user_reccomendations/1.json
   def update
-    respond_to do |format|
-      if @user_reccomendation.update(user_reccomendation_params)
-        format.html { redirect_to user_reccomendation_url(@user_reccomendation), notice: "User reccomendation was successfully updated." }
-        format.json { render :show, status: :ok, location: @user_reccomendation }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @user_reccomendation.errors, status: :unprocessable_entity }
-      end
+
+    puts "Sono dentro update"
+
+    if @user_reccomendation.update(viewed: true)
+      redirect_to reccomendations_path
     end
+
   end
 
   # DELETE /user_reccomendations/1 or /user_reccomendations/1.json

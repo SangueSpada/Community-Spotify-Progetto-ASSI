@@ -24,19 +24,20 @@
                     </div>
                 <% end %>
             </div>
+
+            <div class="row">
+                <div class="col">
+                    <%= button_to "OK", user_reccomendation_path(user_reccomendation), class:"btn btn-primary", :method=>:put %>
+                </div>
+
+                <div class="col">
+                    <%= button_to "Follow", follow_user_path(user_reccomendation.resource.uid), class: "btn btn-outline-success mb-2", method: "POST" %>
+                </div>
+
+            </div>
             
         </div>
 
-        <div class="row">
-            <div class="col">
-                <%= button_to "OK", user_reccomendation_path(user_reccomendation), class:"btn btn-primary", :method=>:put %>
-            </div>
-
-            <div class="col">
-                <%= button_to "Entra in community", create_user_community_participation_path(user_id: current_user.id, community_id: community_reccomendation.community.id), class:"btn btn-outline-success"%>
-            </div>
-
-        </div>
     </div>
     <!-- end timeline-body -->
 </li>

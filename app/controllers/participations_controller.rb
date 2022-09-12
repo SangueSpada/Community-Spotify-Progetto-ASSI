@@ -2,14 +2,25 @@ class ParticipationsController < ApplicationController
   before_action :authenticate_user!, :set_community_and_user
 
   def create
+
+    if params[:recc_id]
+      id = params[:recc_id]
+      recc = CommunityReccomendation.find(id)
+
+      if recc.update(viewed: true)
+        puts "Reccomendations aggiornata"
+      end
+      
+    end
+
     @participation = @community.participations.new(user_id: @user.id, community_id: @community.id, role: :member,
                                                    banned: false)
     @participation.community = @community
     @participation.user = @user
     if @participation.save
-      redirect_to community_path(@community)
+      redirect_back(fallback_location: community_path(@community))
     else
-      redirect_to community_path(@community), notice: 'Impossibile ammettere utente'
+      redirect_back(fallback_location: community_path(@community), notice: 'Impossibile ammettere utente')
     end
   end
 
@@ -95,6 +106,6 @@ class ParticipationsController < ApplicationController
   end
 
   def participation_params
-    params.require(:participation).permit(:role, :banned)
+    params.require(:participation).permit(:recc_id, :role, :banned)
   end
 end

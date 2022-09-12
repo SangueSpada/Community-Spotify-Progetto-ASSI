@@ -103,6 +103,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_09_172735) do
   create_table "participations", force: :cascade do |t|
     t.integer "community_id"
     t.integer "user_id"
+    t.integer "recc_id"
     t.integer "role", default: 0
     t.boolean "banned", default: false
     t.datetime "created_at", null: false

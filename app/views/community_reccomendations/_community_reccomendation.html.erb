@@ -31,7 +31,7 @@
                 </div>
 
                 <div class="col">
-                    <%= button_to "Entra in community", create_user_community_participation_path(user_id: current_user.id, community_id: community_reccomendation.community.id), class:"btn btn-outline-success"%>
+                    <%= button_to "Entra in community", create_user_community_participation_path(recc_id: community_reccomendation.id, user_id: current_user.id, community_id: community_reccomendation.community.id), class:"btn btn-outline-success"%>
                 </div>
 
             </div>
