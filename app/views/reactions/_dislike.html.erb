@@ -1,18 +1,17 @@
-<% if !current_modder && post.reactions.where(uid: current_user.uid).first %> <!-- c è un like/dislike?-->
-    <% @reaction = post.reactions.where(uid: current_user.uid).first %>
-    <% if @reaction.like == true %>
-        <%= button_to raw('<i class="bi bi-hand-thumbs-down"></i>'), update_post_reaction_path(post.id, @reaction.id), class: "btn btn-trasparent col",remote: true,  method: :get%>
-    <% else %>
-        <%= button_to raw('<i class="bi bi-hand-thumbs-down-fill"></i>'), post_reaction_path(post.id, @reaction.id), class: "btn btn-trasparent col",remote: true, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete%>
-    <% end %>
+<% if !current_modder && post.reactions.where(user_id: current_user.id).first %> <!-- c è un like/dislike?-->
+  <% @reaction = post.reactions.where(user_id: current_user.id).first %>
+  <% if @reaction.like == true %>
+    <%= button_to raw('<i class="bi bi-hand-thumbs-down"></i>'), update_post_reaction_path(post.id, @reaction.id), class: "btn btn-trasparent col",remote: true,  method: :get%>
+  <% else %>
+    <%= button_to raw('<i class="bi bi-hand-thumbs-down-fill"></i>'), post_reaction_path(post.id, @reaction.id), class: "btn btn-trasparent col",remote: true, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete%>
+  <% end %>
 <% else %>
-    <% unless current_modder %>
-        <%= form_with(model: [ post, post.reactions.build ],remote: true) do |form| %>
-            <%= form.hidden_field :uid, value: current_user.uid %>
-            <%= form.hidden_field :like, value: false%>
-            <button type="submit" class="btn btn-trasparent">
-                <i class="bi bi-hand-thumbs-down"></i>
-            </button>
-        <% end %>
+  <% unless current_modder %>
+    <%= form_with(model: [ post, post.reactions.build ],remote: true) do |form| %>
+      <%= form.hidden_field :like, value: false%>
+      <button type="submit" class="btn btn-trasparent">
+        <i class="bi bi-hand-thumbs-down"></i>
+      </button>
     <% end %>
+  <% end %>
 <% end %>
