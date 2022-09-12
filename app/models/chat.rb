@@ -5,6 +5,7 @@ class Chat < ApplicationRecord
     has_many :messages, dependent: :destroy
 
     validates_uniqueness_of :user1, :scope => [:user2]
+    
     validate do |chat|
         if !user1 || !user2
             if !user1
@@ -19,6 +20,7 @@ class Chat < ApplicationRecord
             errors.add(:chat, "already exist in opposite form")
         end
     end
+
     scope :between, ->(user1,user2) {
             where ("user2_id = "+user1.to_s+" AND user1_id ="+ user2.to_s ) 
         }

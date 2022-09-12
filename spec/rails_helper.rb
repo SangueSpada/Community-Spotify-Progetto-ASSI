@@ -65,7 +65,9 @@ RSpec.configure do |config|
     c.include Warden::Test::ControllerHelpers, type: :controller
   end 
 =end
-  
+  RSpec.configure do |config|
+    config.include FactoryBot::Syntax::Methods
+  end
   config.include Devise::Test::IntegrationHelpers
   config.expect_with :rspec do |c|
     c.syntax = :expect
