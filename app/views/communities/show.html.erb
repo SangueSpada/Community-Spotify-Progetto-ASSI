@@ -29,7 +29,11 @@
                     <!-- BEGIN profile-header-img -->
                     <div class="profile-header-content col-10" style= "padding-bottom: 70px">
                       <div class="profile-header-img">
+                      <% if @playlist %>
                         <img src="<%=@playlist.images[0]['url']%>" alt="">
+                      <%else%>
+                        <%= image_tag "prof_pic_default.png"%>
+                      <%end%>
                       </div>
                       <!-- END profile-header-img -->
                       <!-- BEGIN profile-header-info -->
@@ -99,7 +103,9 @@
               <!-- end profile-content -->
                 </div>
                 <div class="tab-pane fade show" id="nav-playlist" role="tabpanel" aria-labelledby="nav-playlist-tab" tabindex="0">
-                  <iframe class="pt-2" style="border-radius:20px; margin: 0 auto; display:block; " src="https://open.spotify.com/embed/playlist/<%=@playlist.id%>?utm_source=generator" width="75%" height="250" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                <% if @community.playlist  %>
+                  <iframe class="pt-2" style="border-radius:20px; margin: 0 auto; display:block; " src="https://open.spotify.com/embed/playlist/<%=@community.playlist %>?utm_source=generator" width="75%" height="250" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                <% end %>
                   <!--< if @playlist.is_followed_by?(Array(current_user))  >
                     <button class="btn btn-danger", onclick="<@spotify_user.unfollow(@playlist)>">Rimuovi dalla mie playlist</button>
                   < else >
@@ -202,16 +208,18 @@
         </div>
       </div>
       <script>
-      window.onSpotifyIframeApiReady = (IFrameAPI) => {
-        let element = document.getElementById('embed-iframe');
-        let options = {
-            width: '100%',
-            heigth:'200'
-            uri: 'spotify:playlist:<%=@playlist.id%>'
-          };
-        let callback = (EmbedController) => {};
-        IFrameAPI.createController(element, options, callback);
-      };
+      <%if @community.playlist %>
+        window.onSpotifyIframeApiReady = (IFrameAPI) => {
+          let element = document.getElementById('embed-iframe');
+          let options = {
+              width: '100%',
+              heigth:'200'
+              uri: 'spotify:playlist:<%=@community.playlist%>'
+            };
+          let callback = (EmbedController) => {};
+          IFrameAPI.createController(element, options, callback);
+        };
+      <%end%>
       </script>
     </body>
   <% elsif %>

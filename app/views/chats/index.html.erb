@@ -4,13 +4,12 @@
         <div class="col-sm-8 col-md-6 justify-content-center">
         <h1>Chats</h1>
             <ul class="list-group chat-group">
-            <% atleast_one  = false%>
             <% @chats.each do |chat| %>
                <%= render chat%>
             <% end %>
             
             </ul>
-            <% unless atleast_one %>
+            <% if @chats.where(user1: current_user).count==0 && @chats.where(user2: current_user).count==0%>
                 <p>Sembra che tu non abbia nessuna chat aperta con gli utenti di CommunitySpotify. Recati sul profilo di un'utente per iniziare una chat.</p>
             <% end %>
         </div>

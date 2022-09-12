@@ -12,10 +12,14 @@ module NavigationHelpers
   #
   def path_to(page_name)
     case page_name
+    when  /^community "RRM" page$/
+      community=Community.where(name: "RRM").first
+      return community_path(community)
     when /^"Carlo" page$/
       user=User.where(name: "Carlo").first
-      visit "/users/"+String(user.uid)
-
+      return "/users/"+String(user.uid)
+    when /^the recommendations page$/
+      return "/reccomendations"
     when /^the home\s?page$/
       '/'
 
