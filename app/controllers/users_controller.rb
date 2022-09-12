@@ -11,7 +11,7 @@ class UsersController < ApplicationController
     @communities.each do |co|
       #puts co.id
     end
-    if !Rails.env.test?
+    if @u.spotify_hash
       @user = RSpotify::User.new(JSON.parse(@u.spotify_hash.gsub('=>', ':').gsub('nil', 'null')))
       #@user = RSpotify::User.find(@u.uid)
       @top_artist=@user.top_artists().first
