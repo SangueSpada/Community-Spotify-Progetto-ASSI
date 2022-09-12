@@ -66,6 +66,7 @@ When /^(?:|I )go to (.+)$/ do |page_name|
 end
 
 When /^(?:|I )press "([^"]*)"$/ do |button|
+  
   click_button(button)
 end
 
@@ -124,6 +125,20 @@ Then /^(?:|I )should see "([^"]*)"$/ do |text|
   else
     assert page.has_content?(text)
   end
+end
+Given('{string} likes {string}') do |string, string2|
+  tag=Tag.create(name: string2)
+  user=User.where(name: string).first
+  TaggableUser.create(user: user,tag:tag)
+end
+Given('a community named {string}') do |name|
+  Community.create(name:name, description: name)
+end
+Given('{string} deals with {string}') do |string, string2|
+  tag=Tag.where(name: string2).first
+  communities=Community.where(name: string)
+  community=communities.first
+  TaggableCommunity.create(community: community,tag:tag)
 end
 Then("{string} is on the chat page with {string}") do |name1,name2|
   user1=User.where(name: name1).first

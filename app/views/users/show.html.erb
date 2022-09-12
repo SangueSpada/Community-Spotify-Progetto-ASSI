@@ -32,6 +32,8 @@
                         <div class="profile-header-img">
                            <%if @user && @user.images[0]!=nil%>
                               <img src="<%=@user.images[0]['url']%>" alt="" width= "120" height= "114">
+                           <%else%>
+                              <%= image_tag "prof_pic_default.png"%>
                            <%end%>
                         </div>
                         <!-- END profile-header-img -->
@@ -40,6 +42,8 @@
                            <div class="profile-header-name">
                               <%if@user %>
                                  <h4 class=" m-t-10 m-b-5"><%=@user.display_name%> <a href="https://open.spotify.com/user/<%=@user.id%>" target="_blank"><i class="bi bi-spotify"></i></a></h4>
+                              <%else%>
+                                 <h4 class=" m-t-10 m-b-5"><%=@u.name%> <i class="bi bi-spotify"></i></h4>
                               <%end%>
                               <%if(@currently_playing)%>
                                  <h4 class=" m-t-10 m-b-5">In ascolto: <%=link_to @currently_playing.name,"https://open.spotify.com/track/"+@currently_playing.id, target:"_blank" %> di <%=link_to @currently_playing.artists.first.name, @currently_playing.artists.first.external_urls[:spotify], target:"_blank"%> </h4>
