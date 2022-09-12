@@ -18,18 +18,23 @@ RSpec.describe "/chats", type: :request do
   # Chat. As you add validations to Chat, be sure to
   # adjust the attributes here as well.
   user1 = User.new(email: "daniele@example.com",password: "password",id:1,uid:"1");
-  user2 = User.new(email: "fabio@example.com",password: "password",id:2,uid:"2" );
+  
+  before(:example) do
+    user1 = User.first_or_create(email: "daniele@example.com",password: "password",id:1,uid:"1");
+    User.create(email: "fabio@example.com",password: "password",id:2,uid:"2" );
+    sign_in user1
+  end
   let(:valid_attributes) {
     {
       :id => 1,
       :user1=> user1,
-      :user2=> user2
+      :user2_id=> 2
     }
   }
   let(:valid_attributes_backwards) {
     {
       :id => 1,
-      :user1=> user2,
+      :user1_id=> 2,
       :user2=> user1
     }
   }
@@ -52,7 +57,6 @@ RSpec.describe "/chats", type: :request do
   describe "GET /show" do
     it "renders a successful response" do
       chat=Chat.create(valid_attributes)
-      #chat.save
       get chat_url(chat)
       expect(response).to be_successful
     end
@@ -60,34 +64,28 @@ RSpec.describe "/chats", type: :request do
 
 
   describe "POST /create" do
-    before do
-      sign_in user1
-    end
     context "with valid parameters" do
-      user2.save
       it "creates a new Chat" do
         expect {
-          post chats_url, params: { user2_id: valid_attributes[:user2].id }
+          post chats_url, params: { user2_id: valid_attributes[:user2_id]}
         }.to change(Chat, :count).by(1)
       end
-
       it "redirects to the created chat" do
-        post chats_url, params: { user2_id: valid_attributes[:user2].id }
+        post chats_url, params: { user2_id: valid_attributes[:user2_id] }
         expect(response).to redirect_to(chat_url(Chat.last))
       end
     end
     context "with valid parameters of already existing chat" do
-      
       it "doesn't create a new Chat" do
         Chat.create(valid_attributes_backwards)
         expect {
-          post chats_url, params: { user2_id: valid_attributes[:user2].id }
+          post chats_url, params: { user2_id: valid_attributes[:user2_id] }
         }.to change(Chat, :count).by(0)
       end
 
       it "redirects to the created chat also if the chat exist backwards" do
         chat=Chat.create(valid_attributes_backwards)
-        post chats_url, params: { user2_id: valid_attributes[:user2].id }
+        post chats_url, params: { user2_id: valid_attributes[:user2_id] }
         expect(response).to redirect_to(chat_url(chat.id))
       end
     end
@@ -108,9 +106,6 @@ RSpec.describe "/chats", type: :request do
 
 
   describe "DELETE /destroy" do
-    before do
-      sign_in user1
-    end
     it "destroys the requested chat" do
       chat = Chat.create! valid_attributes
       expect {

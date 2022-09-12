@@ -20,13 +20,13 @@ RSpec.describe "/community_reccomendations", type: :request do
   current_user = User.new(email: "daniele@example.com",password: "password",id:1,uid:"1");
   before(:example) do
     current_user = User.first_or_create(email: "daniele@example.com",password: "password",id:1,uid:"1");
-    rock=Tag.new(name: 'Rock')
-    pop=Tag.new(name: 'Pop')
-    metal=Tag.new(name: 'Metal')
-    indie=Tag.new(name: 'Indie')
-    Tag.new(name: 'Classica')
-    Tag.new(name: 'Rap')
-    Tag.new(name: 'Cazzi')
+    rock=Tag.create(name: 'Rock')
+    pop=Tag.create(name: 'Pop')
+    metal=Tag.create(name: 'Metal')
+    indie=Tag.create(name: 'Indie')
+    Tag.create(name: 'Classica')
+    Tag.create(name: 'Rap')
+    Tag.create(name: 'Electro')
 
     TaggableUser.first_or_create(user: current_user, tag: rock)
     TaggableUser.first_or_create(user: current_user, tag: pop)
@@ -64,9 +64,11 @@ RSpec.describe "/community_reccomendations", type: :request do
   describe "POST /create" do
     context "with matching commmunity (by tags 100%)" do
       @comm=Community.create(name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
+      puts Tag.all
       TaggableCommunity.create(community: @comm, tag_id: 1)
       TaggableCommunity.create(community: @comm, tag_id: 2)
       TaggableCommunity.create(community: @comm, tag_id: 3) 
+      puts @comm.tags.count
       it "creates a new CommunityReccomendation for the current user" do
         expect {
           post community_reccomendations_url
@@ -86,6 +88,7 @@ RSpec.describe "/community_reccomendations", type: :request do
       TaggableCommunity.create(community: @comm, tag_id: 3)
       TaggableCommunity.create(community: @comm, tag_id: 4)
       TaggableCommunity.create(community: @comm, tag_id: 5)
+      puts @comm.tags.count
       it "creates a new CommunityReccomendation for the current user" do
         expect {
           post community_reccomendations_url
@@ -106,6 +109,7 @@ RSpec.describe "/community_reccomendations", type: :request do
       TaggableCommunity.create(community: @comm, tag_id: 7)
       TaggableCommunity.create(community: @comm, tag_id: 4)
       TaggableCommunity.create(community: @comm, tag_id: 5)
+      puts @comm.tags.count
       it "doesn't creates a new CommunityReccomendation for the current user" do
         expect {
           post community_reccomendations_url

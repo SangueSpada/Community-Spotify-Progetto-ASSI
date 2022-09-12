@@ -1,6 +1,6 @@
 require 'json'
 class UsersController < ApplicationController
-  before_action :authenticate_user!, :set_user, only: %i[show edit update]
+  before_action :authenticate_user!, :set_user, only: %i[show edit update] 
   def show
     @u = User.where(uid: params[:uid]).first
     @communities = Community.joins(:participations).where(participations: {user_id: @u})
@@ -11,18 +11,23 @@ class UsersController < ApplicationController
     @communities.each do |co|
       #puts co.id
     end
-    @user = RSpotify::User.new(JSON.parse(@u.spotify_hash.gsub('=>', ':').gsub('nil', 'null')))
-    #@user = RSpotify::User.find(@u.uid)
-    @top_artist=@user.top_artists().first
-    @top_tracks=@user.top_tracks(:limit => 5)
-    @player=@user.player
-    begin
-      @player.currently_playing
-    rescue NoMethodError
-      @currently_playing=nil
+    if !Rails.env.test?
+      @user = RSpotify::User.new(JSON.parse(@u.spotify_hash.gsub('=>', ':').gsub('nil', 'null')))
+      #@user = RSpotify::User.find(@u.uid)
+      @top_artist=@user.top_artists().first
+      @top_tracks=@user.top_tracks(:limit => 5)
+      @player=@user.player
+      begin
+        @player.currently_playing
+      rescue NoMethodError
+        @currently_playing=nil
+      else
+        @currently_playing=@player.currently_playing
+      end
     else
-      @currently_playing=@player.currently_playing
+      @user=nil
     end
+
   end
   
   def follow
