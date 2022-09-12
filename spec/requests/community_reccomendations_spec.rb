@@ -83,8 +83,8 @@ RSpec.describe "/community_reccomendations", type: :request do
         expect(response).to redirect_to(reccomendations_path)
       end
     end
-    context "with matching commmunity (by tags 60%)" do
-      it "creates a new CommunityReccomendation for the current user" do
+    context "with no matching commmunity (by tags 60%)" do
+      it "doesn't create a new CommunityReccomendation for the current user" do
         @comm=create(:community,name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
         TaggableCommunity.create(community: @comm, tag_id: 1)
         TaggableCommunity.create(community: @comm, tag_id: 2)
@@ -93,23 +93,12 @@ RSpec.describe "/community_reccomendations", type: :request do
         TaggableCommunity.create(community: @comm, tag_id: 5)
         expect {
           post community_reccomendations_url
-        }.to change(CommunityReccomendation.where(user: current_user), :count).by(1)
-      end
-
-      it "redirects to the reccomendation page" do
-        @comm=create(:community,name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
-        TaggableCommunity.create(community: @comm, tag_id: 1)
-        TaggableCommunity.create(community: @comm, tag_id: 2)
-        TaggableCommunity.create(community: @comm, tag_id: 3)
-        TaggableCommunity.create(community: @comm, tag_id: 4)
-        TaggableCommunity.create(community: @comm, tag_id: 5)
-        post community_reccomendations_url
-        expect(response).to redirect_to(reccomendations_path)
+        }.to change(CommunityReccomendation.where(user: current_user), :count).by(0)
       end
     end
 
-    context "with matching commmunity (by tags 20%)" do
-      it "doesn't creates a new CommunityReccomendation for the current user" do
+    context "with no matching commmunity (by tags 20%)" do
+      it "doesn't create a new CommunityReccomendation for the current user" do
         @comm=create(:community,name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
         TaggableCommunity.create(community: @comm, tag_id: 1)
         TaggableCommunity.create(community: @comm, tag_id: 6)
@@ -132,7 +121,139 @@ RSpec.describe "/community_reccomendations", type: :request do
         expect(response).to redirect_to(reccomendations_path)
       end
     end
+    context "with matching commmunity (by tags 60% with 1 following)" do  
+      it "creates a new CommunityReccomendation for the current user" do
+        @comm=create(:community,name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
+        TaggableCommunity.create(community: @comm, tag_id: 1)
+        TaggableCommunity.create(community: @comm, tag_id: 2)
+        TaggableCommunity.create(community: @comm, tag_id: 3)
+        TaggableCommunity.create(community: @comm, tag_id: 4)
+        TaggableCommunity.create(community: @comm, tag_id: 5)
+
+        user2=create(:user, id: 2,uid: '2')
+        
+        Follow.create(follower:current_user,followed_user:user2)
+        
+        Participation.create(user: user2, community: @comm)
+        expect {
+          post community_reccomendations_url
+        }.to change(CommunityReccomendation.where(user: current_user), :count).by(1)
+      end
+    end
+    context "with no matching commmunity (by tags 50% with 1 following)" do
     
+      it "doesn't create a new CommunityReccomendation for the current user" do
+        @comm=create(:community,name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
+        TaggableCommunity.create(community: @comm, tag_id: 1)
+        TaggableCommunity.create(community: @comm, tag_id: 2)
+        TaggableCommunity.create(community: @comm, tag_id: 4)
+        TaggableCommunity.create(community: @comm, tag_id: 5)
+
+        user2=create(:user, id: 2,uid: '2')
+        
+        Follow.create(follower:current_user,followed_user:user2)
+        
+        Participation.create(user: user2, community: @comm)
+        expect {
+          post community_reccomendations_url
+        }.to change(CommunityReccomendation.where(user: current_user), :count).by(0)
+      end
+
+    end
+    context "with matching commmunity (by tags 50% with 2 following)" do
+      
+      it "creates a new CommunityReccomendation for the current user" do
+        @comm=create(:community,name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
+        TaggableCommunity.create(community: @comm, tag_id: 1)
+        TaggableCommunity.create(community: @comm, tag_id: 2)
+        TaggableCommunity.create(community: @comm, tag_id: 4)
+        TaggableCommunity.create(community: @comm, tag_id: 5)
+
+        user2=create(:user, id: 2,uid: '2')
+        Follow.create(follower:current_user,followed_user:user2)
+        Participation.create(user: user2, community: @comm)
+        user3=create(:user, id: 3,uid: '3')
+        Follow.create(follower:current_user,followed_user:user3)
+        Participation.create(user: user3, community: @comm)
+        
+        expect {
+          post community_reccomendations_url
+        }.to change(CommunityReccomendation.where(user: current_user), :count).by(1)
+      end
+    end
+    context "with no matching commmunity (by tags 40% with 2 following)" do
+      
+      it "doesn't create a new CommunityReccomendation for the current user" do
+        @comm=create(:community,name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
+        TaggableCommunity.create(community: @comm, tag_id: 1)
+        TaggableCommunity.create(community: @comm, tag_id: 2)
+        TaggableCommunity.create(community: @comm, tag_id: 4)
+        TaggableCommunity.create(community: @comm, tag_id: 5)
+        TaggableCommunity.create(community: @comm, tag_id: 6)
+
+        user2=create(:user, id: 2,uid: '2')
+        Follow.create(follower:current_user,followed_user:user2)
+        Participation.create(user: user2, community: @comm)
+        user3=create(:user, id: 3,uid: '3')
+        Follow.create(follower:current_user,followed_user:user3)
+        Participation.create(user: user3, community: @comm)
+        
+        expect {
+          post community_reccomendations_url
+        }.to change(CommunityReccomendation.where(user: current_user), :count).by(0)
+      end
+    end
+    context "with matching commmunity (by tags 40% with 3 following)" do
+      
+      it "creates a new CommunityReccomendation for the current user" do
+        @comm=create(:community,name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
+        TaggableCommunity.create(community: @comm, tag_id: 1)
+        TaggableCommunity.create(community: @comm, tag_id: 2)
+        TaggableCommunity.create(community: @comm, tag_id: 4)
+        TaggableCommunity.create(community: @comm, tag_id: 5)
+        TaggableCommunity.create(community: @comm, tag_id: 6)
+
+        user2=create(:user, id: 2,uid: '2')
+        Follow.create(follower:current_user,followed_user:user2)
+        Participation.create(user: user2, community: @comm)
+        user3=create(:user, id: 3,uid: '3')
+        Follow.create(follower:current_user,followed_user:user3)
+        Participation.create(user: user3, community: @comm)
+        user4=create(:user, id: 4,uid: '4')
+        Follow.create(follower:current_user,followed_user:user4)
+        Participation.create(user: user4, community: @comm)
+        
+        expect {
+          post community_reccomendations_url
+        }.to change(CommunityReccomendation.where(user: current_user), :count).by(1)
+      end
+    end
+    context "with no matching commmunity (by tags 33% with 3 following)" do
+      
+      it "doesn't create a new CommunityReccomendation for the current user" do
+        @comm=create(:community,name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "1mhSPC0EH13KrZrVuB441j?si=13690c7ef7354606")
+        TaggableCommunity.create(community: @comm, tag_id: 1)
+        TaggableCommunity.create(community: @comm, tag_id: 2)
+        TaggableCommunity.create(community: @comm, tag_id: 4)
+        TaggableCommunity.create(community: @comm, tag_id: 5)
+        TaggableCommunity.create(community: @comm, tag_id: 6)
+        TaggableCommunity.create(community: @comm, tag_id: 7)
+
+        user2=create(:user, id: 2,uid: '2')
+        Follow.create(follower:current_user,followed_user:user2)
+        Participation.create(user: user2, community: @comm)
+        user3=create(:user, id: 3,uid: '3')
+        Follow.create(follower:current_user,followed_user:user3)
+        Participation.create(user: user3, community: @comm)
+        user4=create(:user, id: 4,uid: '4')
+        Follow.create(follower:current_user,followed_user:user4)
+        Participation.create(user: user4, community: @comm)
+        
+        expect {
+          post community_reccomendations_url
+        }.to change(CommunityReccomendation.where(user: current_user), :count).by(0)
+      end
+    end
   end
 
 =begin   describe "DELETE /destroy" do
