@@ -15,14 +15,19 @@
                 </div>
             </div>
 
-            <div class="timeline-content">
-                <span class="username" style="font-size:80%"><a href="/communities/<%= community_reccomendation.community.id.to_s %>"><%= community_reccomendation.community.name %></a></span>
+            <div class="row timeline-content pb-2">
 
-                <% if community_reccomendation.resource_img %>
-                    <div class="profile-header-img">
-                        <img src="<%=community_reccomendation.resource_img%>" alt="">
-                    </div>
-                <% end %>
+                <div class="col">
+                    <% if community_reccomendation.resource_img %>
+                        <div class="profile-header-img">
+                            <img src="<%=community_reccomendation.resource_img%>" alt="">
+                        </div>
+                    <% end %>
+                </div>
+
+                <div class="col">
+                    <span class="username" style="font-size:80%"><a href="/communities/<%= community_reccomendation.community.id.to_s %>"><%= community_reccomendation.community.name %></a></span>
+                </div>
             </div>
 
             <div class="row">

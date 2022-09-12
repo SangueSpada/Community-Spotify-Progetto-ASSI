@@ -5,6 +5,7 @@ class CreateCommunityReccomendations < ActiveRecord::Migration[7.0]
       t.string :body
       t.string :resource_img
       t.boolean :viewed
+      t.datetime :expiration_datetime
 
       t.references :community, null: false, foreign_key: true
       t.references :user, null: false, foreign_key: true

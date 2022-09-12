@@ -24,7 +24,18 @@ class CommunityReccomendationsController < ApplicationController
 
       if !community.users.include?(current_user)
 
-        @new_recc = CommunityReccomendation.new(body: 'questa community', viewed: false, community: community, user: current_user)
+        if community.participations && community.participations.where(role: 'admin').first
+          @admin_participation = community.participations.where(role: 'admin').first
+
+          @playlist = RSpotify::Playlist.find(@admin_participation.user.uid, community.playlist)
+
+          if @playlist
+            @new_recc = CommunityReccomendation.new(body: 'questa community', resource_img: @playlist.images[0]['url'], viewed: false, community: community, user: current_user)
+          end
+
+        else
+          @new_recc = CommunityReccomendation.new(body: 'questa community', viewed: false, community: community, user: current_user)
+        end
 
         if @new_recc.save
           puts"Ci sono delle community che non sono state consigliate"
@@ -47,7 +58,7 @@ class CommunityReccomendationsController < ApplicationController
     if @community_reccomendation.update(viewed: true)
       redirect_to reccomendations_path
     end
-    
+
   end
 
   # DELETE /community_reccomendations/1 or /community_reccomendations/1.json
@@ -88,8 +99,6 @@ class CommunityReccomendationsController < ApplicationController
           end
 
         end
-
-        puts counter.to_f/user_tags
 
         if counter.to_f/user_tags >= 0.6
           ret.push(community)

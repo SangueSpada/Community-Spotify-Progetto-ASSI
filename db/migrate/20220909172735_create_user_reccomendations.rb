@@ -5,6 +5,7 @@ class CreateUserReccomendations < ActiveRecord::Migration[7.0]
       t.string :body
       t.string :resource_img
       t.boolean :viewed
+      t.datetime :expiration_datetime
 
       t.references :resource, null: false
       t.references :user, null: false

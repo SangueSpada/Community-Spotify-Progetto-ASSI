@@ -52,6 +52,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_09_172735) do
     t.string "body"
     t.string "resource_img"
     t.boolean "viewed"
+    t.datetime "expiration_datetime"
     t.integer "community_id", null: false
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
@@ -159,6 +160,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_09_172735) do
     t.string "body"
     t.string "resource_img"
     t.boolean "viewed"
+    t.datetime "expiration_datetime"
     t.integer "resource_id", null: false
     t.integer "user_id", null: false
     t.datetime "created_at", null: false

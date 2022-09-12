@@ -23,8 +23,14 @@ class UserReccomendationsController < ApplicationController
     @rec_users.each do |user|
 
       if user != current_user && !user.followers.include?(current_user)
-        
-        @new_recc = UserReccomendation.new(body: 'questo utente', viewed: false, resource: user, user: current_user)
+
+        if user.spotify_hash
+          spfy_user = RSpotify::User.new(JSON.parse(user.spotify_hash.gsub('=>', ':').gsub('nil', 'null')))
+
+          @new_recc = UserReccomendation.new(body: 'questo utente', resource_img: spfy_user.images[0]['url'], viewed: false, resource: user, user: current_user)
+        else
+          @new_recc = UserReccomendation.new(body: 'questo utente', viewed: false, resource: user, user: current_user)
+        end
 
         if @new_recc.save
           puts"Ci sono degli utenti che non sono stati consigliati"
