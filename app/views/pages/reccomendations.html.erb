@@ -1,10 +1,26 @@
 <%= render "partials/navbar" %>
 <div style="padding: 40pt"></div>
 
+<div id="reccomendations_warning" class="container">
+
+  <div class="row align-text-center pb-4">
+    <p>
+      Ricorda di andare sul tuo profilo ad impostare i tuoi gusti musicali aggiungendo dei tag al tuo account, altrimenti
+      CommunitySpotify non sarà in gradi di generare delle raccomandations a posta per te!
+    </p>
+  </div>
+
 <div id="reccomendations_generator" class="container">
 
   <div class="row align-text-center">
-    <%= button_to "Genera reccomendations", community_reccomendations_path(), class:"btn btn-primary", method: "POST" %>
+    <div class="col">
+      <%= button_to "Genera community reccomendations", community_reccomendations_path(), class:"btn btn-primary", method: "POST" %>
+    </div>
+    <div class="col">
+      <%= button_to "Genera user reccomendations", user_reccomendations_path(), class:"btn btn-primary", method: "POST" %>
+    </div>
+    
+    
   </div>
 
 </div>
@@ -20,7 +36,11 @@
     <ul class="timeline">
 
       <% @community_reccomendations.each do |reccomendation| %>
-        <%= render reccomendation %>
+
+        <% if reccomendation.viewed == false %>
+          <%= render reccomendation %>
+        <% end %>
+
       <% end %>
 
     </ul>
@@ -39,7 +59,11 @@
     <ul class="timeline">
 
       <% @user_reccomendations.each do |reccomendation| %>
-        <%= render reccomendation %>
+
+        <% if reccomendation.viewed == false %>
+          <%= render reccomendation %>
+        <% end %>
+
       <% end %>
 
     </ul>

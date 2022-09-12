@@ -21,9 +21,11 @@ Tag.create(name: 'Sperimentale')
 Tag.create(name: 'Hardcore')
 Tag.create(name: 'Groovy')
 
-Community.create(name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "https://open.spotify.com/playlist/1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
-Community.create(name: "COCK", creator: "Pluto", description: "BBBBBBBBBBBBBBBB", playlist: "https://open.spotify.com/playlist/00fyBjjIZWbUya1sg9n9FI?si=2dd08635ebc249c7")
-Community.create(name: "BRO", creator: "Paperino", description: "CCCCCCCCCCCCCCCC", playlist: "https://open.spotify.com/playlist/3Efd5k4pAbgcr9Phd3GkcM?si=fdbddb4f01364f41")
+
+Community.create(name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
+Community.create(name: "Community2", creator: "Pluto", description: "BBBBBBBBBBBBBBBB", playlist: "00fyBjjIZWbUya1sg9n9FI?si=2dd08635ebc249c7")
+Community.create(name: "Community3", creator: "Paperino", description: "CCCCCCCCCCCCCCCC", playlist: "3Efd5k4pAbgcr9Phd3GkcM?si=fdbddb4f01364f41")
+
 
 TaggableCommunity.create(community_id: 1, tag_id: 6)
 TaggableCommunity.create(community_id: 1, tag_id: 10)
@@ -31,7 +33,34 @@ TaggableCommunity.create(community_id: 1, tag_id: 10)
 TaggableCommunity.create(community_id: 2, tag_id: 1)
 TaggableCommunity.create(community_id: 2, tag_id: 2)
 TaggableCommunity.create(community_id: 2, tag_id: 3)
+TaggableCommunity.create(community_id: 2, tag_id: 6)
 
-TaggableCommunity.create(community_id: 3, tag_id: 4)
+TaggableCommunity.create(community_id: 3, tag_id: 1)
+TaggableCommunity.create(community_id: 3, tag_id: 2)
+TaggableCommunity.create(community_id: 3, tag_id: 3)
 TaggableCommunity.create(community_id: 3, tag_id: 6)
+TaggableCommunity.create(community_id: 3, tag_id: 7)
 TaggableCommunity.create(community_id: 3, tag_id: 10)
+
+
+User.create(email: "matteo@example.it", uid: 1, password: "password", name: "Matteo")
+User.create(email: "marco@example.it", uid: 2, password: "password", name: "Marco")
+User.create(email: "luca@example.it", uid: 3, password: "password", name: "Luca")
+User.create(email: "giovanni@example.it", uid: 4, password: "password", name: "Giovanni")
+User.create(email: "leoanrdo@example.it", uid: 5, password: "password", name: "Leonardo")
+
+
+TaggableUser.create(user_id: 2, tag_id:1)
+TaggableUser.create(user_id: 2, tag_id:2)
+TaggableUser.create(user_id: 2, tag_id:3)
+TaggableUser.create(user_id: 2, tag_id:6)
+TaggableUser.create(user_id: 2, tag_id:7)
+TaggableUser.create(user_id: 2, tag_id:10)
+
+TaggableUser.create(user_id: 4, tag_id:1)
+TaggableUser.create(user_id: 4, tag_id:2)
+TaggableUser.create(user_id: 4, tag_id:3)
+TaggableUser.create(user_id: 4, tag_id:6)
+
+TaggableUser.create(user_id: 5, tag_id:6)
+TaggableUser.create(user_id: 5, tag_id:10)

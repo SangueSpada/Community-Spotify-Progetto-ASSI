@@ -2,5 +2,5 @@ class CommunityReccomendation < ApplicationRecord
     belongs_to :user
     belongs_to :community
 
-    validates :resource_id, presence: true
+    validates_uniqueness_of :user, :scope => [:community]
 end

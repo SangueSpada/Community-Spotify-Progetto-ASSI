@@ -6,24 +6,38 @@
     <!-- end timeline-icon -->
 
     <!-- begin timeline-body -->
-    <div class="timeline-body">
-        <div class="row timeline-header">
-            <div class="col-10 col-md-11 post-header align-content-center">
-                <h3>Dai un'occhiata a <%= user_reccomendation.body %>, potreste avere in comune più di quello che pensi</h3>
-                <small></small>
-            </div>
-        </div>
-
-        <div class="timeline-content">
-            <span class="username" style="font-size:80%"><a href="/communities/<%= user_reccomendation.user.id.to_s %>"><%= user_reccomendation.user.name %></a></span>
-
-            <% if user_reccomendation.resource_img %>
-                <div class="profile-header-img">
-                    <img src="<%=user_reccomendation.resource_img%>" alt="">
+    <div class="container">
+        <div class="timeline-body">
+            <div class="row timeline-header">
+                <div class="col-10 col-md-11 post-header align-content-center">
+                    <h3>Dai un'occhiata a <%= user_reccomendation.body %>, potreste avere in comune più di quello che pensi</h3>
+                    <small></small>
                 </div>
-            <% end %>
+            </div>
+
+            <div class="timeline-content">
+                <span class="username" style="font-size:80%"><a href="/users/<%= user_reccomendation.user.id.to_s %>"><%= user_reccomendation.resource.name %></a></span>
+
+                <% if user_reccomendation.resource_img %>
+                    <div class="profile-header-img">
+                        <img src="<%=user_reccomendation.resource_img%>" alt="">
+                    </div>
+                <% end %>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <%= button_to "OK", user_reccomendation_path(user_reccomendation), class:"btn btn-primary", :method=>:put %>
+                </div>
+
+                <div class="col">
+                    <%= button_to "Follow", follow_user_path(user_reccomendation.resource.uid), class: "btn btn-outline-success mb-2", method: "POST" %>
+                </div>
+
+            </div>
+            
         </div>
-        
+
     </div>
     <!-- end timeline-body -->
 </li>

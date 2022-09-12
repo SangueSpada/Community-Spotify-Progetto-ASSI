@@ -3,48 +3,51 @@ class CommunityReccomendationsController < ApplicationController
 
   # POST /community_reccomendations or /community_reccomendations.json
   def create
+
     user_tags = current_user.tags
+
+    puts "Tag dell'utente"
+    user_tags.each do |tag|
+      puts tag.name
+    end
+
     communities = Community.all
+
+    puts "Community nel database"
+    communities.each do |comm|
+      puts comm.name
+    end
+
     @rec_communities = reccomended_communities(user_tags, communities)
 
     @rec_communities.each do |community|
 
-      CommunityReccomendation.create(body: 'questa community', community: community.id, user: @community_reccomendation.user.id)
+      if !community.users.include?(current_user)
+
+        @new_recc = CommunityReccomendation.new(body: 'questa community', viewed: false, community: community, user: current_user)
+
+        if @new_recc.save
+          puts"Ci sono delle community che non sono state consigliate"
+          puts @new_recc
+        end
+        
+      end
       
     end
 
+    redirect_to reccomendations_path
 
-
-
-
-
-
-=begin 
-    @community_reccomendation = CommunityReccomendation.new(community_reccomendation_params)
-
-    respond_to do |format|
-      if @community_reccomendation.save
-        format.html { redirect_to community_reccomendation_url(@community_reccomendation), notice: "Community reccomendation was successfully created." }
-        format.json { render :show, status: :created, location: @community_reccomendation }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @community_reccomendation.errors, status: :unprocessable_entity }
-      end
-    end 
-=end
   end
 
   # PATCH/PUT /community_reccomendations/1 or /community_reccomendations/1.json
   def update
-    respond_to do |format|
-      if @community_reccomendation.update(community_reccomendation_params)
-        format.html { redirect_to community_reccomendation_url(@community_reccomendation), notice: "Community reccomendation was successfully updated." }
-        format.json { render :show, status: :ok, location: @community_reccomendation }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @community_reccomendation.errors, status: :unprocessable_entity }
-      end
+
+    puts "Sono dentro update"
+
+    if @community_reccomendation.update(viewed: true)
+      redirect_to reccomendations_path
     end
+    
   end
 
   # DELETE /community_reccomendations/1 or /community_reccomendations/1.json
@@ -65,32 +68,35 @@ class CommunityReccomendationsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def community_reccomendation_params
-      params.require(:reccomendation).permit(:body, :resource_img, :viewed, :community_id)
+      params.require(:community_reccomendation).permit(:body, :resource_img, :viewed, :community, :user)
     end
 
     def reccomended_communities(tags, communities)
-      counter = 0
 
       ret = Array.new
 
       communities.each do |community|
 
-        comm_tags = community.tags.count
+        counter = 0
+
+        user_tags = tags.count
 
         tags.each do |tag|
 
-          if community.tags.find(tag.id).present?
+          if community.tags.include?(tag)
             counter+=1
           end
 
         end
 
-        if counter/comm_tags >= 0.6
+        puts counter.to_f/user_tags
+
+        if counter.to_f/user_tags >= 0.6
           ret.push(community)
         end
 
-        if counter == 3
-          break
+        if ret.length == 3
+          return ret
         end
 
       end

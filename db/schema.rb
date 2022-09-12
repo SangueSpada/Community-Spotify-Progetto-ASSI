@@ -51,7 +51,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_09_172735) do
   create_table "community_reccomendations", force: :cascade do |t|
     t.string "body"
     t.string "resource_img"
-    t.binary "viewed"
+    t.boolean "viewed"
     t.integer "community_id", null: false
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
@@ -103,6 +103,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_09_172735) do
   create_table "participations", force: :cascade do |t|
     t.integer "community_id"
     t.integer "user_id"
+    t.integer "recc_id"
     t.integer "role", default: 0
     t.boolean "banned", default: false
     t.datetime "created_at", null: false
@@ -156,12 +157,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_09_172735) do
 
   create_table "user_reccomendations", force: :cascade do |t|
     t.string "body"
-    t.integer "resource_id", null: false
     t.string "resource_img"
-    t.binary "viewed"
+    t.boolean "viewed"
+    t.integer "resource_id", null: false
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["resource_id"], name: "index_user_reccomendations_on_resource_id"
     t.index ["user_id"], name: "index_user_reccomendations_on_user_id"
   end
 
@@ -191,5 +193,4 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_09_172735) do
   add_foreign_key "taggable_communities", "tags"
   add_foreign_key "taggable_users", "tags"
   add_foreign_key "taggable_users", "users"
-  add_foreign_key "user_reccomendations", "users"
 end
