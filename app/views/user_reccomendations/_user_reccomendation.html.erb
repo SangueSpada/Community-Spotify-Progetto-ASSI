@@ -36,7 +36,7 @@
                 </div>
 
                 <div class="col">
-                    <%= button_to "Follow", follow_user_path(user_reccomendation.resource.uid), class: "btn btn-outline-success mb-2", method: "POST" %>
+                    <%= button_to "Follow", follow_user_path(uid: user_reccomendation.resource.uid, recc_id: user_reccomendation.id), class: "btn btn-outline-success mb-2", method: "POST" %>
                 </div>
 
             </div>

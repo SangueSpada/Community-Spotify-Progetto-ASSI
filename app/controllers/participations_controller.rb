@@ -7,8 +7,8 @@ class ParticipationsController < ApplicationController
       id = params[:recc_id]
       recc = CommunityReccomendation.find(id)
 
-      if recc.update(viewed: true)
-        puts "Reccomendations aggiornata"
+      if recc.destroy
+        puts "Reccomendations eliminata"
       end
       
     end

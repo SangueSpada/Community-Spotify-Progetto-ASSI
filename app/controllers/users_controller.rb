@@ -31,6 +31,17 @@ class UsersController < ApplicationController
   end
   
   def follow
+
+    if params[:recc_id]
+      id = params[:recc_id]
+      recc = UserReccomendation.find(id)
+
+      if recc.destroy
+        puts "Reccomendations eliminata"
+      end
+      
+    end
+
     @user = User.where(uid: params[:uid]).first
     spotify_user = RSpotify::User.new(JSON.parse(current_user.spotify_hash.gsub('=>', ':').gsub('nil', 'null')))
     spotify_user.follow(RSpotify::User.find(@user.uid))
