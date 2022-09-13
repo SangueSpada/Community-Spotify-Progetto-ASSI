@@ -85,23 +85,43 @@ class CommunityReccomendationsController < ApplicationController
     def reccomended_communities(tags, communities)
 
       ret = Array.new
+      user_followings = current_user.followings
 
       communities.each do |community|
 
-        counter = 0
+        same_tags = 0
+        followings_in = 0
 
         comm_tags = community.tags.count
 
-        tags.each do |tag|
-
-          if community.tags.include?(tag)
-            counter+=1
+        user_followings.each do |following|
+          if community.users.include?(following)
+            followings_in += 1
           end
-
         end
 
-        if counter.to_f/comm_tags >= 0.9
-          ret.push(community)
+        tags.each do |tag|
+          if community.tags.include?(tag)
+            same_tags += 1
+          end
+        end
+
+        if followings_in >= 3
+          if same_tags.to_f/comm_tags >= 0.4
+            ret.push(community)
+          end
+        elsif followings_in > 1 && followings_in < 3
+          if same_tags.to_f/comm_tags >= 0.5
+            ret.push(community)
+          end
+        elsif followings_in == 1
+          if same_tags.to_f/comm_tags >= 0.6
+            ret.push(community)
+          end
+        else
+          if same_tags.to_f/comm_tags >= 0.9
+            ret.push(community)
+          end
         end
 
         if ret.length == 3
