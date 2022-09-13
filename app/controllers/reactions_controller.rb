@@ -8,9 +8,9 @@ class ReactionsController < ApplicationController
     if @reaction.save
       if !@post.community_id.nil?
         @community = Community.find(@post.community_id)
-        redirect_to community_path(@community)
+        redirect_back(fallback_location: community_path(@community))
       else
-        redirect_to root_path
+        redirect_back(fallback_location: root_path)
       end
     else
       redirect_to root_path, alert: 'Impossibile inserire la reaction'
@@ -25,7 +25,7 @@ class ReactionsController < ApplicationController
                 end
     if !@post.community_id.nil?
       @community = Community.find(@post.community_id)
-      redirect_to community_path(@community)
+      redirect_back(fallback_location: community_path(@community))
     else
       redirect_back(fallback_location: root_path)
     end
@@ -35,9 +35,9 @@ class ReactionsController < ApplicationController
     @reaction.destroy
     if !@post.community_id.nil?
       @community = Community.find(@post.community_id)
-      redirect_to community_path(@community)
+      redirect_back(fallback_location: community_path(@community))
     else
-      redirect_to :back
+      redirect_back(fallback_location: root_path)
     end
   end
 
