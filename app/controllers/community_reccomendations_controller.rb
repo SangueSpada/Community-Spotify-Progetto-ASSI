@@ -90,7 +90,7 @@ class CommunityReccomendationsController < ApplicationController
 
         counter = 0
 
-        user_tags = tags.count
+        comm_tags = community.tags.count
 
         tags.each do |tag|
 
@@ -100,7 +100,7 @@ class CommunityReccomendationsController < ApplicationController
 
         end
 
-        if counter.to_f/user_tags >= 0.6
+        if counter.to_f/comm_tags >= 0.9
           ret.push(community)
         end
 

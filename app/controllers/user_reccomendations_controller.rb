@@ -82,11 +82,9 @@ class UserReccomendationsController < ApplicationController
 
       users.each do |user|
 
-        puts user.tags
-
         counter = 0
 
-        cur_usr_tags = tags.count
+        usr_tags = user.tags.count
 
         tags.each do |tag|
 
@@ -96,9 +94,7 @@ class UserReccomendationsController < ApplicationController
 
         end
 
-        puts counter.to_f/cur_usr_tags
-
-        if counter.to_f/cur_usr_tags >= 0.6
+        if counter.to_f/usr_tags >= 0.9
           ret.push(user)
         end
 

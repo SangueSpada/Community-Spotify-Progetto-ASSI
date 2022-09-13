@@ -2,7 +2,14 @@ class PagesController < ApplicationController
 before_action :authenticate_person!
 
   def home
-    @posts = Post.all.order(created_at: :desc)
+    followings = current_user.followings
+
+    participations = current_user.communities
+
+    @posts = Post.where(user: current_user)#.or(Post.where(followings.include?(:user)))
+    .or(Post.where(participations.include?(:community)))
+    .order(created_at: :desc)
+
     @communities = Community.all
     
   end

@@ -4,18 +4,17 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.0]
   def change
     create_table :users do |t|
       ## Database authenticatable
-      t.string :email,              null: false, default: "", unique: true 
-      t.string :uid,                unique: true, null: false, default: ""
-      t.string :encrypted_password, null: false, default: ""
+      t.string :email,              null: false, default: '', unique: true
+      t.string :uid,                unique: true, null: false, default: ''
+      t.string :encrypted_password, null: false, default: ''
       t.string :provider
-      t.string :avatar_url
-      t.string :name
-      t.integer :recc_id
+      t.string :avatar_url, null: false, default: ''
+      t.string :name, null: false, default: ''
       t.text :spotify_hash
-      
+
       ## Recoverable
-      #t.string   :reset_password_token
-      #t.datetime :reset_password_sent_at
+      # t.string   :reset_password_token
+      # t.datetime :reset_password_sent_at
 
       ## Rememberable
       t.datetime :remember_created_at
@@ -38,7 +37,6 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.0]
       # t.string   :unlock_token # Only if unlock strategy is :email or :both
       # t.datetime :locked_at
 
-
       t.timestamps null: false
     end
 
@@ -52,6 +50,4 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.0]
     # add_index :users, :confirmation_token,   unique: true
     # add_index :users, :unlock_token,         unique: true
   end
-
-  
 end

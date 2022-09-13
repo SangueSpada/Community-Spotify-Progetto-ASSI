@@ -3,12 +3,17 @@ class ReactionsController < ApplicationController
 
   def create
     @post = Post.find(params[:post_id])
-    @reaction = @post.reactions.create(reaction_params)
-    if !@post.community_id.nil?
-      @community = Community.find(@post.community_id)
-      redirect_to community_path(@community)
+    @reaction = @post.reactions.new(reaction_params)
+    @reaction.user = current_user
+    if @reaction.save
+      if !@post.community_id.nil?
+        @community = Community.find(@post.community_id)
+        redirect_to community_path(@community)
+      else
+        redirect_to root_path
+      end
     else
-      redirect_to root_path
+      redirect_to root_path, alert: 'Impossibile inserire la reaction'
     end
   end
 
@@ -22,7 +27,7 @@ class ReactionsController < ApplicationController
       @community = Community.find(@post.community_id)
       redirect_to community_path(@community)
     else
-      redirect_to root_path
+      redirect_back(fallback_location: root_path)
     end
   end
 
@@ -32,7 +37,7 @@ class ReactionsController < ApplicationController
       @community = Community.find(@post.community_id)
       redirect_to community_path(@community)
     else
-      redirect_to root_path
+      redirect_to :back
     end
   end
 
@@ -46,6 +51,6 @@ class ReactionsController < ApplicationController
   end
 
   def reaction_params
-    params.require(:reaction).permit(:uid, :like)
+    params.require(:reaction).permit(:like)
   end
 end

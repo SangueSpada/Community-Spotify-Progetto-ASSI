@@ -1,20 +1,17 @@
-<% if !current_modder && comment.comment_reactions.where(uid: current_user.uid).first %>
-    <% @comment_reaction = comment.comment_reactions.where(uid: current_user.uid).first %>
-    <% if @comment_reaction.like == true %>
-        <%= button_to raw('<i class="bi bi-hand-thumbs-up-fill"></i>'), post_comment_comment_reaction_path(post.id, comment.id, @comment_reaction.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class:"btn btn-trasparent", method: :delete %>
-    <% else %>
-        <%= button_to raw('<i class="bi bi-hand-thumbs-up"></i>'),update_post_comment_comment_reaction_path(post.id, comment.id, @comment_reaction.id), class:"btn btn-trasparent", method: :get %>
-    <% end %>
+<% if !current_modder && comment.comment_reactions.where(user_id: current_user.id).first %>
+  <% @comment_reaction = comment.comment_reactions.where(user_id: current_user.id).first %>
+  <% if @comment_reaction.like == true %>
+    <%= button_to raw('<i class="bi bi-hand-thumbs-up-fill"></i>'), post_comment_comment_reaction_path(post.id, comment.id, @comment_reaction.id), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class:"btn btn-trasparent", method: :delete %>
+  <% else %>
+    <%= button_to raw('<i class="bi bi-hand-thumbs-up"></i>'),update_post_comment_comment_reaction_path(post.id, comment.id, @comment_reaction.id), class:"btn btn-trasparent", method: :get %>
+  <% end %>
 <% else %>
-    <% unless current_modder %>
-        <%= form_with model: [ post, comment, comment.comment_reactions.build ] do |form| %>
-            <%= form.hidden_field :uid, value: current_user.uid %>
-            <%= form.hidden_field :like, value: true%>
-            <button type="submit" class="btn btn-trasparent">
-                <i class="bi bi-hand-thumbs-up"></i>
-            </button>
-        <% end %>
+  <% unless current_modder %>
+    <%= form_with model: [ post, comment, comment.comment_reactions.build ] do |form| %>
+      <%= form.hidden_field :like, value: true%>
+      <button type="submit" class="btn btn-trasparent">
+        <i class="bi bi-hand-thumbs-up"></i>
+      </button>
     <% end %>
+  <% end %>
 <% end %>
-
-
