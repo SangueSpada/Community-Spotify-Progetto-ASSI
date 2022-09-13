@@ -24,44 +24,14 @@ class CommentsController < ApplicationController
     end
   end
 
-  def update
-    @post = Post.find(params[:post_id])
-    @comment = @post.comments.find(params[:id])
-    respond_to do |format|
-      if !@post.community_id.nil?
-        @community = Community.find(@post.community_id)
-        if @comment.update(comment_params)
-          format.html do
-            redirect_back(fallback_location: community_path(@community),
-                          notice: 'Il commento è stato aggiornato con successo.')
-          end
-        else
-          format.html do
-            redirect_back(fallback_location: community_path(@community),
-                          alert: 'Il commento non è stato aggiornato. Riprova.')
-          end
-        end
-      elsif @comment.update(comment_params)
-        format.html do
-          redirect_back(fallback_location: root_path, notice: 'Il commento è stato aggiornato con successo.')
-        end
-      else
-        format.html do
-          redirect_back(fallback_location: root_path, alert: 'Il commento non è stato aggiornato. Riprova.')
-        end
-      end
-    end
-  end
-
   def destroy
     @post = Post.find(params[:post_id])
     @comment = @post.comments.find(params[:id])
-    if current_user == @comment.user || current_modder
+    if current_user == @comment.user || current_user == @post.user || current_modder
       @comment.destroy
-
       if !@post.community_id.nil?
         @community = Community.find(@post.community_id)
-        redirect_back(fallback_location: community_path(@community))
+        redirect_back(fallback_location: community_path(@community), status: 303)
       else
         redirect_back(fallback_location: root_path)
       end

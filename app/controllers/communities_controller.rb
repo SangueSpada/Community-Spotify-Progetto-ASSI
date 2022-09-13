@@ -1,5 +1,5 @@
 class CommunitiesController < ApplicationController
-  before_action :authenticate_user!, :set_community, only: %i[show edit update destroy]
+  before_action :authenticate_person!, :set_community, only: %i[show edit update destroy]
 
   def index
     @communities = if params[:query].present?
@@ -10,17 +10,12 @@ class CommunitiesController < ApplicationController
   end
 
   def show
-    
     @admin_participation = @community.participations.where(role: 'admin').first
-    if  @admin_participation
-      @playlist = RSpotify::Playlist.find(@admin_participation.user.uid, @community.playlist)
-    end
-    #@spotify_user = RSpotify::User.new(JSON.parse(current_user.spotify_hash.gsub('=>', ':').gsub('nil', 'null')))
+    @playlist = RSpotify::Playlist.find(@admin_participation.user.uid, @community.playlist) if @admin_participation
+    # @spotify_user = RSpotify::User.new(JSON.parse(current_user.spotify_hash.gsub('=>', ':').gsub('nil', 'null')))
     @posts = @community.posts.all.order(created_at: :desc)
     @events = @community.events.all.order(created_at: :desc)
-    if !session[:authorization]
-      @client = Signet::OAuth2::Client.new(client_options)
-    end
+    @client = Signet::OAuth2::Client.new(client_options) unless session[:authorization]
   end
 
   def new
@@ -86,7 +81,7 @@ class CommunitiesController < ApplicationController
 
   def set_community
     @community = Community.find(params[:id])
-    @user_participation = @community.participations.where(user_id: current_user.id).first
+    @user_participation = (@community.participations.where(user_id: current_user.id).first unless current_modder)
   rescue ActiveRecord::RecordNotFound => e
     redirect_to root_path, notice: e.message
   end
@@ -105,9 +100,7 @@ class CommunitiesController < ApplicationController
   def give_community_tags(community, tags)
     community.taggableCommunities.destroy_all
     tags.each do |tag|
-      if tag != ""
-        community.tags << Tag.find(tag)
-      end
+      community.tags << Tag.find(tag) if tag != ''
     end
   end
 
@@ -115,7 +108,7 @@ class CommunitiesController < ApplicationController
     !!link.match(%r{https://open.spotify.com/playlist/\w})
   end
 
-  #Crea la struttura con i dati richiesti per effettuare le chiamate API
+  # Crea la struttura con i dati richiesti per effettuare le chiamate API
   def client_options
     {
       client_id: Rails.application.credentials[:google_client_id],

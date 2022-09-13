@@ -1,4 +1,4 @@
-<% if post.user == current_user || (current_user.followings.include?(post.user) && !post.community_id) || (post.community_id && current_user.communities.where(id: post.community_id).first)%>
+<% if current_modder || post.user == current_user || (current_user.followings.include?(post.user) && !post.community_id) || (post.community_id && current_user.communities.where(id: post.community_id).first)%>
   <li>
     <!-- begin timeline-time -->
     <div class="timeline-time">

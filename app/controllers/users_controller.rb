@@ -1,45 +1,39 @@
 require 'json'
 class UsersController < ApplicationController
-  before_action :authenticate_user!, :set_user, only: %i[show edit update] 
+  before_action :authenticate_person!, :set_user, only: %i[show edit update]
   def show
     @u = User.where(uid: params[:uid]).first
-    @communities = Community.joins(:participations).where(participations: {user_id: @u})
-    #puts "le community sono:"+ String(@communities.count())
-    unless !@u.posts
-      @posts = @u.posts.order(created_at: :desc)
-    end
+    @communities = Community.joins(:participations).where(participations: { user_id: @u })
+    # puts "le community sono:"+ String(@communities.count())
+    @posts = @u.posts.order(created_at: :desc) if @u.posts
     @communities.each do |co|
-      #puts co.id
+      # puts co.id
     end
     if @u.spotify_hash
       @user = RSpotify::User.new(JSON.parse(@u.spotify_hash.gsub('=>', ':').gsub('nil', 'null')))
-      #@user = RSpotify::User.find(@u.uid)
-      @top_artist=@user.top_artists().first
-      @top_tracks=@user.top_tracks(:limit => 5)
-      @player=@user.player
+      # @user = RSpotify::User.find(@u.uid)
+      @top_artist = @user.top_artists.first
+      @top_tracks = @user.top_tracks(limit: 5)
+      @player = @user.player
       begin
         @player.currently_playing
       rescue NoMethodError
-        @currently_playing=nil
+        @currently_playing = nil
       else
-        @currently_playing=@player.currently_playing
+        @currently_playing = @player.currently_playing
       end
     else
-      @user=nil
+      @user = nil
     end
-
   end
-  
-  def follow
 
+  def follow
     if params[:recc_id]
       id = params[:recc_id]
       recc = UserReccomendation.find(id)
 
-      if recc.destroy
-        puts "Reccomendations eliminata"
-      end
-      
+      puts 'Reccomendations eliminata' if recc.destroy
+
     end
 
     @user = User.where(uid: params[:uid]).first
@@ -48,7 +42,7 @@ class UsersController < ApplicationController
       spotify_user.follow(RSpotify::User.find(@user.uid))
     end
     current_user.followings << @user
-    redirect_back(fallback_location: {action: "show", uid: @user.uid})
+    redirect_back(fallback_location: { action: 'show', uid: @user.uid })
   end
 
   def unfollow
@@ -58,12 +52,12 @@ class UsersController < ApplicationController
       spotify_user.unfollow(RSpotify::User.find(@user.uid))
     end
     current_user.given_follows.find_by(followed_user_id: @user.id).destroy
-    redirect_back(fallback_location: {action: "show", uid: @user.uid})
+    redirect_back(fallback_location: { action: 'show', uid: @user.uid })
   end
 
   def edit
     puts @user
-    puts "MAREMMA MAIAAALAAAA"
+    puts 'MAREMMA MAIAAALAAAA'
     redirect_to root_path, notice: 'Non puoi modificare i tag di un altro utente!' if current_user.uid != params[:uid]
     @tags = Tag.all
   end
@@ -87,10 +81,7 @@ class UsersController < ApplicationController
   def give_user_tags(user, tags)
     user.taggableUsers.destroy_all
     tags.each do |tag|
-      if tag != ""
-        user.tags << Tag.find(tag)
-      end
+      user.tags << Tag.find(tag) if tag != ''
     end
   end
-
 end

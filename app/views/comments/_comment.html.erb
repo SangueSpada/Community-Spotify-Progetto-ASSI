@@ -1,48 +1,32 @@
-  <li class="list-group-item">
-    <div class="comment-box row"id="comment-body-<%= comment.id%> " style="background: #fbfdff;">
-      <div class="comment-header col-1">
-        <%if post.user.avatar_url%>
-                    <span class="userimage"><img src="<%=post.user.avatar_url%>" alt="" width="32" height="32" class="rounded-circle"></span>
-                <%else%>
-                    <span class="userimage"><%= image_tag "prof_pic_default.png" , class: "rounded-circle"%></span>
-                <%end%>
-      </div>
-      <div class="comment-header col-6 col-md-10">
-        <span style="padding-left: 5px padding-bottom: 10px"><span class="username"><a href="/users/<%= String(comment.user.uid) %>"><%= comment.user.name %></a> </span><%= comment.body %>
-                <span style="font-size:10px"><%=comment.created_at.to_fs(:short)%></span>
-        </span>
-        <div class="row justiify-content-end" style= "padding: 0px">
-          <div class="stats-icon"style="float: right; width: auto;">
-              <%= render "comment_reactions/like", post: post, comment: comment %>
-          </div>
-          <div class="stats-icon" style="float: right;width: auto;">
-              <%= render "comment_reactions/dislike", post: post, comment: comment %>
-          </div>
+<li class="list-group-item">
+  <div class="comment-box row"id="comment-body-<%= comment.id%> " style="background: #fbfdff;">
+    <div class="comment-header col-1">
+      <%if post.user.avatar_url%>
+        <span class="userimage"><img src="<%=post.user.avatar_url%>" alt="" width="32" height="32" class="rounded-circle"></span>
+      <%else%>
+        <span class="userimage"><%= image_tag "prof_pic_default.png" , class: "rounded-circle"%></span>
+      <%end%>
+    </div>
+    <div class="comment-header col-6 col-md-10">
+      <span style="padding-left: 5px padding-bottom: 10px"><span class="username"><a href="/users/<%= String(comment.user.uid) %>"><%= comment.user.name %></a> </span><%= comment.body %>
+        <span style="font-size:10px"><%=comment.created_at.to_fs(:short)%></span>
+      </span>
+      <div class="row justiify-content-end" style= "padding: 0px">
+        <div class="stats-icon"style="float: right; width: auto;">
+          <%= render "comment_reactions/like", post: post, comment: comment %>
+        </div>
+        <div class="stats-icon" style="float: right;width: auto;">
+          <%= render "comment_reactions/dislike", post: post, comment: comment %>
         </div>
       </div>
-
-      <div class="col-1 justify-content-end" > 
-      
+    </div>
+    <% if current_modder || (post.user == current_user && comment.user != current_user) || comment.user == current_user %>
+      <div class="col-1 justify-content-end" >
         <a class="nav-link" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></a>
         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdown01">
-        <% if current_modder%>
-            <li><%= link_to "Elimina", post_comment_path(post.id, comment.id),class: "dropdown-item", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %></li>
-        <% elsif comment.user == current_user%>
-            <li><%= link_to "Modifica", nil,class: "dropdown-item", remote: true, method: :get, 
-                    data: {
-                      controller: "comments",
-                      action: "comments#toggleForm",
-                      comments_form_param: "edit-form-#{comment.id}",
-                      comments_body_param: "comment-body-#{comment.id}"
-                    } %></li>
-            <li><%= link_to "Elimina", post_comment_path(post.id, comment.id), class: "dropdown-item",data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %></li>
-        <% end %>
+          <li><%= link_to "Elimina", post_comment_path(post.id, comment.id),class: "dropdown-item", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %></li>
         </ul>
-      </div> 
-      
-    </div>
-    
-    
-  </li>
-    
-
+      </div>
+    <% end %>
+  </div>
+</li>
