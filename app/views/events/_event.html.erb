@@ -34,13 +34,24 @@
             </div>
         </div>
 
-        <div class="timeline-content">
-            <h3><%= event.title %></h3>
-            <p><%= event.body %></p>
-            <%= button_to "Partecipa", new_googlecalendar_event_path(event, 'primary'), class:"btn btn-primary", method: :post %>
-            <%= button_to "Rimuovi partecipazione", delete_googlecalendar_event_path(event, 'primary'), class:"btn btn-primary", method: :delete %>
+        <div class="row timeline-content">
+            <div class="col">
+                <h3><%= event.title %></h3>
+                <p><%= event.body %></p>
+                <%= button_to "Partecipa", new_googlecalendar_event_path(event, 'primary'), class:"btn btn-primary", method: :post %>
+                <%= button_to "Rimuovi partecipazione", delete_googlecalendar_event_path(event, 'primary'), class:"btn btn-primary", method: :delete %>
+            </div>
+
+            <div class="col-1 justify-content-end" > 
+                <a class="nav-link" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person"></i></a>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdown01">
+                <% event.event_participations.each do |participation| %>
+                    <li><p><%= participation.user.name %></p></li>
+                <% end %>
+            </div>
         </div>
-        
+
+
     </div>
     <!-- end timeline-body -->
 </li>
