@@ -4,7 +4,7 @@ class ChatsController < ApplicationController
 
 
   def index
-    @chats = Chat.all
+    @chats = Chat.all.order("last_message_at DESC")
   end
   
   def show
@@ -15,10 +15,6 @@ class ChatsController < ApplicationController
     @messages = messages.reverse
   end
 
-  def new
-    @chat = Chat.new
-    
-  end
   def destroy 
     @chat.destroy
     redirect_to chat_path

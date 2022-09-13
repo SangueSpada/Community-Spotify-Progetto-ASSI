@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :community_reccomendations
 
   root 'pages#home'
-
+  
   get '/reccomendations', to: 'pages#reccomendations'
   
   post 'search/searchbar', to: 'search#searchbar'
@@ -52,6 +52,8 @@ Rails.application.routes.draw do
     resources :posts
     resources :events
   end
+  post '/communities/:id/add_playlist', to: 'communities#add_playlist', as: 'community_add_playlist'
+  post '/communities/:id/remove_playlist', to: 'communities#remove_playlist',as:'community_remove_playlist'
 
   resources :users do
     resources :communities do

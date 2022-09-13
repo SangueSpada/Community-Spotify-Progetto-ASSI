@@ -10,6 +10,9 @@ class CommunitiesController < ApplicationController
   end
 
   def show
+    if current_user.spotify_hash
+      @spotify_user = RSpotify::User.new(JSON.parse(current_user.spotify_hash.gsub('=>', ':').gsub('nil', 'null')))
+    end
     @admin_participation = @community.participations.where(role: 'admin').first
     @playlist = RSpotify::Playlist.find(@admin_participation.user.uid, @community.playlist) if @admin_participation
     # @spotify_user = RSpotify::User.new(JSON.parse(current_user.spotify_hash.gsub('=>', ':').gsub('nil', 'null')))
@@ -74,6 +77,38 @@ class CommunitiesController < ApplicationController
     else
       @community.destroy
       redirect_to root_path, status: :see_other
+    end
+  end
+
+  def add_playlist
+    @community = Community.find(params[:id])
+    if current_user.spotify_hash
+
+      @spotify_user = RSpotify::User.new(JSON.parse(current_user.spotify_hash.gsub('=>', ':').gsub('nil', 'null')))
+      @admin_participation = @community.participations.where(role: 'admin').first
+      if @admin_participation.user.spotify_hash
+        @playlist = RSpotify::Playlist.find(@admin_participation.user.uid, @community.playlist)
+        @spotify_user.follow(@playlist)
+      end
+      redirect_back(fallback_location:  community_path(@community))
+    else
+      redirect_back(fallback_location:  community_path(@community))
+    end
+  end
+
+  def remove_playlist
+    @community = Community.find(params[:id])
+    if current_user.spotify_hash
+
+      @spotify_user = RSpotify::User.new(JSON.parse(current_user.spotify_hash.gsub('=>', ':').gsub('nil', 'null')))
+      @admin_participation = @community.participations.where(role: 'admin').first
+      if @admin_participation.user.spotify_hash
+        @playlist = RSpotify::Playlist.find(@admin_participation.user.uid, @community.playlist)
+        @spotify_user.unfollow(@playlist)
+      end
+      redirect_back(fallback_location:  community_path(@community))
+    else
+      redirect_back(fallback_location:  community_path(@community))
     end
   end
 

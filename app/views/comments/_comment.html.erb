@@ -1,8 +1,8 @@
 <li class="list-group-item">
   <div class="comment-box row"id="comment-body-<%= comment.id%> " style="background: #fbfdff;">
     <div class="comment-header col-1">
-      <%if post.user.avatar_url%>
-        <span class="userimage"><img src="<%=post.user.avatar_url%>" alt="" width="32" height="32" class="rounded-circle"></span>
+      <%if comment.user.avatar_url%>
+        <span class="userimage"><img src="<%=comment.user.avatar_url%>" alt="prof_pic_default.png" width="32" height="32" class="rounded-circle"></span>
       <%else%>
         <span class="userimage"><%= image_tag "prof_pic_default.png" , class: "rounded-circle"%></span>
       <%end%>

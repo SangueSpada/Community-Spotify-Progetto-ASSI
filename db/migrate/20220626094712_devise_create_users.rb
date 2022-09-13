@@ -8,7 +8,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.0]
       t.string :uid,                unique: true, null: false, default: ''
       t.string :encrypted_password, null: false, default: ''
       t.string :provider
-      t.string :avatar_url, null: false, default: ''
+      t.string :avatar_url
       t.string :name, null: false, default: ''
       t.text :spotify_hash
 
