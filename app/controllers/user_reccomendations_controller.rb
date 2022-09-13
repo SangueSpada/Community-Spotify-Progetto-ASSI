@@ -79,23 +79,43 @@ class UserReccomendationsController < ApplicationController
     def reccomended_users(tags, users)
 
       ret = Array.new
+      user_followings = current_user.followings
 
       users.each do |user|
 
-        counter = 0
+        same_tags = 0
+        followings_in = 0
 
         usr_tags = user.tags.count
 
-        tags.each do |tag|
-
-          if user.tags.include?(tag)
-            counter+=1
+        user_followings.each do |following|
+          if user.followers.include?(following)
+            followings_in += 1
           end
-
         end
 
-        if counter.to_f/usr_tags >= 0.9
-          ret.push(user)
+        tags.each do |tag|
+          if user.tags.include?(tag)
+            same_tags += 1
+          end
+        end
+
+        if followings_in >= 3
+          if same_tags.to_f/usr_tags >= 0.4
+            ret.push(user)
+          end
+        elsif followings_in > 1 && followings_in < 3
+          if same_tags.to_f/usr_tags >= 0.5
+            ret.push(user)
+          end
+        elsif followings_in == 1
+          if same_tags.to_f/usr_tags >= 0.6
+            ret.push(user)
+          end
+        else
+          if same_tags.to_f/usr_tags >= 0.9
+            ret.push(user)
+          end
         end
 
         if ret.length == 3
