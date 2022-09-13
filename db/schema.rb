@@ -10,15 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 20_220_909_172_735) do
-  create_table 'chats', force: :cascade do |t|
-    t.integer 'user1_id'
-    t.integer 'user2_id'
-    t.datetime 'last_message_at'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index ['user1_id'], name: 'index_chats_on_user1_id'
-    t.index ['user2_id'], name: 'index_chats_on_user2_id'
+ActiveRecord::Schema[7.0].define(version: 2022_09_13_153559) do
+  create_table "chats", force: :cascade do |t|
+    t.integer "user1_id"
+    t.integer "user2_id"
+    t.datetime "last_message_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user1_id"], name: "index_chats_on_user1_id"
+    t.index ["user2_id"], name: "index_chats_on_user2_id"
   end
 
   create_table "comment_reactions", force: :cascade do |t|
@@ -186,7 +186,7 @@ ActiveRecord::Schema[7.0].define(version: 20_220_909_172_735) do
     t.string "uid", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "provider"
-    t.string "avatar_url", default: "", null: false
+    t.string "avatar_url"
     t.string "name", default: "", null: false
     t.text "spotify_hash"
     t.datetime "remember_created_at"

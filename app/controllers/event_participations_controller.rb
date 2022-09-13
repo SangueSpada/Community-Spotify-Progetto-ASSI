@@ -131,9 +131,11 @@ class EventParticipationsController < ApplicationController
     end
 
     def set_event_user_and_community
-        @event = Event.find(params[:id])
-        @user = @event.user
-        @community = @event.community
+        if params[:id]
+            @event = Event.find(params[:id])
+            @user = @event.user
+            @community = @event.community 
+        end
 
     rescue ActiveRecord::RecordNotFound => e
         redirect_to root_path, notice: e.message
