@@ -116,7 +116,7 @@
                 <div class="tab-pane fade show" id="nav-iscritti" role="tabpanel" aria-labelledby="nav-iscritti-tab" tabindex="0">
                   <% @community.participations.each do |participation| %>
                     <% if @user_participation.present? && !participation.banned %>
-                        <a href="/users/<%= String(participation.user.uid) %>" ><%= participation.user.uid %></a>  <strong class="text-dark">(<%= participation.role %>)</strong><br>
+                        <a href="/users/<%= String(participation.user.uid) %>" ><%= participation.user.name %></a>  <strong class="text-dark"> (<%= participation.role %>)</strong><br>
                     <% end %>
                   <% end %>
                 </div>

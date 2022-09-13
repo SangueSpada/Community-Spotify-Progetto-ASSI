@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :reccomendation
   resources :user_reccomendations
   resources :community_reccomendations
 
@@ -21,11 +22,11 @@ Rails.application.routes.draw do
   }
 
   #Routes per l'OAuth di Google
-  get '/redirect', to: 'events#redirect', as: 'redirect'
-  get '/callback', to: 'events#callback', as: 'callback'
+  get '/redirect', to: 'event_participations#redirect', as: 'redirect'
+  get '/callback', to: 'event_participations#callback', as: 'callback'
 
-  post '/events/:id/:calendar_id', to: 'events#new_googlecalendar_event', as: 'new_googlecalendar_event', calendar_id: /[^\/]+/
-  delete '/events/:id/:calendar_id', to: 'events#delete_googlecalendar_event', as: 'delete_googlecalendar_event', calendar_id: /[^\/]+/
+  post '/events/:id/:calendar_id', to: 'event_participations#create', as: 'new_googlecalendar_event', calendar_id: /[^\/]+/
+  delete '/events/:id/:calendar_id', to: 'event_participations#destroy', as: 'delete_googlecalendar_event', calendar_id: /[^\/]+/
 
   get '/chats/index'
   get '/users/:uid', to: 'users#show', as: 'uid_user'
@@ -44,9 +45,11 @@ Rails.application.routes.draw do
     resources :reactions, only: %i[create update destroy]
   end
 
-  resources :events
-
-  resources :reccomendation
+  resources :events do
+    resources :users do
+      resources :event_participations
+    end
+  end
 
   resources :communities do
     resources :posts
@@ -54,8 +57,13 @@ Rails.application.routes.draw do
   end
 
   resources :users do
+
     resources :communities do
       resources :participations
+    end
+
+    resources :events do
+      resources :event_participations
     end
   end
 

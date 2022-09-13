@@ -6,13 +6,14 @@ class User < ApplicationRecord
   devise :database_authenticatable, :rememberable, :validatable, :omniauthable, :omniauth_providers => [:spotify]
 
   has_many :participations
+  has_many :event_participations
   has_many :communities, through: :participations, dependent: :destroy
   has_many :followers, dependent: :destroy
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :chats, dependent: :destroy
   has_many :messages, dependent: :destroy
-  has_many :events, dependent: :destroy
+  has_many :events, through: :event_participations, dependent: :destroy
   has_many :reccomendations, dependent: :destroy
   has_many :taggableUsers, dependent: :destroy
   has_many :tags, through: :taggableUsers

@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: %i[ edit update destroy ]
+  before_action :authenticate_user!, :set_event, only: %i[ edit update destroy ]
 
   # GET /events/new
   def new
@@ -53,28 +53,6 @@ class EventsController < ApplicationController
       end
     end
   end
-
-  # Sezione adibita alla gestione delle interazioni con Google Calendar
-
-  def redirect
-    puts "Sono dentro redirect"
-    client = Signet::OAuth2::Client.new(client_options)
-
-    redirect_to client.authorization_uri.to_s, allow_other_host: true
-  end
-
-  def callback
-    puts "Sono dentro callback"
-    client = Signet::OAuth2::Client.new(client_options)
-    client.code = params[:code]
-
-    response = client.fetch_access_token!
-
-    session[:authorization] = response
-
-    redirect_to root_path
-  end
-
 
   def new_googlecalendar_event
     
@@ -178,18 +156,6 @@ class EventsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def event_params
       params.require(:event).permit(:title, :body, :start_date, :community_id, :user_id)
-    end
-
-    #Crea la struttura con i dati richiesti per effettuare le chiamate API
-    def client_options
-      {
-        client_id: Rails.application.credentials[:google_client_id],
-        client_secret: Rails.application.credentials[:google_client_secret],
-        authorization_uri: 'https://accounts.google.com/o/oauth2/auth',
-        token_credential_uri: 'https://accounts.google.com/o/oauth2/token',
-        scope: Google::Apis::CalendarV3::AUTH_CALENDAR,
-        redirect_uri: callback_url
-      }
     end
   
 end

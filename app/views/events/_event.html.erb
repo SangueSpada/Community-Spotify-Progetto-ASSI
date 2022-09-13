@@ -37,8 +37,8 @@
         <div class="timeline-content">
             <h3><%= event.title %></h3>
             <p><%= event.body %></p>
-            <%= button_to "Aggiungi evento al tuo Calendar", new_googlecalendar_event_path(event, 'primary'), class:"btn btn-primary", method: :post %>
-            <%= button_to "Elimina evento dal tuo Calendar", delete_googlecalendar_event_path(event, 'primary'), class:"btn btn-primary", method: :delete %>
+            <%= button_to "Partecipa", new_googlecalendar_event_path(event, 'primary'), class:"btn btn-primary", method: :post %>
+            <%= button_to "Rimuovi partecipazione", delete_googlecalendar_event_path(event, 'primary'), class:"btn btn-primary", method: :delete %>
         </div>
         
     </div>

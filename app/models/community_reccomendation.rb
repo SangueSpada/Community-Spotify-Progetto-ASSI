@@ -7,6 +7,6 @@ class CommunityReccomendation < ApplicationRecord
     validates_uniqueness_of :user, :scope => [:community]
 
     def set_expiration_datetime
-        self.expiration_datetime =  DateTime.now + 10.seconds
+        self.expiration_datetime =  DateTime.now + 10.minutes
     end
 end
