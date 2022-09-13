@@ -103,7 +103,7 @@
                   <% if @community.playlist  %>
                     <iframe class="pt-2" style="border-radius:20px; margin: 0 auto; display:block; " src="https://open.spotify.com/embed/playlist/<%=@community.playlist %>?utm_source=generator" width="75%" height="250" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
                   <% end %>
-                  <% if@admin_participation.user!=current_user%>
+                  <% if@admin_participation && @admin_participation.user!=current_user%>
                     <% if @playlist.is_followed_by?(Array(@spotify_user)).first %>
                       <%=button_to "Rimuovi dalla mie playlist", community_remove_playlist_path(@community), class: "btn btn-danger"%>
                     <% else %>
