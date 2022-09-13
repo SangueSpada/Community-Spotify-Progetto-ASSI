@@ -1,7 +1,11 @@
 class EventParticipationsController < ApplicationController
-    before_action :set_event_user_and_community
-
+    before_action :authenticate_user!
+    
     def create
+
+        @event = Event.find(params[:id])
+        @user = @event.user
+        @community = @event.community
     
         @event_participation = @event.event_participations.new(user: @user, event: @event)
 
@@ -66,6 +70,10 @@ class EventParticipationsController < ApplicationController
 
     def destroy
 
+        @event = Event.find(params[:id])
+        @user = @event.user
+        @community = @event.community
+
         client = Signet::OAuth2::Client.new(client_options)
 
         client.update!(session[:authorization])
@@ -128,17 +136,6 @@ class EventParticipationsController < ApplicationController
 
     def event_participation_params
         params.require(:event_participation).permit(:user, :event)
-    end
-
-    def set_event_user_and_community
-        if params[:id]
-            @event = Event.find(params[:id])
-            @user = @event.user
-            @community = @event.community 
-        end
-
-    rescue ActiveRecord::RecordNotFound => e
-        redirect_to root_path, notice: e.message
     end
 
     #Crea la struttura con i dati richiesti per effettuare le chiamate API
