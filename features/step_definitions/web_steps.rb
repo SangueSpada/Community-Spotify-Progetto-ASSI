@@ -120,6 +120,7 @@ When /^(?:|I )attach the file "([^"]*)" to "([^"]*)"$/ do |path, field|
 end
 
 Then /^(?:|I )should see "([^"]*)"$/ do |text|
+save_and_open_page
   if page.respond_to? :should
     page.should have_content(text)
   else
@@ -127,7 +128,10 @@ Then /^(?:|I )should see "([^"]*)"$/ do |text|
   end
 end
 Given('{string} likes {string}') do |string, string2|
-  tag=Tag.create(name: string2)
+  tag=Tag.where(name: string2).first
+  if(tag==nil)
+    tag=Tag.create(name: string2)
+  end
   user=User.where(name: string).first
   TaggableUser.create(user: user,tag:tag)
 end

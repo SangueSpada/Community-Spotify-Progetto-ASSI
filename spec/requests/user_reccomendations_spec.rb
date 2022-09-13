@@ -17,7 +17,23 @@ RSpec.describe "/user_reccomendations", type: :request do
   # This should return the minimal set of attributes required to create a valid
   # UserReccomendation. As you add validations to UserReccomendation, be sure to
   # adjust the attributes here as well.
-=begin   let(:valid_attributes) {
+  current_user = User.new(email: "daniele@example.com",password: "password",id:1,uid:"1");
+  before(:example) do
+    current_user = User.create(email: "daniele@example.com",password: "password",id:1,uid:"1");
+    rock=create(:tag,name: 'Rock',id:1)
+    pop=create(:tag,name: 'Pop',id:2)
+    metal=create(:tag,name: 'Metal',id:3)
+    create(:tag,name: 'Indie',id:4)
+    create(:tag,name: 'Classica',id:5)
+    create(:tag,name: 'Rap',id:6)
+    create(:tag,name: 'Electro',id:7)
+
+    TaggableUser.create(user: current_user, tag: rock)
+    TaggableUser.create(user: current_user, tag: pop)
+    TaggableUser.create(user: current_user, tag: metal)
+    sign_in current_user
+  end
+  let(:valid_attributes) {
     skip("Add a hash of attributes valid for your model")
   }
 
@@ -25,108 +41,218 @@ RSpec.describe "/user_reccomendations", type: :request do
     skip("Add a hash of attributes invalid for your model")
   }
 
-  describe "GET /index" do
+=begin   describe "GET /index" do
     it "renders a successful response" do
       UserReccomendation.create! valid_attributes
       get user_reccomendations_url
       expect(response).to be_successful
     end
-  end
+  end 
+=end
 
-  describe "GET /show" do
-    it "renders a successful response" do
-      user_reccomendation = UserReccomendation.create! valid_attributes
-      get user_reccomendation_url(user_reccomendation)
-      expect(response).to be_successful
-    end
-  end
 
-  describe "GET /new" do
-    it "renders a successful response" do
-      get new_user_reccomendation_url
-      expect(response).to be_successful
-    end
-  end
-
-  describe "GET /edit" do
+=begin   describe "GET /edit" do
     it "renders a successful response" do
       user_reccomendation = UserReccomendation.create! valid_attributes
       get edit_user_reccomendation_url(user_reccomendation)
       expect(response).to be_successful
     end
-  end
-
-  describe "POST /create" do
-    context "with valid parameters" do
-      it "creates a new UserReccomendation" do
-        expect {
-          post user_reccomendations_url, params: { user_reccomendation: valid_attributes }
-        }.to change(UserReccomendation, :count).by(1)
-      end
-
-      it "redirects to the created user_reccomendation" do
-        post user_reccomendations_url, params: { user_reccomendation: valid_attributes }
-        expect(response).to redirect_to(user_reccomendation_url(UserReccomendation.last))
-      end
-    end
-
-    context "with invalid parameters" do
-      it "does not create a new UserReccomendation" do
-        expect {
-          post user_reccomendations_url, params: { user_reccomendation: invalid_attributes }
-        }.to change(UserReccomendation, :count).by(0)
-      end
-
-      it "renders a successful response (i.e. to display the 'new' template)" do
-        post user_reccomendations_url, params: { user_reccomendation: invalid_attributes }
-        expect(response).to be_successful
-      end
-    end
-  end
-
-  describe "PATCH /update" do
-    context "with valid parameters" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
-
-      it "updates the requested user_reccomendation" do
-        user_reccomendation = UserReccomendation.create! valid_attributes
-        patch user_reccomendation_url(user_reccomendation), params: { user_reccomendation: new_attributes }
-        user_reccomendation.reload
-        skip("Add assertions for updated state")
-      end
-
-      it "redirects to the user_reccomendation" do
-        user_reccomendation = UserReccomendation.create! valid_attributes
-        patch user_reccomendation_url(user_reccomendation), params: { user_reccomendation: new_attributes }
-        user_reccomendation.reload
-        expect(response).to redirect_to(user_reccomendation_url(user_reccomendation))
-      end
-    end
-
-    context "with invalid parameters" do
-      it "renders a successful response (i.e. to display the 'edit' template)" do
-        user_reccomendation = UserReccomendation.create! valid_attributes
-        patch user_reccomendation_url(user_reccomendation), params: { user_reccomendation: invalid_attributes }
-        expect(response).to be_successful
-      end
-    end
-  end
-
-  describe "DELETE /destroy" do
-    it "destroys the requested user_reccomendation" do
-      user_reccomendation = UserReccomendation.create! valid_attributes
-      expect {
-        delete user_reccomendation_url(user_reccomendation)
-      }.to change(UserReccomendation, :count).by(-1)
-    end
-
-    it "redirects to the user_reccomendations list" do
-      user_reccomendation = UserReccomendation.create! valid_attributes
-      delete user_reccomendation_url(user_reccomendation)
-      expect(response).to redirect_to(user_reccomendations_url)
-    end
   end 
 =end
+
+  describe "POST /create" do
+    context "with matching commmunity (by tags 100%)" do
+      
+      it "creates a new UserReccomendation for the current user" do
+        user_target=create(:user,id:7,uid:"7")
+        TaggableUser.create(user: user_target, tag_id: 1)
+        TaggableUser.create(user: user_target, tag_id: 2)
+        TaggableUser.create(user: user_target, tag_id: 3) 
+        expect {
+          post user_reccomendations_url
+        }.to change(UserReccomendation.where(user: current_user), :count).by(1)
+      end
+
+      it "redirects to the reccomendation page" do
+        user_target=create(:user,id:7,uid:"7")
+        TaggableUser.create(user: user_target, tag_id: 1)
+        TaggableUser.create(user: user_target, tag_id: 2)
+        TaggableUser.create(user: user_target, tag_id: 3) 
+
+        post user_reccomendations_url
+        expect(response).to redirect_to(reccomendations_path)
+      end
+    end
+    context "with no matching commmunity (by tags 60%)" do
+      it "doesn't create a new UserReccomendation for the current user" do
+        user_target=create(:user,id:7,uid:"7")
+        TaggableUser.create(user: user_target, tag_id: 1)
+        TaggableUser.create(user: user_target, tag_id: 2)
+        TaggableUser.create(user: user_target, tag_id: 3)
+        TaggableUser.create(user: user_target, tag_id: 4)
+        TaggableUser.create(user: user_target, tag_id: 5)
+        expect {
+          post user_reccomendations_url
+        }.to change(UserReccomendation.where(user: current_user), :count).by(0)
+      end
+    end
+
+    context "with no matching commmunity (by tags 20%)" do
+      it "doesn't create a new UserReccomendation for the current user" do
+        user_target=create(:user,id:7,uid:"7")
+        TaggableUser.create(user: user_target, tag_id: 1)
+        TaggableUser.create(user: user_target, tag_id: 6)
+        TaggableUser.create(user: user_target, tag_id: 7)
+        TaggableUser.create(user: user_target, tag_id: 4)
+        TaggableUser.create(user: user_target, tag_id: 5)
+        expect {
+          post user_reccomendations_url
+        }.to change(UserReccomendation.where(user: current_user), :count).by(0)
+      end
+
+      it "redirects to the reccomendation page" do
+        user_target=create(:user,id:7,uid:"7")
+        TaggableUser.create(user: user_target, tag_id: 1)
+        TaggableUser.create(user: user_target, tag_id: 6)
+        TaggableUser.create(user: user_target, tag_id: 7)
+        TaggableUser.create(user: user_target, tag_id: 4)
+        TaggableUser.create(user: user_target, tag_id: 5)
+        post user_reccomendations_url
+        expect(response).to redirect_to(reccomendations_path)
+      end
+    end
+    context "with matching commmunity (by tags 60% with 1 following)" do  
+      it "creates a new UserReccomendation for the current user" do
+        user_target=create(:user,id:7,uid:"7")
+        TaggableUser.create(user: user_target, tag_id: 1)
+        TaggableUser.create(user: user_target, tag_id: 2)
+        TaggableUser.create(user: user_target, tag_id: 3)
+        TaggableUser.create(user: user_target, tag_id: 4)
+        TaggableUser.create(user: user_target, tag_id: 5)
+
+        user2=create(:user, id: 2,uid: '2')
+        
+        Follow.create(follower:current_user,followed_user:user2)
+        
+        Follow.create(follower: user2, followed_user: user_target)
+        expect {
+          post user_reccomendations_url
+        }.to change(UserReccomendation.where(user: current_user), :count).by(1)
+      end
+    end
+    context "with no matching commmunity (by tags 50% with 1 following)" do
+    
+      it "doesn't create a new UserReccomendation for the current user" do
+        user_target=create(:user,id:7,uid:"7")
+        TaggableUser.create(user: user_target, tag_id: 1)
+        TaggableUser.create(user: user_target, tag_id: 2)
+        TaggableUser.create(user: user_target, tag_id: 4)
+        TaggableUser.create(user: user_target, tag_id: 5)
+
+        user2=create(:user, id: 2,uid: '2')
+        
+        Follow.create(follower:current_user,followed_user:user2)
+        
+        Follow.create(follower: user2, followed_user: user_target)
+        expect {
+          post user_reccomendations_url
+        }.to change(UserReccomendation.where(user: current_user), :count).by(0)
+      end
+
+    end
+    context "with matching commmunity (by tags 50% with 2 following)" do
+      
+      it "creates a new UserReccomendation for the current user" do
+        user_target=create(:user,id:7,uid:"7")
+        TaggableUser.create(user: user_target, tag_id: 1)
+        TaggableUser.create(user: user_target, tag_id: 2)
+        TaggableUser.create(user: user_target, tag_id: 4)
+        TaggableUser.create(user: user_target, tag_id: 5)
+
+        user2=create(:user, id: 2,uid: '2')
+        Follow.create(follower:current_user,followed_user:user2)
+        Follow.create(follower: user2, followed_user: user_target)
+        user3=create(:user, id: 3,uid: '3')
+        Follow.create(follower:current_user,followed_user:user3)
+        Follow.create(follower: user3, followed_user: user_target)
+        
+        expect {
+          post user_reccomendations_url
+        }.to change(UserReccomendation.where(user: current_user), :count).by(1)
+      end
+    end
+    context "with no matching commmunity (by tags 40% with 2 following)" do
+      
+      it "doesn't create a new UserReccomendation for the current user" do
+        user_target=create(:user,id:7,uid:"7")
+        TaggableUser.create(user: user_target, tag_id: 1)
+        TaggableUser.create(user: user_target, tag_id: 2)
+        TaggableUser.create(user: user_target, tag_id: 4)
+        TaggableUser.create(user: user_target, tag_id: 5)
+        TaggableUser.create(user: user_target, tag_id: 6)
+
+        user2=create(:user, id: 2,uid: '2')
+        Follow.create(follower:current_user,followed_user:user2)
+        Follow.create(follower: user2, followed_user: user_target)
+        user3=create(:user, id: 3,uid: '3')
+        Follow.create(follower:current_user,followed_user:user3)
+        Follow.create(follower: user3, followed_user: user_target)
+        
+        expect {
+          post user_reccomendations_url
+        }.to change(UserReccomendation.where(user: current_user), :count).by(0)
+      end
+    end
+    context "with matching commmunity (by tags 40% with 3 following)" do
+      
+      it "creates a new UserReccomendation for the current user" do
+        user_target=create(:user,id:7,uid:"7")
+        TaggableUser.create(user: user_target, tag_id: 1)
+        TaggableUser.create(user: user_target, tag_id: 2)
+        TaggableUser.create(user: user_target, tag_id: 4)
+        TaggableUser.create(user: user_target, tag_id: 5)
+        TaggableUser.create(user: user_target, tag_id: 6)
+
+        user2=create(:user, id: 2,uid: '2')
+        Follow.create(follower:current_user,followed_user:user2)
+        Follow.create(follower: user2, followed_user: user_target)
+        user3=create(:user, id: 3,uid: '3')
+        Follow.create(follower:current_user,followed_user:user3)
+        Follow.create(follower: user3, followed_user: user_target)
+        user4=create(:user, id: 4,uid: '4')
+        Follow.create(follower:current_user,followed_user:user4)
+        Follow.create(follower: user4,followed_user: user_target)
+        
+        expect {
+          post user_reccomendations_url
+        }.to change(UserReccomendation.where(user: current_user), :count).by(1)
+      end
+    end
+    context "with no matching commmunity (by tags 33% with 3 following)" do
+      
+      it "doesn't create a new UserReccomendation for the current user" do
+        user_target=create(:user,id:7,uid:"7")
+        TaggableUser.create(user: user_target, tag_id: 1)
+        TaggableUser.create(user: user_target, tag_id: 2)
+        TaggableUser.create(user: user_target, tag_id: 4)
+        TaggableUser.create(user: user_target, tag_id: 5)
+        TaggableUser.create(user: user_target, tag_id: 6)
+        TaggableUser.create(user: user_target, tag_id: 7)
+
+        user2=create(:user, id: 2,uid: '2')
+        Follow.create(follower:current_user,followed_user:user2)
+        Follow.create(follower: user2, followed_user: user_target)
+        user3=create(:user, id: 3,uid: '3')
+        Follow.create(follower:current_user,followed_user:user3)
+        Follow.create(follower: user3, followed_user: user_target)
+        user4=create(:user, id: 4,uid: '4')
+        Follow.create(follower:current_user,followed_user:user4)
+        Follow.create(follower: user4,followed_user: user_target)
+        
+        expect {
+          post user_reccomendations_url
+        }.to change(UserReccomendation.where(user: current_user), :count).by(0)
+      end
+    end
+  end
 end

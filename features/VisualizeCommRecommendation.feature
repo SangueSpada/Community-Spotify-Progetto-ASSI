@@ -8,7 +8,7 @@ Background:
     And "RRM" deals with "Rock"
     And "RRM" deals with "Rap"
     And "RRM" deals with "Metal"                  
-Scenario: Get recommendations (Accept)
+Scenario: Get community recommendations (Accept)
     Given I am logged in as "Daniele"
     And I am on the recommendations page
     When I press "Genera community reccomendations" 
@@ -17,7 +17,7 @@ Scenario: Get recommendations (Accept)
     And I go to community "RRM" page
     And I press "Iscritti"
     Then I should see "Daniele"
-Scenario: Get recommendations (Deny)
+Scenario: Get community recommendations (Deny)
     Given I am logged in as "Daniele"
     And I am on the recommendations page
     And I press "Genera community reccomendations" 
