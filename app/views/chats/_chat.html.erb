@@ -21,8 +21,8 @@
 
     <div class="chat-header-cover"></div>
     <div class="chat-header-content">
-        <%if chat.user2.avatar_url%>
-            <span class="userimage"><img src="<%=chat.user2.avatar_url%>" alt="" width="50" height="50" class="rounded-circle"></span>
+        <%if chat.user1.avatar_url%>
+            <span class="userimage"><img src="<%=chat.user1.avatar_url%>" alt="" width="50" height="50" class="rounded-circle"></span>
         <%else%>
             <span class="userimage"><%= image_tag "prof_pic_default.png" , class: "rounded-circle"%></span>
         <%end%>

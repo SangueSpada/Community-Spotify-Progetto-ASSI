@@ -106,12 +106,13 @@
                 <% if @community.playlist  %>
                   <iframe class="pt-2" style="border-radius:20px; margin: 0 auto; display:block; " src="https://open.spotify.com/embed/playlist/<%=@community.playlist %>?utm_source=generator" width="75%" height="250" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
                 <% end %>
-                  <!--< if @playlist.is_followed_by?(Array(current_user))  >
-                    <button class="btn btn-danger", onclick="<@spotify_user.unfollow(@playlist)>">Rimuovi dalla mie playlist</button>
-                  < else >
-                  <button class="btn btn-success", onclick="<@spotify_user.follow(@playlist)>">Salva nelle mie playlist</button>
-                  <end>  !!!!!!!!!!!!!!!!!!!!!!!! inserire le % dove opportuno prima di levare il commento-->
-
+                <% if@admin_participation.user!=current_user%>
+                  <% if @playlist.is_followed_by?(Array(@spotify_user)).first %>
+                    <%=button_to "Rimuovi dalla mie playlist", community_remove_playlist_path(@community), class: "btn btn-danger"%>
+                  <% else %>
+                    <%=button_to "Salva nelle mie playlist", community_add_playlist_path(@community), class: "btn btn-success"%>
+                  <%end%>  
+                <%end%>  
                 </div>
                 <div class="tab-pane fade show" id="nav-iscritti" role="tabpanel" aria-labelledby="nav-iscritti-tab" tabindex="0">
                   <% @community.participations.each do |participation| %>

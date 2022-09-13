@@ -3,8 +3,14 @@ require 'json'
 class SearchController < ApplicationController
   def searchbar
     if params[:name_search].present?
-      @communities = Community.where('name LIKE ?', "%#{params[:name_search]}%")
-      @users = User.where('uid LIKE ?', "%#{params[:name_search]}%")
+      @communities = Community.where('name LIKE ?', "%#{params[:name_search]}%").to_set
+      @users = User.where('name LIKE ?', "%#{params[:name_search]}%").to_set
+      Tag.where('name LIKE ?', "%#{params[:name_search]}%").each  do |tag|
+        @communities= @communities | tag.communities
+        @users = @users | tag.users
+      end 
+      @communities=@communities.to_a
+      @users= @users.to_a
     else
       @communities = []
       @users = []
