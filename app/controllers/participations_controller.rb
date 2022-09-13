@@ -2,15 +2,12 @@ class ParticipationsController < ApplicationController
   before_action :authenticate_user!, :set_community_and_user
 
   def create
-
     if params[:recc_id]
       id = params[:recc_id]
       recc = CommunityReccomendation.find(id)
 
-      if recc.destroy
-        puts "Reccomendations eliminata"
-      end
-      
+      puts 'Reccomendations eliminata' if recc.destroy
+
     end
 
     @participation = @community.participations.new(user_id: @user.id, community_id: @community.id, role: :member,
@@ -28,7 +25,7 @@ class ParticipationsController < ApplicationController
     if @user_participation.role == 'moderator' || @user_participation.role == 'admin'
       @participation = @community.participations.where(user_id: @user.id).first
       @participation = @participation.update(role: :banned, banned: :true)
-      redirect_to community_path(@community) 
+      redirect_to community_path(@community)
     else
       puts 'Non puoi accedere a questa sezione!'
       redirect_to root_path, notice: 'Non puoi accedere a questa sezione!'
@@ -47,7 +44,6 @@ class ParticipationsController < ApplicationController
   end
 
   def promote
-    
     if @user_participation.role == 'admin'
       @participation = @community.participations.where(user_id: @user.id).first
       @participation = @participation.update(role: :moderator)
@@ -70,12 +66,19 @@ class ParticipationsController < ApplicationController
   end
 
   def move
-    
     if @user_participation.role == 'admin'
       @admin_participation = @community.participations.where(role: :admin).first
       @admin_participation = @admin_participation.update(role: :moderator)
       @new_admin_participation = @community.participations.where(user_id: @user.id).first
       @new_admin_participation = @new_admin_participation.update(role: :admin)
+      @community_playlist = RSpotify::Playlist.find_by_id(@community.playlist)
+      @spotify_user = RSpotify::User.new(JSON.parse(@community.participations.where(user_id: @user.id).first.user.spotify_hash.gsub('=>', ':').gsub('nil',
+                                                                                                                                                    'null')))
+      @user_playlist = @spotify_user.create_playlist!(@community_playlist.name,
+                                                      description: @community_playlist.description, public: true, collaborative: false)
+      @tracks = @community_playlist.tracks
+      @user_playlist.add_tracks!(@tracks)
+      @community.playlist = @user_playlist.id
       redirect_to community_path(@community)
     else
       puts 'Non puoi accedere a questa sezione!'

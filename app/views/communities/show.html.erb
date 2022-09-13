@@ -29,11 +29,11 @@
                     <!-- BEGIN profile-header-img -->
                     <div class="profile-header-content col-10" style= "padding-bottom: 70px">
                       <div class="profile-header-img">
-                      <% if @playlist %>
-                        <img src="<%=@playlist.images[0]['url']%>" alt="">
-                      <%else%>
-                        <%= image_tag "prof_pic_default.png"%>
-                      <%end%>
+                        <% if @playlist %>
+                          <img src="<%=@playlist.images[0]['url']%>" alt="">
+                        <%else%>
+                          <%= image_tag "prof_pic_default.png"%>
+                        <%end%>
                       </div>
                       <!-- END profile-header-img -->
                       <!-- BEGIN profile-header-info -->
@@ -42,9 +42,8 @@
                         <p class="m-b-10"><%= @community.description %></p>
                         <strong>TAGS:</strong>
                         <p class="m-b-10">
-                          
                           <%@community.tags.each do |tag|%>
-                            #<%=tag.name %> 
+                            #<%=tag.name %>
                           <%end%>
                         </p>
                       </div>
@@ -52,12 +51,12 @@
                     </div>
                     <div class="profile-header-content col-2">
                       <div class="row mt-5">
-                        <% if @user_participation.present? && @user_participation.role == "admin" %>
+                        <% if !current_modder && @user_participation.present? && @user_participation.role == "admin" %>
                           <%= link_to "Modifica Community", edit_community_path(community_id: @community.id), class:"btn btn-outline-warning", method: :get %>
                           <%= link_to "Elimina Community", community_path(community_id: @community.id), class:"btn btn-outline-danger", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
-                        <% elsif current_user.participations.where(community_id: @community.id).first == nil %>
+                        <% elsif !current_modder && current_user.participations.where(community_id: @community.id).first == nil %>
                           <%= button_to "Entra in community", create_user_community_participation_path(user_id: current_user.id, community_id: @community.id), class:"btn btn-outline-success"%>
-                        <% elsif current_user.participations.where(community_id: @community.id, role: :member).first %>
+                        <% elsif !current_modder && current_user.participations.where(community_id: @community.id, role: :member).first %>
                           <%= button_to "Abbandona community", user_community_participation_path(user_id: current_user.id, community_id: @community.id),class:"btn btn-outline-danger",  data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %>
                         <% end %>
                       </div>
@@ -67,18 +66,16 @@
                       <button class="nav-link" id="nav-playlist-tab" data-bs-toggle="tab" data-bs-target="#nav-playlist" type="button" role="tab" aria-controls="nav-playlist" aria-selected="false">Playlist</button>
                       <button class="nav-link" id="nav-iscritti-tab" data-bs-toggle="tab" data-bs-target="#nav-iscritti" type="button" role="tab" aria-controls="nav-iscritti" aria-selected="false">Iscritti</button>
                       <button class="nav-link" id="nav-eventi-tab" data-bs-toggle="tab" data-bs-target="#nav-eventi" type="button" role="tab" aria-controls="nav-eventi" aria-selected="false">Eventi</button>
-                       <% if @user_participation.present? && ( @user_participation.role == "admin" || @user_participation.role == "moderator") %>
+                      <% if @user_participation.present? && ( @user_participation.role == "admin" || @user_participation.role == "moderator") %>
                         <button class="nav-link" id="nav-gestIscritti-tab" data-bs-toggle="tab" data-bs-target="#nav-gestIscritti" type="button" role="tab" aria-controls="nav-gestIscritti" aria-selected="false">Gestione Iscritti</button>
                       <% end %>
                     </div>
                   </div>
-                  
                   <!-- END profile-header-content -->
                 </div>
               </div>
               <!-- end profile -->
               <!-- begin profile-content -->
-              
               <div class="tab-content container text-center" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
                   <div class="profile-content row text-start">
@@ -92,26 +89,27 @@
                         <!-- begin timeline -->
                         <ul class="timeline">
                           <% @posts.each do |post| %>
-                              <%= render "posts/post", post: post, communities: nil%>
-                            <% end %>
+                            <%= render "posts/post", post: post, communities: nil%>
+                          <% end %>
                         </ul>
                       </div>
                       <!-- end #profile-post tab -->
                     </div>
                     <!-- end tab-content -->
                   </div>
-              <!-- end profile-content -->
+                  <!-- end profile-content -->
                 </div>
                 <div class="tab-pane fade show" id="nav-playlist" role="tabpanel" aria-labelledby="nav-playlist-tab" tabindex="0">
-                <% if @community.playlist  %>
-                  <iframe class="pt-2" style="border-radius:20px; margin: 0 auto; display:block; " src="https://open.spotify.com/embed/playlist/<%=@community.playlist %>?utm_source=generator" width="75%" height="250" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-                <% end %>
-                  <!--< if @playlist.is_followed_by?(Array(current_user))  >
-                    <button class="btn btn-danger", onclick="<@spotify_user.unfollow(@playlist)>">Rimuovi dalla mie playlist</button>
-                  < else >
-                  <button class="btn btn-success", onclick="<@spotify_user.follow(@playlist)>">Salva nelle mie playlist</button>
-                  <end>  !!!!!!!!!!!!!!!!!!!!!!!! inserire le % dove opportuno prima di levare il commento-->
-
+                  <% if @community.playlist  %>
+                    <iframe class="pt-2" style="border-radius:20px; margin: 0 auto; display:block; " src="https://open.spotify.com/embed/playlist/<%=@community.playlist %>?utm_source=generator" width="75%" height="250" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                  <% end %>
+                  <% if@admin_participation.user!=current_user%>
+                    <% if @playlist.is_followed_by?(Array(@spotify_user)).first %>
+                      <%=button_to "Rimuovi dalla mie playlist", community_remove_playlist_path(@community), class: "btn btn-danger"%>
+                    <% else %>
+                      <%=button_to "Salva nelle mie playlist", community_add_playlist_path(@community), class: "btn btn-success"%>
+                    <%end%>
+                  <%end%>
                 </div>
                 <div class="tab-pane fade show" id="nav-iscritti" role="tabpanel" aria-labelledby="nav-iscritti-tab" tabindex="0">
                   <% @community.participations.each do |participation| %>
@@ -120,33 +118,30 @@
                     <% end %>
                   <% end %>
                 </div>
-                
                 <div class="tab-pane fade show" id="nav-eventi" role="tabpanel" aria-labelledby="nav-eventi-tab" tabindex="0">
                   <div class="profile-content row text-start">
                     <% if @client %>
                       <%= link_to "Login con Google", redirect_path(), class:"btn btn-outline-success", method: :get %>
                     <% else %>
                       <% if @user_participation.present? && (@user_participation.role == "admin" || @user_participation.role == "moderator") %>
-                      <%= link_to "Crea un nuovo evento", new_community_event_path(@community.id), class:"btn btn-outline-success", method: :get %>
-                        <% end %>
-                        <div class="tab-content p-0">
-                          <!-- begin #profile-post tab -->
-                          <div class="tab-pane fade active show" id="profile-post">
-                            <!-- begin timeline -->
-                            <ul class="timeline">
+                        <%= link_to "Crea un nuovo evento", new_community_event_path(@community.id), class:"btn btn-outline-success", method: :get %>
+                      <% end %>
+                      <div class="tab-content p-0">
+                        <!-- begin #profile-post tab -->
+                        <div class="tab-pane fade active show" id="profile-post">
+                          <!-- begin timeline -->
+                          <ul class="timeline">
                             <% @events.each do |event| %>
-                                  <%= render "events/event", event: event, communities: nil%>
-                                <% end %>
-                            </ul>
-                          </div>
-                          <!-- end #profile-post tab -->
+                              <%= render "events/event", event: event, communities: nil%>
+                            <% end %>
+                          </ul>
                         </div>
-                        <!-- end tab-content -->
+                        <!-- end #profile-post tab -->
+                      </div>
+                      <!-- end tab-content -->
                     <% end %>
                   </div>
-
                 </div>
-
                 <div class="tab-pane fade show" id="nav-gestIscritti" role="tabpanel" aria-labelledby="nav-gestIscritti-tab" tabindex="0">
                   <% if @user_participation.present? && @user_participation.role=="admin" %> <!-- GESTIONE ADMIN-->
                     <% @community.participations.each do |participation| %>
@@ -155,28 +150,28 @@
                         <strong class="text-dark"><%= button_to "Riammetti", unban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"btn btn-warning" %></strong><br>
                       <% else %>
                         <% if  participation.user.uid == @user_participation.user.uid  %> <!-- CURRENT USER -->
-                          <a href="/users/<%= String(participation.user.uid) %>" class="text-success" ><%= participation.user.name %></a> 
+                          <a href="/users/<%= String(participation.user.uid) %>" class="text-success" ><%= participation.user.name %></a>
                           <strong class="text-dark">(Tu - <%= participation.role %>)</strong><br>
                         <% elsif  participation.user != @user_participation.user.uid  && participation.role=="moderator" %> <!-- utente not current non bannato modder -->
-                          <a href="/users/<%= String(participation.user.uid) %>" ><%= participation.user.name %></a> 
+                          <a href="/users/<%= String(participation.user.uid) %>" ><%= participation.user.name %></a>
                           <strong class="text-dark">(<%= participation.role %>)</strong>
                           <strong>
-                            <%= button_to "Bandisci utente", ban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:" btn btn-warning text-dark"%> 
+                            <%= button_to "Degrada a membro", demote_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"btn btn-warning text-dark" %>
+                            <%= button_to "Bandisci utente", ban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:" btn btn-warning text-dark"%>
                             <%= button_to "Rendi proprietario", move_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"btn btn-warning text-dark" %>
                           </strong>
                           <br>
                         <% elsif participation.user != @user_participation && participation.role=="member"  %> <!-- utente not current non bannato membro -->
-                          <a href="/users/<%= String(participation.user.uid) %>" ><%= participation.user.name %></a> 
+                          <a href="/users/<%= String(participation.user.uid) %>" ><%= participation.user.name %></a>
                           <strong class="text-dark">(<%= participation.role %>)</strong>
                           <strong>
-                            <%= button_to "Bandisci utente", ban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:" btn btn-warning text-dark"%> 
-                            <%= button_to "Promuovi a moderatore", move_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"btn btn-warning text-dark" %>
+                            <%= button_to "Bandisci utente", ban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:" btn btn-warning text-dark"%>
+                            <%= button_to "Promuovi a moderatore", promote_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"btn btn-warning text-dark" %>
                           </strong>
                           <br>
-                        <% end %> 
+                        <% end %>
                       <% end %>
                     <% end %>
-                  
                   <% elsif @user_participation.present? && @user_participation.role=="moderator" %> <!-- GESTIONE MODERATOR-->
                     <% @community.participations.each do |participation| %>
                       <% if participation.banned%> <!-- utente bannato -->
@@ -184,23 +179,22 @@
                         <strong class="text-dark"><%= button_to "Riammetti", unban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:"btn btn-warning" %></strong><br>
                       <% else %>
                         <% if  participation.user.uid == @user_participation.user.uid  %> <!-- CURRENT USER -->
-                          <a href="/users/<%= String(participation.user.uid) %>" class="text-success" ><%= participation.user.name %></a> 
+                          <a href="/users/<%= String(participation.user.uid) %>" class="text-success" ><%= participation.user.name %></a>
                           <strong class="text-dark">(Tu - <%= participation.role %>)</strong><br>
                         <% elsif  participation.user != @user_participation.user.uid  && !(participation.role=="member") %> <!-- utente non bannato admin o modder -->
-                        <a href="/users/<%= String(participation.user.uid) %>" ><%= participation.user.uid %></a>
-                        <strong class="text-dark">(<%= participation.role %>)</strong><br>
+                          <a href="/users/<%= String(participation.user.uid) %>" ><%= participation.user.uid %></a>
+                          <strong class="text-dark">(<%= participation.role %>)</strong><br>
                         <% elsif  participation.role=="member" %> <!-- utente non bannato member -->
-                          <a href="/users/<%= String(participation.user.uid) %>" ><%= participation.user.name %></a> 
+                          <a href="/users/<%= String(participation.user.uid) %>" ><%= participation.user.name %></a>
                           <strong class="text-dark">(<%= participation.role %>)</strong>
                           <strong>
-                            <%= button_to "Bandisci utente", ban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:" btn btn-warning text-dark"%> 
+                            <%= button_to "Bandisci utente", ban_user_community_participation_path(user_id: participation.user_id, community_id: @community.id), class:" btn btn-warning text-dark"%>
                           </strong>
                           <br>
                         <% end %>
                       <% end %>
                     <% end %>
                   <% end %>
-
                 </div>
               </div>
             </div>
@@ -208,22 +202,21 @@
         </div>
       </div>
       <script>
-      <%if @community.playlist %>
-        window.onSpotifyIframeApiReady = (IFrameAPI) => {
-          let element = document.getElementById('embed-iframe');
-          let options = {
-              width: '100%',
-              heigth:'200'
-              uri: 'spotify:playlist:<%=@community.playlist%>'
-            };
-          let callback = (EmbedController) => {};
-          IFrameAPI.createController(element, options, callback);
-        };
-      <%end%>
+        <%if @community.playlist %>
+          window.onSpotifyIframeApiReady = (IFrameAPI) => {
+            let element = document.getElementById('embed-iframe');
+            let options = {
+                width: '100%',
+                heigth:'200'
+                uri: 'spotify:playlist:<%=@community.playlist%>'
+              };
+            let callback = (EmbedController) => {};
+            IFrameAPI.createController(element, options, callback);
+          };
+        <%end%>
       </script>
     </body>
   <% elsif %>
     <p>SEI BANNATO, <%= link_to "TORNA ALLA HOME", root_path %> </p>
   <% end %>
 </html>
-

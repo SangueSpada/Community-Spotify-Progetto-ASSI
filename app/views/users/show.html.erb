@@ -1,185 +1,174 @@
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
-        <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-        <meta name="generator" content="Hugo 0.88.1">
-        <title>Offcanvas navbar template · Bootstrap v5.1</title>
-        <!-- Bootstrap core CSS -->
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-        <!-- Custom styles for this template -->
-
-    </head>
-    <body>
-        <%= render "partials/navbar" %>
-        <div style="padding: 40pt"></div>
-        
-<div class="container">
-   <div class="row">
-      <div class="col-md-12">
-         <div id="content" class="content content-full-width">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+    <title>Offcanvas navbar template · Bootstrap v5.1</title>
+    <!-- Bootstrap core CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+  </head>
+  <body>
+    <%= render "partials/navbar" %>
+    <div style="padding: 40pt"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div id="content" class="content content-full-width">
             <!-- begin profile -->
             <div class="profile">
-               <div class="profile-header">
-                  <!-- BEGIN profile-header-cover -->
-                  <div class="profile-header-cover"></div>
-                  <!-- END profile-header-cover -->
-                  <!-- BEGIN profile-header-content -->
-                  <div class="profile-header-content row" >
-                     <!-- BEGIN profile-header-img -->
-                     <div class="profile-header-content col-10" style= "padding-bottom: 60px">
-                        <div class="profile-header-img">
-                           <%if @user && @user.images[0]!=nil%>
-                              <img src="<%=@user.images[0]['url']%>" alt="" width= "120" height= "114">
-                           <%else%>
-                              <%= image_tag "prof_pic_default.png"%>
-                           <%end%>
-                        </div>
-                        <!-- END profile-header-img -->
-                        <!-- BEGIN profile-header-info -->
-                        <div class="profile-header-info">
-                           <div class="profile-header-name">
-                              <%if@user %>
-                                 <h4 class=" m-t-10 m-b-5"><%=@user.display_name%> <a href="https://open.spotify.com/user/<%=@user.id%>" target="_blank"><i class="bi bi-spotify"></i></a></h4>
-                              <%else%>
-                                 <h4 class=" m-t-10 m-b-5"><%=@u.name%> <i class="bi bi-spotify"></i></h4>
-                              <%end%>
-                              <%if(@currently_playing)%>
-                                 <h4 class=" m-t-10 m-b-5">In ascolto: <%=link_to @currently_playing.name,"https://open.spotify.com/track/"+@currently_playing.id, target:"_blank" %> di <%=link_to @currently_playing.artists.first.name, @currently_playing.artists.first.external_urls[:spotify], target:"_blank"%> </h4>
-                              <%end%>
-                           </div>
-                           <p class="m-b-10">
-                           <strong>TAGS:</strong>
-                              <%@u.tags.each do |tag|%>
-                                #<%=tag.name %> 
-                              <%end%>
-                           </p>
-                           
-                        </div>
-                        <!-- END profile-header-info -->
-                        
-                     </div>
-                     <div class="profile-header-content col-2">
-                        <div class="row pt-2">
-                          
-                           <section id=" all-links"class="mt-2">
-                              <% unless @u==current_user %>
-                                    <% if current_user.followings.include?(@u) %>
-                                       <h5><%= button_to "Unfollow",unfollow_user_path, method: "POST",:class => "btn btn-outline-danger mb-2" %></h5>
-                                       <%= button_to "Chat", create_chat_path(@u.id),:class => "btn btn-outline-info mb-2" %>
-                                    <% else %>
-                                       <h5><%= button_to "Follow", follow_user_path, method: "POST", :class => "btn btn-outline-success mb-2" %></h5>
-                                    <% end%>     
-                              <br>
-                              <%end%>
-                              <% if @u==current_user %>
-                                 <%= link_to "Modifica Tags utente", edit_user_path(@u.uid), class:"btn btn-sm btn-info mb-2", method: :get %>
-                                 
-                              <%end%>
-                           </section>
-                           
-                        </div>
-                     </div>
-                     <nav>
-                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                           <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Posts</button>
-                           <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Tastes</button>
-                           <button class="nav-link" id="nav-followers-tab" data-bs-toggle="tab" data-bs-target="#nav-followers" type="button" role="tab" aria-controls="nav-followers" aria-selected="false">Followers (<%= String(@u.followers.length()) %>)</button>
-                           <button class="nav-link" id="nav-following-tab" data-bs-toggle="tab" data-bs-target="#nav-following" type="button" role="tab" aria-controls="nav-following" aria-selected="false">Following (<%= String(@u.followings.length()) %>)</button>
-                           <button class="nav-link" id="nav-communities-tab" data-bs-toggle="tab" data-bs-target="#nav-communities" type="button" role="tab" aria-controls="nav-communities" aria-selected="false">Communities (<%= String(@communities.count()) %>)</button>
-                        </div>
-                     </nav>
+              <div class="profile-header">
+                <!-- BEGIN profile-header-cover -->
+                <div class="profile-header-cover"></div>
+                <!-- END profile-header-cover -->
+                <!-- BEGIN profile-header-content -->
+                <div class="profile-header-content row" >
+                  <!-- BEGIN profile-header-img -->
+                  <div class="profile-header-content col-10" style= "padding-bottom: 60px">
+                    <div class="profile-header-img">
+                      <%if @user && @user.images[0]!=nil%>
+                        <img src="<%=@user.images[0]['url']%>" alt="" width= "120" height= "114">
+                      <%else%>
+                        <%= image_tag "prof_pic_default.png"%>
+                      <%end%>
+                    </div>
+                    <!-- END profile-header-img -->
+                    <!-- BEGIN profile-header-info -->
+                    <div class="profile-header-info">
+                      <div class="profile-header-name">
+                        <%if@user %>
+                          <h4 class=" m-t-10 m-b-5"><%=@user.display_name%> <a href="https://open.spotify.com/user/<%=@user.id%>" target="_blank"><i class="bi bi-spotify"></i></a></h4>
+                        <%else%>
+                          <h4 class=" m-t-10 m-b-5"><%=@u.name%> <i class="bi bi-spotify"></i></h4>
+                        <%end%>
+                        <%if(@currently_playing)%>
+                          <h4 class=" m-t-10 m-b-5">In ascolto: <%=link_to @currently_playing.name,"https://open.spotify.com/track/"+@currently_playing.id, target:"_blank" %> di <%=link_to @currently_playing.artists.first.name, @currently_playing.artists.first.external_urls[:spotify], target:"_blank"%> </h4>
+                        <%end%>
+                      </div>
+                      <p class="m-b-10">
+                        <strong>TAGS:</strong>
+                        <%@u.tags.each do |tag|%>
+                          #<%=tag.name %>
+                        <%end%>
+                      </p>
+                    </div>
+                    <!-- END profile-header-info -->
                   </div>
-               </div>
+                  <div class="profile-header-content col-2">
+                    <div class="row pt-2">
+                      <section id=" all-links"class="mt-2">
+                        <% unless @u==current_user %>
+                          <% if !current_modder && current_user.followings.include?(@u) %>
+                            <h5><%= button_to "Unfollow",unfollow_user_path, method: "POST",:class => "btn btn-outline-danger mb-2" %></h5>
+                            <%= button_to "Chat", create_chat_path(@u.id),:class => "btn btn-outline-info mb-2" %>
+                          <% elsif !current_modder %>
+                            <h5><%= button_to "Follow", follow_user_path, method: "POST", :class => "btn btn-outline-success mb-2" %></h5>
+                          <% end%>
+                          <br>
+                        <%end%>
+                        <% if @u==current_user %>
+                          <%= link_to "Modifica Tags utente", edit_user_path(@u.uid), class:"btn btn-sm btn-info mb-2", method: :get %>
+                        <%end%>
+                      </section>
+                    </div>
+                  </div>
+                  <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                      <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Posts</button>
+                      <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Tastes</button>
+                      <button class="nav-link" id="nav-followers-tab" data-bs-toggle="tab" data-bs-target="#nav-followers" type="button" role="tab" aria-controls="nav-followers" aria-selected="false">Followers (<%= String(@u.followers.length()) %>)</button>
+                      <button class="nav-link" id="nav-following-tab" data-bs-toggle="tab" data-bs-target="#nav-following" type="button" role="tab" aria-controls="nav-following" aria-selected="false">Following (<%= String(@u.followings.length()) %>)</button>
+                      <button class="nav-link" id="nav-communities-tab" data-bs-toggle="tab" data-bs-target="#nav-communities" type="button" role="tab" aria-controls="nav-communities" aria-selected="false">Communities (<%= String(@communities.count()) %>)</button>
+                    </div>
+                  </nav>
+                </div>
+              </div>
             </div>
             <!-- end profile -->
             <!-- begin profile-content -->
-            
             <div class="tab-content container text-center" id="nav-tabContent">
-               <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
-                  <div class="profile-content text-start">
+              <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+                <div class="profile-content text-start">
                   <!-- begin tab-content -->
-                     <div class="tab-content p-0">
-                        <!-- begin #profile-post tab -->
-                        <div class="tab-pane fade active show" id="profile-post">
-                           <!-- begin timeline -->
-                           <ul class="timeline">
-                              <% @posts.each do |post| %>
-                                 <% if post.user==@u %>
-                                    <%= render "posts/post", post: post, communities: @communities%>
-                                 <% end %>
+                  <div class="tab-content p-0">
+                    <!-- begin #profile-post tab -->
+                    <div class="tab-pane fade active show" id="profile-post">
+                      <!-- begin timeline -->
+                      <ul class="timeline">
+                        <% @posts.each do |post| %>
+                          <% if post.user==@u %>
+                            <%= render "posts/post", post: post, communities: @communities%>
+                          <% end %>
+                        <% end %>
+                      </ul>
+                    </div>
+                    <!-- end #profile-post tab -->
+                  </div>
+                  <!-- end tab-content -->
+                </div>
+              </div>
+              <div class="tab-pane fade " id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+                <div class="container text-center" style= "padding-top: 50px">
+                  <div class="row align-items-start">
+                    <div class="col-6">
+                      <div class="card">
+                        <h5 class="card-header">Top 5 tracks</h5>
+                        <div class="card-body">
+                          <%if !@top_tracks || @top_tracks.size==0%>
+                            <p>L'utente non ha tracce preferite</p>
+                          <%else%>
+                            <ul class="list-group-flush top_5_tracks">
+                              <% @top_tracks.each do |track| %>
+                                <%= render "partials/track", track: track%>
                               <% end %>
-                           </ul>
+                            </ul>
+                          <%end%>
                         </div>
-                        <!-- end #profile-post tab -->
-                     </div>
-                     <!-- end tab-content -->
-                  </div>
-               </div>
-               <div class="tab-pane fade " id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
-                  <div class="container text-center" style= "padding-top: 50px">
-                     <div class="row align-items-start">
-                        <div class="col-6">
-                              <div class="card">
-                                 <h5 class="card-header">Top 5 tracks</h5>
-                                 <div class="card-body">
-                                    <%if !@top_tracks || @top_tracks.size==0%>
-                                       <p>L'utente non ha tracce preferite</p>
-                                    <%else%>
-                                       <ul class="list-group-flush top_5_tracks">
-                                          <% @top_tracks.each do |track| %>
-                                             <%= render "partials/track", track: track%>   
-                                          <% end %>
-                                       </ul>
-                                    <%end%>
-
-                                 </div>
-                              </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="card">
+                        <h5 class="card-header">Favorite artist</h5>
+                        <div class="card-body">
+                          <%if @top_artist%>
+                            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/artist/<%=@top_artist.id%>?utm_source=generator" width="100%" height="523" frameBorder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                          <%else%>
+                            <p>L'utente non ha un artista preferito</p>
+                          <%end%>
                         </div>
-                        <div class="col-6">
-                              <div class="card">
-                                 <h5 class="card-header">Favorite artist</h5>
-                                 <div class="card-body">
-                                    <%if @top_artist%>
-                                       <iframe style="border-radius:12px" src="https://open.spotify.com/embed/artist/<%=@top_artist.id%>?utm_source=generator" width="100%" height="523" frameBorder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-                                    <%else%>
-                                       <p>L'utente non ha un artista preferito</p>
-                                    <%end%>
-                                 </div>
-                              </div> 
-                        </div>
-                     </div>
+                      </div>
+                    </div>
                   </div>
-               </div>
-               <div class="tab-pane fade " id="nav-followers" role="tabpanel" aria-labelledby="nav-followers-tab" tabindex="0">
-                  <div class="container text-center" style= "padding-top: 50px">
-                     <% @u.followers.each  do |followers| %>
-                        <a href="/users/<%= String(followers.uid) %>" ><%= followers.name %></a><br>
-                     <% end %>
-                  </div>
-               </div>
-               <div class="tab-pane fade " id="nav-following" role="tabpanel" aria-labelledby="nav-following-tab" tabindex="0">
-                  <div class="container text-center" style= "padding-top: 50px">
-                     <% @u.followings.each  do |following| %>
-                        <a href="/users/<%= String(following.uid) %>" ><%= following.name %></a><br>
-                     <% end %>
-                  </div>
-               </div>
-               <div class="tab-pane fade " id="nav-communities" role="tabpanel" aria-labelledby="nav-communities-tab" tabindex="0">
-                  <div class="container text-center" style= "padding-top: 50px">
-                     <% @communities.each do |co| %>
-                        <a href="/communities/<%= String(co.id) %>" ><%= co.name %></a><br>
-                     <% end %>
-                  </div>
-               </div>
-
+                </div>
+              </div>
+              <div class="tab-pane fade " id="nav-followers" role="tabpanel" aria-labelledby="nav-followers-tab" tabindex="0">
+                <div class="container text-center" style= "padding-top: 50px">
+                  <% @u.followers.each  do |followers| %>
+                    <a href="/users/<%= String(followers.uid) %>" ><%= followers.name %></a><br>
+                  <% end %>
+                </div>
+              </div>
+              <div class="tab-pane fade " id="nav-following" role="tabpanel" aria-labelledby="nav-following-tab" tabindex="0">
+                <div class="container text-center" style= "padding-top: 50px">
+                  <% @u.followings.each  do |following| %>
+                    <a href="/users/<%= String(following.uid) %>" ><%= following.name %></a><br>
+                  <% end %>
+                </div>
+              </div>
+              <div class="tab-pane fade " id="nav-communities" role="tabpanel" aria-labelledby="nav-communities-tab" tabindex="0">
+                <div class="container text-center" style= "padding-top: 50px">
+                  <% @communities.each do |co| %>
+                    <a href="/communities/<%= String(co.id) %>" ><%= co.name %></a><br>
+                  <% end %>
+                </div>
+              </div>
             </div>
             <!-- end profile-content -->
-         </div>
+          </div>
+        </div>
       </div>
-   </div>
-</div>
-        
-    </body>
+    </div>
+  </body>
 </html>

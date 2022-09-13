@@ -19,14 +19,14 @@
                             <%if @chat.user2.avatar_url%>
                                 <span class="userimage"><img src="<%=@chat.user2.avatar_url%>" alt=""width="70" height="70" class="rounded-circle"></span>
                             <%else%>
-                                <span class="userimage"><%= image_tag "prof_pic_default.png",class:"rounded-circle"%></span>
+                                <span class="userimage"><%= image_tag "prof_pic_default.png",width:"70" ,height:"70",class:"rounded-circle"%></span>
                             <%end%>
                             <span class="username"><a href="/users/<%= String(@chat.user2.uid) %>"><%= @chat.user2.name %></a></span>
                         <% elsif @chat.user2==current_user%>
-                            <%if @chat.user2.avatar_url%>
-                                <span class="userimage"><img src="<%=@chat.user2.avatar_url%>" alt=""width="70" height="70" class="rounded-circle"></span>
+                            <%if @chat.user1.avatar_url%>
+                                <span class="userimage"><img src="<%=@chat.user1.avatar_url%>" alt=""width="70" height="70" class="rounded-circle"></span>
                             <%else%>
-                                <span class="userimage"><%= image_tag "prof_pic_default.png",class:"rounded-circle"%></span>
+                                <span class="userimage"><%= image_tag "prof_pic_default.png",width:"70" ,height:"70",class:"rounded-circle"%></span>
                             <%end%>
                             <span class="username"><a class="user-link" href="/users/<%= String(@chat.user1.uid) %>"><%= @chat.user1.name %></a></span>
                         <%end%>
