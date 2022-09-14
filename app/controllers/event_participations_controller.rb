@@ -4,7 +4,7 @@ class EventParticipationsController < ApplicationController
     def create
 
         @event = Event.find(params[:id])
-        @user = @event.user
+        @user = current_user
         @community = @event.community
     
         @event_participation = @event.event_participations.new(user: @user, event: @event)
@@ -68,7 +68,7 @@ class EventParticipationsController < ApplicationController
     def destroy
 
         @event = Event.find(params[:id])
-        @user = @event.user
+        @user = current_user
         @community = @event.community
 
         client = Signet::OAuth2::Client.new(client_options)
