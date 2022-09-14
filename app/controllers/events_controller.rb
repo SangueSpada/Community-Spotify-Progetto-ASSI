@@ -21,7 +21,7 @@ class EventsController < ApplicationController
         format.html { redirect_to root_path, notice: "Event was successfully created." }
         format.json { render :show, status: :created, location: @event }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { redirect_to new_community_event_path(event_params[:community_id]), status: :unprocessable_entity }
         format.json { render json: @event.errors, status: :unprocessable_entity }
       end
     end
