@@ -25,7 +25,33 @@ class EventParticipationsController < ApplicationController
         event_date = @event.start_date
         event_title = @event.title
 
-        event = service.get_event('primary', event_id)
+        begin
+            event = service.get_event('primary', event_id)
+
+            event.status = 'confirmed'
+            event.summary = event_title
+            event.start.date = event_date
+            event.end.date = event_date + 1
+            
+            service.update_event('primary', event_id, event)
+
+        rescue Google::Apis::ClientError
+            event = {
+                id: event_id,
+                status: 'confirmed',
+                summary: event_title,
+                start: {
+                date: event_date
+                },
+                end: {
+                date: event_date + 1
+                }
+            }
+
+            service.insert_event('primary', event)
+        end
+
+=begin event = service.get_event('primary', event_id)
 
         if event
             event.status = 'confirmed'
@@ -52,7 +78,8 @@ class EventParticipationsController < ApplicationController
             puts event
         
             service.insert_event('primary', event)
-        end
+        end 
+=end
 
         if @event_participation.save
           redirect_back(fallback_location: community_path(@community))
