@@ -3,7 +3,7 @@ class CreateEvents < ActiveRecord::Migration[7.0]
     create_table :events do |t|
       t.string :title, null: false, default: 'Nuovo Evento'
       t.text :body
-      t.date :start_date, null: false, default: ''
+      t.date :start_date, null: false
       t.integer :community_id
       
       t.references :user, null: false, foreign_key: true
