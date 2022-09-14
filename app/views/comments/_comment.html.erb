@@ -20,7 +20,7 @@
         </div>
       </div>
     </div>
-    <% if current_modder || (post.user == current_user && comment.user != current_user) || comment.user == current_user %>
+    <% if current_modder || post.user == current_user|| comment.user == current_user || (!post.community_id.nil? && (current_user.participations.where(community_id: post.community_id).first.role=="admin"||current_user.participations.where(community_id: post.community_id).first.role=="moderator"))%>
       <div class="col-1 justify-content-end" >
         <a class="nav-link" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></a>
         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdown01">

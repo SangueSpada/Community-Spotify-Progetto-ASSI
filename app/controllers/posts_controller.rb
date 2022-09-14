@@ -36,11 +36,11 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    if (current_user != @post.user && !current_modder)
-      redirect_to root_path, notice: 'Non puoi accedere a questa sezione!'
-    else
+    if current_user == @post.user || current_modder || (!@post.community_id.nil? && (current_user.participations.where(community_id: @post.community_id).first.role=="admin"||current_user.participations.where(community_id: @post.community_id).first.role=="moderator"))
       @post.destroy
       redirect_to root_path, status: :see_other
+    else
+      redirect_to root_path, notice: 'Non puoi accedere a questa sezione!'
     end
   end
 
