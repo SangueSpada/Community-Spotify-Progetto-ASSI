@@ -14,7 +14,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_13_153559) do
   create_table "chats", force: :cascade do |t|
     t.integer "user1_id"
     t.integer "user2_id"
-    t.datetime "last_message_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user1_id"], name: "index_chats_on_user1_id"
