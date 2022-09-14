@@ -28,7 +28,6 @@
                 <% if current_modder%>
                     <li><%= link_to "Elimina", event_path(event),class: "dropdown-item", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %></li>
                 <% elsif event.user == current_user%>
-                    <li><%= link_to "Modifica", edit_event_path(event),class: "dropdown-item", method: :get %></li>
                     <li><%= link_to "Elimina", event_path(event),class: "dropdown-item", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %></li>
                 <% end %>
             </div>
@@ -38,8 +37,11 @@
             <div class="col">
                 <h3><%= event.title %></h3>
                 <p><%= event.body %></p>
-                <%= button_to "Partecipa", new_googlecalendar_event_path(event, 'primary'), class:"btn btn-primary", method: :post %>
-                <%= button_to "Rimuovi partecipazione", delete_googlecalendar_event_path(event, 'primary'), class:"btn btn-primary", method: :delete %>
+                <% if current_user.joined_events.include?(event) %>
+                  <%= button_to "Rimuovi partecipazione", delete_googlecalendar_event_path(event, 'primary'), class:"btn btn-primary", method: :delete %>
+                <% else %>
+                  <%= button_to "Partecipa", new_googlecalendar_event_path(event, 'primary'), class:"btn btn-primary", method: :post %>
+                <% end %>
             </div>
 
             <div class="col-1 justify-content-end" > 
