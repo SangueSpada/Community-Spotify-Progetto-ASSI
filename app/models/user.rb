@@ -10,10 +10,11 @@ class User < ApplicationRecord
   has_many :communities, through: :participations, dependent: :destroy
   has_many :followers, dependent: :destroy
   has_many :posts, dependent: :destroy
+  has_many :events, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :chats, dependent: :destroy
   has_many :messages, dependent: :destroy
-  has_many :events, through: :event_participations, dependent: :destroy
+  has_many :joined_events, through: :event_participations, source: :event, dependent: :destroy, class_name: "Event"
   has_many :reccomendations, dependent: :destroy
   has_many :taggableUsers, dependent: :destroy
   has_many :tags, through: :taggableUsers

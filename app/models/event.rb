@@ -1,6 +1,6 @@
 class Event < ApplicationRecord
     has_many :event_participations
-    has_many :users, through: :participations, dependent: :destroy
+    has_many :users, through: :event_participations, dependent: :destroy
     
     belongs_to :user
     belongs_to :community

@@ -42,9 +42,11 @@ class EventsController < ApplicationController
 
   # DELETE /events/1 or /events/1.json
   def destroy
-    if (current_user != @event.user && !current_modder)
+
+    if (current_user != @event.user)
       redirect_to root_path, notice: 'Non puoi accedere a questa sezione!'
     else
+
       @event.destroy
       
       respond_to do |format|
