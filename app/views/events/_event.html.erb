@@ -22,15 +22,13 @@
                 <small></small>
             </div>
 
-            <div class="col-1 justify-content-end" > 
-                <a class="nav-link" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></a>
-                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdown01">
-                <% if current_modder%>
-                    <li><%= link_to "Elimina", event_path(event),class: "dropdown-item", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %></li>
-                <% elsif event.user == current_user%>
-                    <li><%= link_to "Elimina", event_path(event),class: "dropdown-item", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %></li>
-                <% end %>
-            </div>
+            <% if current_modder || (event.user == current_user && @user_participation.present? && (@user_participation.role == "admin" || @user_participation.role == "moderator")) %>
+                <div class="col-1 justify-content-end" > 
+                    <a class="nav-link" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdown01">
+                        <li><%= link_to "Elimina", event_path(event),class: "dropdown-item", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %></li>
+                </div>
+            <% end %>
         </div>
 
         <div class="row timeline-content">
