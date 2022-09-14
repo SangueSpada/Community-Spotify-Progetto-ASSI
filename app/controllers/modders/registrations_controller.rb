@@ -12,8 +12,14 @@ class Modders::RegistrationsController < Devise::RegistrationsController
     if check
       super
     else
-      flash[:alert] = 'Modder key errata, Riprova.'
-      redirect_to new_modder_registration_path
+      build_resource(sign_up_params)
+      if(params[:modder][:modder_key]!=Rails.application.credentials[:modder_key])
+        resource.errors.add(:errors, :blank, message: "Invalid Modder Key")
+      end
+      if params[:modder][:password]!=params[:modder][:password_confirmation]
+        resource.errors.add(:password, :blank, message: "doesn't match with password confirmation")
+      end
+      respond_with resource, location: new_modder_registration_path(resource)
       return
     end
 
@@ -66,7 +72,7 @@ class Modders::RegistrationsController < Devise::RegistrationsController
   # end
   private
   def check
-    if (params[:modder][:modder_key]!="pippo" || params[:modder][:password]!=params[:modder][:password_confirmation])
+    if (params[:modder][:modder_key]!=Rails.application.credentials[:modder_key] || params[:modder][:password]!=params[:modder][:password_confirmation])
       return false
     end
     true
