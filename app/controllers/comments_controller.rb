@@ -25,9 +25,10 @@ class CommentsController < ApplicationController
   end
 
   def destroy
+    
     @post = Post.find(params[:post_id])
     @comment = @post.comments.find(params[:id])
-    if current_user == @comment.user || current_user == @post.user || current_modder
+    if current_user == @comment.user || current_user == @post.user || current_modder || (!@post.community_id.nil? && (current_user.participations.where(community_id: @post.community_id).first.role=="admin"||current_user.participations.where(community_id: @post.community_id).first.role=="moderator"))
       @comment.destroy
       if !@post.community_id.nil?
         @community = Community.find(@post.community_id)

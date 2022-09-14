@@ -48,6 +48,10 @@ User.create(email: "marco@example.it", uid: 2, password: "password", name: "Marc
 luca = User.create(email: "luca@example.it", uid: 3, password: "password", name: "Luca")
 giovanni=User.create(email: "giovanni@example.it", uid: 4, password: "password", name: "Giovanni")
 User.create(email: "leoanrdo@example.it", uid: 5, password: "password", name: "Leonardo")
+luca = User.where(name: "Luca").first
+Participation.create(user: luca,community_id:6 )
+post = Post.create(user: luca, spotify_content: "spotify:track:0ABEVL7pgQLokhBcNJmozw?si=f148e8af5af5425c",community_id: 6, body: "perfetta per la Balestra")
+Comment.create(post:post, user:luca,  body: "Si fratello, perfetta per la Balestra")
 
 post = Post.create(user: luca, spotify_content: "spotify:track:0ABEVL7pgQLokhBcNJmozw?si=f148e8af5af5425c",  body: "perfetta per la Balestra")
 Comment.create(post:post, user:giovanni,  body: "Si fratello, perfetta per la Balestra")

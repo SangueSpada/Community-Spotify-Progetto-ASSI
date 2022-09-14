@@ -10,7 +10,7 @@ class CommunitiesController < ApplicationController
   end
 
   def show
-    if current_user.spotify_hash
+    if !current_modder && current_user.spotify_hash
       @spotify_user = RSpotify::User.new(JSON.parse(current_user.spotify_hash.gsub('=>', ':').gsub('nil', 'null')))
     end
     @admin_participation = @community.participations.where(role: 'admin').first
@@ -19,6 +19,7 @@ class CommunitiesController < ApplicationController
     @posts = @community.posts.all.order(created_at: :desc)
     @events = @community.events.all.order(created_at: :desc)
     @client = Signet::OAuth2::Client.new(client_options) unless session[:authorization]
+    @communities = Community.all
   end
 
   def new

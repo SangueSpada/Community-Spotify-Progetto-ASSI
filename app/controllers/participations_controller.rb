@@ -66,9 +66,9 @@ class ParticipationsController < ApplicationController
   end
 
   def move
+    puts @user.name
     if @user_participation.role == 'admin'
-      @admin_participation = @community.participations.where(role: :admin).first
-      @admin_participation = @admin_participation.update(role: :moderator)
+      @user_participation = @user_participation.update(role: :moderator)
       @new_admin_participation = @community.participations.where(user_id: @user.id).first
       @new_admin_participation = @new_admin_participation.update(role: :admin)
       @community_playlist = RSpotify::Playlist.find_by_id(@community.playlist)
