@@ -7,6 +7,7 @@ class MessagesController < ApplicationController
     end
     def create
         @message=current_user.messages.create(body: message_params[:body],chat_id: params[:chat_id])
+
     end
     
     private

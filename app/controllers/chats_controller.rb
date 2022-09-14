@@ -4,7 +4,7 @@ class ChatsController < ApplicationController
 
 
   def index
-    @chats = Chat.all.order("last_message_at DESC")
+    @chats = Chat.all.order(updated_at: :desc)
   end
   
   def show
