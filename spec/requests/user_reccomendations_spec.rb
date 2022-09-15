@@ -59,7 +59,26 @@ RSpec.describe "/user_reccomendations", type: :request do
     end
   end 
 =end
+  describe "PUT /update" do
+    context "setting the recommendation as viewed" do
+      
+      it "updates the \"viewed\" field to true" do
+        user_target=create(:user,id:7,uid:"7")
+        recc=UserReccomendation.create(user: current_user,resource:user_target,viewed: false)
 
+        put user_reccomendation_path(recc)
+        expect(UserReccomendation.find(recc.id).viewed).to be_truthy
+      end
+
+      it "redirects to the reccomendation page" do
+        user_target=create(:user,id:7,uid:"7")
+        recc=UserReccomendation.create(user: current_user,resource:user_target,viewed: false)
+
+        put user_reccomendation_path(recc)
+        expect(response).to redirect_to(reccomendations_path)
+      end
+    end
+  end
   describe "POST /create" do
     context "with matching commmunity (by tags 100%)" do
       
