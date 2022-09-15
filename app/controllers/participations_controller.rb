@@ -27,7 +27,7 @@ class ParticipationsController < ApplicationController
       @participation = @participation.update(role: :banned, banned: :true)
       redirect_to community_path(@community)
     else
-      puts 'Non puoi accedere a questa sezione!'
+      #puts 'Non puoi accedere a questa sezione!'
       redirect_to root_path, notice: 'Non puoi accedere a questa sezione!'
     end
   end
@@ -38,7 +38,7 @@ class ParticipationsController < ApplicationController
       @participation = @participation.update(role: :member, banned: :false)
       redirect_to community_path(@community)
     else
-      puts 'Non puoi accedere a questa sezione!'
+      #puts 'Non puoi accedere a questa sezione!'
       redirect_to root_path, notice: 'Non puoi accedere a questa sezione!'
     end
   end
@@ -49,7 +49,7 @@ class ParticipationsController < ApplicationController
       @participation = @participation.update(role: :moderator)
       redirect_to community_path(@community)
     else
-      puts 'Non puoi accedere a questa sezione!'
+      #puts 'Non puoi accedere a questa sezione!'
       redirect_to root_path, notice: 'Non puoi accedere a questa sezione!'
     end
   end
@@ -60,13 +60,13 @@ class ParticipationsController < ApplicationController
       @participation = @participation.update(role: :member)
       redirect_to community_path(@community)
     else
-      puts 'Non puoi accedere a questa sezione!'
+      #puts 'Non puoi accedere a questa sezione!'
       redirect_to root_path, notice: 'Non puoi accedere a questa sezione!'
     end
   end
 
   def move
-    puts @user.name
+    #puts @user.name
     if @user_participation.role == 'admin'
       @user_participation = @user_participation.update(role: :moderator)
       @new_admin_participation = @community.participations.where(user_id: @user.id).first
@@ -81,18 +81,18 @@ class ParticipationsController < ApplicationController
       @community.playlist = @user_playlist.id
       redirect_to community_path(@community)
     else
-      puts 'Non puoi accedere a questa sezione!'
+      #puts 'Non puoi accedere a questa sezione!'
       redirect_to root_path, notice: 'Non puoi accedere a questa sezione!'
     end
   end
 
   def destroy
     if current_user.participations.where(community_id: @community.id).nil?
-      puts 'Non puoi accedere a questa sezione!'
+      #puts 'Non puoi accedere a questa sezione!'
       redirect_to root_path, notice: 'Non puoi accedere a questa sezione!'
     else
       @participation = @community.participations.where(user_id: @user.id).first
-      puts @community.participations.where(user_id: @user.id).first
+      #puts @community.participations.where(user_id: @user.id).first
       @participation.destroy
       redirect_to community_path(@community)
     end

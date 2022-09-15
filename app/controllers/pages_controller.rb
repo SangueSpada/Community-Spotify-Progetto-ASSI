@@ -11,16 +11,16 @@ class PagesController < ApplicationController
     @comm_reccs = CommunityReccomendation.where(user: current_user)
 
     @comm_reccs.each do |comm_recc|
-      puts comm_recc.expiration_datetime
-      puts DateTime.now
+      #puts comm_recc.expiration_datetime
+      #puts DateTime.now
       comm_recc.destroy if comm_recc.expiration_datetime < DateTime.now && comm_recc.viewed == true
     end
 
     @usr_reccs = UserReccomendation.where(user: current_user)
 
     @usr_reccs.each do |usr_recc|
-      puts usr_recc.expiration_datetime
-      puts DateTime.now
+      #puts usr_recc.expiration_datetime
+      #puts DateTime.now
       usr_recc.destroy if usr_recc.expiration_datetime < DateTime.now && usr_recc.viewed == true
     end
 

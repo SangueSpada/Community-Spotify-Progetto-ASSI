@@ -14,8 +14,6 @@ class EventParticipationsController < ApplicationController
 
         client = Signet::OAuth2::Client.new(client_options)
 
-        puts "Authorization code: " + client.code.to_s
-
         client.update!(session[:authorization])
 
         service = Google::Apis::CalendarV3::CalendarService.new
@@ -83,7 +81,6 @@ class EventParticipationsController < ApplicationController
 
         event_list.items.each do |event|
             if event.id == event_id
-                puts "Trovato evento con l'id che stavi cercando"
                 service.delete_event('primary', event.id)
                 break
             end
@@ -94,8 +91,8 @@ class EventParticipationsController < ApplicationController
   
         else
             @event_participation = @event.event_participations.where(user: @user).first
-            puts @event.event_participations.where(user: @user).first
             @event_participation.destroy
+            
             redirect_to community_path(@community)
         end
 
@@ -110,14 +107,12 @@ class EventParticipationsController < ApplicationController
     # Sezione adibita alla gestione delle interazioni con Google Calendar
 
     def redirect
-        puts "Sono dentro redirect"
         client = Signet::OAuth2::Client.new(client_options)
 
         redirect_to client.authorization_uri.to_s, allow_other_host: true
     end
 
     def callback
-        puts "Sono dentro callback"
         client = Signet::OAuth2::Client.new(client_options)
         client.code = params[:code]
 

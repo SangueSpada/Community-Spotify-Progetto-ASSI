@@ -4,10 +4,10 @@ class UsersController < ApplicationController
   def show
     @u = User.where(uid: params[:uid]).first
     @communities = Community.joins(:participations).where(participations: { user_id: @u })
-    # puts "le community sono:"+ String(@communities.count())
+    #puts "le community sono:"+ String(@communities.count())
     @posts = @u.posts.order(created_at: :desc) if @u.posts
     @communities.each do |co|
-      # puts co.id
+      #puts co.id
     end
     if @u.spotify_hash
       @user = RSpotify::User.new(JSON.parse(@u.spotify_hash.gsub('=>', ':').gsub('nil', 'null')))
@@ -56,8 +56,6 @@ class UsersController < ApplicationController
   end
 
   def edit
-    puts @user
-    puts 'MAREMMA MAIAAALAAAA'
     redirect_to root_path, notice: 'Non puoi modificare i tag di un altro utente!' if current_user.uid != params[:uid]
     @tags = Tag.all
   end
