@@ -56,9 +56,6 @@ class EventsController < ApplicationController
   def new_googlecalendar_event
     
     client = Signet::OAuth2::Client.new(client_options)
-
-    puts "Authorization code: " + client.code.to_s
-
     client.update!(session[:authorization])
 
     service = Google::Apis::CalendarV3::CalendarService.new
@@ -94,16 +91,14 @@ class EventsController < ApplicationController
         }
       }
   
-      puts event
-  
       service.insert_event('primary', event)
     end
 
     return
 
   rescue Google::Apis::AuthorizationError
-    response = client.refresh!
 
+    response = client.refresh!
     session[:authorization] = session[:authorization].merge(response)
 
     retry
@@ -130,7 +125,6 @@ class EventsController < ApplicationController
 
     event_list.items.each do |event|
       if event.id == event_id
-        puts "Trovato evento con l'id che stavi cercando"
         service.delete_event('primary', event.id)
         break
       end

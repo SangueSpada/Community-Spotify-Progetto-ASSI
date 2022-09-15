@@ -33,9 +33,8 @@ class CommentReactionsController < ApplicationController
 
   def destroy
     @comment_reaction = @comment.comment_reactions.find(params[:id])
-    puts @comment_reaction
     @comment_reaction.destroy
-    puts @comment_reaction
+    
     if !@post.community_id.nil?
       @community = Community.find(@post.community_id)
       redirect_back(fallback_location: community_path(@community))

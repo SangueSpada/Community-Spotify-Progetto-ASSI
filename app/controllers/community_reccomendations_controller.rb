@@ -5,18 +5,7 @@ class CommunityReccomendationsController < ApplicationController
   def create
 
     user_tags = current_user.tags
-
-    puts "Tag dell'utente"
-    user_tags.each do |tag|
-      puts tag.name
-    end
-
     communities = Community.all
-
-    puts "Community nel database"
-    communities.each do |comm|
-      puts comm.name
-    end
 
     @rec_communities = reccomended_communities(user_tags, communities)
 
@@ -38,7 +27,6 @@ class CommunityReccomendationsController < ApplicationController
         end
 
         if @new_recc.save
-          puts"Ci sono delle community che non sono state consigliate"
           puts @new_recc
         end
         
@@ -52,8 +40,6 @@ class CommunityReccomendationsController < ApplicationController
 
   # PATCH/PUT /community_reccomendations/1 or /community_reccomendations/1.json
   def update
-
-    puts "Sono dentro update"
 
     if @community_reccomendation.update(viewed: true)
       redirect_to reccomendations_path

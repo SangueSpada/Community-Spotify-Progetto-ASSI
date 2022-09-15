@@ -5,18 +5,7 @@ class UserReccomendationsController < ApplicationController
   def create
 
     user_tags = current_user.tags
-
-    puts "Tag dell'utente"
-    user_tags.each do |tag|
-      puts tag.name
-    end
-
     users = User.all
-
-    puts "Utenti nel database"
-    users.each do |usr|
-      puts usr.name
-    end
 
     @rec_users = reccomended_users(user_tags, users)
 
@@ -33,7 +22,6 @@ class UserReccomendationsController < ApplicationController
         end
 
         if @new_recc.save
-          puts"Ci sono degli utenti che non sono stati consigliati"
           puts @new_recc
         end
 
@@ -46,8 +34,6 @@ class UserReccomendationsController < ApplicationController
 
   # PATCH/PUT /user_reccomendations/1 or /user_reccomendations/1.json
   def update
-
-    puts "Sono dentro update"
 
     if @user_reccomendation.update(viewed: true)
       redirect_to reccomendations_path
