@@ -11,6 +11,9 @@
         <%end%>
         
         <span class="username"><%= link_to "Chat con "+chat.user2.name, chat %></span>
+        <%if !current_user.followings.include?(chat.user2)%>
+            <span class="text-secondary"style="font-size:10px">Non segui questo utente</span>
+        <%end%>
         <span class=" chat-button"><%= button_to 'X', chat_path(chat),class: 'btn btn-outline-dark', data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %></span>
     </div>
 
@@ -27,6 +30,9 @@
             <span class="userimage"><%= image_tag "prof_pic_default.png" , class: "rounded-circle"%></span>
         <%end%>
         <span class="username"><%= link_to "Chat con "+chat.user1.name, chat %></span>
+        <%if !current_user.followings.include?(chat.user1)%>
+            <span class="text-secondary"style="font-size:10px;">Non segui questo utente</span>
+        <%end%>
         <span class=" chat-button"><%= button_to 'X', chat_path(chat),class: 'btn btn-outline-dark', data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, method: :delete %></span>
     </div>
 

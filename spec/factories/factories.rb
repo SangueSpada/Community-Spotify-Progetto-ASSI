@@ -14,4 +14,10 @@ FactoryBot.define do
     factory :community do
       name {"placeholder"}
     end
+    factory :community_reccomendation do
+      id {1}
+    end
+    factory :user_reccomendation do
+      id {1}
+    end
 end
