@@ -3,11 +3,12 @@ class UsersController < ApplicationController
   before_action :authenticate_person!, :set_user, only: %i[show edit update]
   def show
     @u = User.where(uid: params[:uid]).first
-    @communities = Community.joins(:participations).where(participations: { user_id: @u })
-    #puts "le community sono:"+ String(@communities.count())
+    puts @u
+    @communities = @u.communities
+    puts 'le community sono:' + String(@communities.count)
     @posts = @u.posts.order(created_at: :desc) if @u.posts
     @communities.each do |co|
-      #puts co.id
+      puts co.id
     end
     if @u.spotify_hash
       @user = RSpotify::User.new(JSON.parse(@u.spotify_hash.gsub('=>', ':').gsub('nil', 'null')))

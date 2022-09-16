@@ -32,7 +32,9 @@ class CommunitiesController < ApplicationController
     @community = Community.new(community_params.except(:tag_ids))
     @community.creator = current_user.uid
     give_community_tags(@community, params[:community][:tag_ids])
-    if @community.playlist?
+    if !@community.tags.present?
+      render :new, status: :unprocessable_entity
+    elsif @community.playlist?
       if @community.save
         @participation = @community.participations.new(user_id: current_user.id, community_id: @community.id,
                                                        role: :admin, banned: false)
