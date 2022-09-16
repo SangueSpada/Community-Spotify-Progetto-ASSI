@@ -25,6 +25,9 @@ Tag.create(name: 'Groovy')
 Community.create(name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
 Community.create(name: "Community2", creator: "Pluto", description: "BBBBBBBBBBBBBBBB", playlist: "00fyBjjIZWbUya1sg9n9FI?si=2dd08635ebc249c7")
 Community.create(name: "Community3", creator: "Paperino", description: "CCCCCCCCCCCCCCCC", playlist: "3Efd5k4pAbgcr9Phd3GkcM?si=fdbddb4f01364f41")
+Community.create(name: "Community4", creator: "Pluto", description: "BBBBBBBBBBBBBBBB", playlist: "00fyBjjIZWbUya1sg9n9FI?si=2dd08635ebc249c7")
+Community.create(name: "Community5", creator: "Paperino", description: "CCCCCCCCCCCCCCCC", playlist: "3Efd5k4pAbgcr9Phd3GkcM?si=fdbddb4f01364f41")
+Community.create(name: "Community6", creator: "Paperino", description: "CCCCCCCCCCCCCCCC", playlist: "3Efd5k4pAbgcr9Phd3GkcM?si=fdbddb4f01364f41") 
 
 
 TaggableCommunity.create(community_id: 1, tag_id: 6)
