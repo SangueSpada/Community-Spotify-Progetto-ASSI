@@ -10,7 +10,7 @@
 * rails db:migrate 
 * rails server
 
-## COSA MANCA?
+## User Stories
 1. Registrazione 
 2. Login/OAuth utente semplice 
 3. Registrazione tecnico 
