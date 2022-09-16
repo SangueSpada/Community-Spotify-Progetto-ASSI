@@ -21,16 +21,16 @@ Tag.create(name: 'Sperimentale')
 Tag.create(name: 'Hardcore')
 Tag.create(name: 'Groovy')
 
-Community.create(name: 'Community2', creator: 'Pippo', description: 'AAAAAAAAAAAAAAAA',
+Community.create(name: 'Community1', creator: 'Pippo', description: 'AAAAAAAAAAAAAAAA',
                  playlist: '1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606')
-Community.create(name: 'Community3', creator: 'Pluto', description: 'BBBBBBBBBBBBBBBB',
+Community.create(name: 'Community2', creator: 'Pluto', description: 'BBBBBBBBBBBBBBBB',
                  playlist: '00fyBjjIZWbUya1sg9n9FI?si=2dd08635ebc249c7')
-Community.create(name: 'Community4', creator: 'Paperino', description: 'CCCCCCCCCCCCCCCC',
+Community.create(name: 'Community3', creator: 'Paperino', description: 'CCCCCCCCCCCCCCCC',
                  playlist: '3Efd5k4pAbgcr9Phd3GkcM?si=fdbddb4f01364f41')
 
-Community.create(name: "NICE", creator: "Pippo", description: "AAAAAAAAAAAAAAAA", playlist: "1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
-Community.create(name: "Community5", creator: "Paperino", description: "CCCCCCCCCCCCCCCC", playlist: "3Efd5k4pAbgcr9Phd3GkcM?si=fdbddb4f01364f41")
-Community.create(name: "Community6", creator: "Paperino", description: "CCCCCCCCCCCCCCCC", playlist: "3Efd5k4pAbgcr9Phd3GkcM?si=fdbddb4f01364f41") 
+Community.create(name: "Community4", creator: "Pippo", description: "DDDDDDDDDDDDDD", playlist: "1mhSPC0EH13KrZrVuB441j?si=13690c7ef7254606")
+Community.create(name: "Community5", creator: "Paperino", description: "EEEEEEEEEEEEEE", playlist: "3Efd5k4pAbgcr9Phd3GkcM?si=fdbddb4f01364f41")
+Community.create(name: "Community6", creator: "Paperino", description: "FFFFFFFFFFFFFFFF", playlist: "3Efd5k4pAbgcr9Phd3GkcM?si=fdbddb4f01364f41") 
 
 
 TaggableCommunity.create(community_id: 1, tag_id: 6)
@@ -58,7 +58,7 @@ matteo = User.create(email: 'matteo@example.it', uid: 2, password: 'password', n
 marco = User.create(email: 'marco@example.it', uid: 3, password: 'password', name: 'Marco')
 luca = User.create(email: 'luca@example.it', uid: 4, password: 'password', name: 'Luca')
 giovanni = User.create(email: 'giovanni@example.it', uid: 5, password: 'password', name: 'Giovanni')
-leonardo = User.create(email: 'leoanrdo@example.it', uid: 6, password: 'password', name: 'Leonardo')
+leonardo = User.create(email: 'leonardo@example.it', uid: 6, password: 'password', name: 'Leonardo')
 
 TaggableUser.create(user_id: 2, tag_id: 1)
 TaggableUser.create(user_id: 2, tag_id: 2)
