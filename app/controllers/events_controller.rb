@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :authenticate_user!, :set_event, only: %i[ edit update destroy ]
+  before_action :authenticate_person!, :set_event, only: %i[edit update destroy]
 
   # GET /events/new
   def new
@@ -18,7 +18,7 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       if @event.save
-        format.html { redirect_to root_path, notice: "Event was successfully created." }
+        format.html { redirect_to root_path, notice: 'Event was successfully created.' }
         format.json { render :show, status: :created, location: @event }
       else
         format.html { redirect_to new_community_event_path(event_params[:community_id]), status: :unprocessable_entity }
@@ -31,7 +31,7 @@ class EventsController < ApplicationController
   def update
     respond_to do |format|
       if @event.update(event_params)
-        format.html { redirect_to root_path, notice: "Event was successfully updated." }
+        format.html { redirect_to root_path, notice: 'Event was successfully updated.' }
         format.json { render :show, status: :ok, location: @event }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -42,19 +42,15 @@ class EventsController < ApplicationController
 
   # DELETE /events/1 or /events/1.json
   def destroy
+    @event.destroy
 
- 
-      @event.destroy
-      
-      respond_to do |format|
-        format.html { redirect_to root_path, notice: "Event was successfully destroyed." }
-        format.json { head :no_content }
-      end
-
+    respond_to do |format|
+      format.html { redirect_to root_path, notice: 'Event was successfully destroyed.' }
+      format.json { head :no_content }
+    end
   end
 
   def new_googlecalendar_event
-    
     client = Signet::OAuth2::Client.new(client_options)
     client.update!(session[:authorization])
 
@@ -63,7 +59,7 @@ class EventsController < ApplicationController
 
     @event = Event.find(params[:id])
 
-    event_id = @event.id.to_s + "assi"
+    event_id = @event.id.to_s + 'assi'
     event_date = @event.start_date
     event_title = @event.title
 
@@ -74,9 +70,9 @@ class EventsController < ApplicationController
       event.summary = event_title
       event.start.date = event_date
       event.end.date = event_date + 1
-      
+
       service.update_event('primary', event_id, event)
-      
+
     else
 
       event = {
@@ -90,14 +86,12 @@ class EventsController < ApplicationController
           date: event_date + 1
         }
       }
-  
+
       service.insert_event('primary', event)
     end
 
-    return
-
+    nil
   rescue Google::Apis::AuthorizationError
-
     response = client.refresh!
     session[:authorization] = session[:authorization].merge(response)
 
@@ -105,12 +99,9 @@ class EventsController < ApplicationController
   end
 
   def delete_googlecalendar_event
-    
     client = Signet::OAuth2::Client.new(client_options)
 
-    if !client.code
-      redirect_to client.authorization_uri.to_s, allow_other_host: true
-    end
+    redirect_to client.authorization_uri.to_s, allow_other_host: true unless client.code
 
     client.update!(session[:authorization])
 
@@ -119,7 +110,7 @@ class EventsController < ApplicationController
 
     @event = Event.find(params[:id])
 
-    event_id = @event.id.to_s + "assi"
+    event_id = @event.id.to_s + 'assi'
 
     event_list = service.list_events('primary')
 
@@ -130,8 +121,7 @@ class EventsController < ApplicationController
       end
     end
 
-    return
-
+    nil
   rescue Google::Apis::AuthorizationError
     response = client.refresh!
 
@@ -141,14 +131,14 @@ class EventsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_event
-      @event = Event.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def event_params
-      params.require(:event).permit(:title, :body, :start_date, :community_id, :user_id)
-    end
-  
+  # Use callbacks to share common setup or constraints between actions.
+  def set_event
+    @event = Event.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def event_params
+    params.require(:event).permit(:title, :body, :start_date, :community_id, :user_id)
+  end
 end
