@@ -110,7 +110,7 @@ class CommunityReccomendationsController < ApplicationController
           end
         end
 
-        if ret.length == 3
+        if ret.length >= 5
           return ret
         end
 
