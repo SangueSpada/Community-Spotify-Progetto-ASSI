@@ -19,6 +19,9 @@ class Modders::RegistrationsController < Devise::RegistrationsController
       if params[:modder][:password]!=params[:modder][:password_confirmation]
         resource.errors.add(:password, :blank, message: "doesn't match with password confirmation")
       end
+      if  !params[:modder][:email]=~URI::MailTo::EMAIL_REGEXP
+        resource.errors.add(:email, :blank, message: "is not valid")
+      end 
       respond_with resource, location: new_modder_registration_path(resource)
       return
     end
@@ -72,7 +75,7 @@ class Modders::RegistrationsController < Devise::RegistrationsController
   # end
   private
   def check
-    if (params[:modder][:modder_key]!=Rails.application.credentials[:modder_key] || params[:modder][:password]!=params[:modder][:password_confirmation])
+    if (params[:modder][:modder_key]!=Rails.application.credentials[:modder_key] || params[:modder][:password]!=params[:modder][:password_confirmation] || !params[:modder][:email]=~URI::MailTo::EMAIL_REGEXP)
       return false
     end
     true
